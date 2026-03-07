@@ -3,8 +3,17 @@ import path from 'path';
 import type { Dataset, Tool, Category, Audience, UseCase, Feature, PriceTier, Integration } from '../types/entities.js';
 
 function readJson<T>(filePath: string): T {
-  const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw) as T;
+  let raw: string;
+  try {
+    raw = fs.readFileSync(filePath, 'utf-8');
+  } catch {
+    throw new Error(`loadData: file not found or unreadable: ${filePath}`);
+  }
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    throw new Error(`loadData: invalid JSON in file: ${filePath}`);
+  }
 }
 
 export function loadData(contentRoot: string): Dataset {

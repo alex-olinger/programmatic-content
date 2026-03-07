@@ -10,7 +10,7 @@ export type PageType =
   | 'tool-detail';
 
 export type SectionName =
-  | 'intro'
+  | 'introduction'
   | 'toolList'
   | 'comparisonTable'
   | 'bestFor'
@@ -23,23 +23,41 @@ export interface PageDefinition {
   pageType: PageType;
   title: string;
   description: string;
+  canonicalKey: string;
+  sourceRule: PageType;
   entities: {
-    tools: string[];
     categories: string[];
     audiences: string[];
     useCases: string[];
     features: string[];
     priceTiers: string[];
   };
-  sections: Record<SectionName, 'deterministic' | 'llm'>;
-  validationStatus: 'valid' | 'warning' | 'invalid';
+  matchedToolIds: string[];
+  supportCount: number;
+  sections: Partial<Record<SectionName, 'deterministic' | 'llm'>>;
+  isValid: boolean;
+  warnings: string[];
+  rejectionReason?: string;
+  overlapScore?: number;
 }
 
-export interface SitePlan {
+export interface PageIndex {
   generatedAt: string;
-  totalPages: number;
-  byType: Record<PageType, number>;
+  totalCandidates: number;
+  totalValid: number;
+  totalRejected: number;
   pages: PageDefinition[];
+}
+
+export interface PageDefinitionReport {
+  generatedAt: string;
+  totalCandidates: number;
+  totalValid: number;
+  totalRejected: number;
+  byType: Record<string, { candidates: number; valid: number; rejected: number }>;
+  rejectionsByReason: Record<string, number>;
+  warningsSummary: string[];
+  duplicateKeysRemoved: number;
 }
 
 export interface ValidationResult {

@@ -2,8 +2,8 @@ import type { PageType } from '../types/pages.js';
 
 export interface NarrativeContext {
   pageType: PageType;
+  matchedToolIds: string[];
   entities: {
-    tools: string[];
     categories: string[];
     audiences: string[];
     useCases: string[];

@@ -2,47 +2,85 @@ import fs from 'fs';
 import path from 'path';
 import { loadData } from '../src/lib/loadData.js';
 import { applyAllRules } from '../src/lib/pageRules.js';
-import { deduplicateBySlug } from '../src/lib/pageBuilders.js';
-import type { SitePlan, PageType } from '../src/types/pages.js';
+import {
+  validateCandidates,
+  deduplicateCandidates,
+  buildPageIndex,
+  buildReport,
+  writePageIndex,
+  writeReport,
+} from '../src/lib/pageIndex.js';
 
-const ROOT = path.resolve(process.cwd());
+const ROOT = path.resolve(new URL(import.meta.url).pathname, '../../');
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const INDEX_DIR = path.join(CONTENT_ROOT, 'index');
-const OUTPUT_FILE = path.join(INDEX_DIR, 'page-definitions.json');
+const INDEX_FILE = path.join(INDEX_DIR, 'page-definitions.json');
+const REPORT_FILE = path.join(INDEX_DIR, 'page-definition-report.json');
 
 function main() {
   console.log('Loading data...');
   const dataset = loadData(CONTENT_ROOT);
   console.log(`  tools: ${dataset.tools.length}, categories: ${dataset.categories.length}, audiences: ${dataset.audiences.length}`);
 
-  console.log('Applying page rules...');
-  const rawDefs = applyAllRules(dataset);
+  console.log('Computing page candidates...');
+  const rawCandidates = applyAllRules(dataset);
+  console.log(`  raw candidates: ${rawCandidates.length}`);
+
+  console.log('Validating candidates...');
+  const validated = validateCandidates(rawCandidates);
 
   console.log('Deduplicating...');
-  const defs = deduplicateBySlug(rawDefs);
+  const { result: candidates, duplicateKeysRemoved } = deduplicateCandidates(validated);
 
-  // Count by type
-  const byType: Record<string, number> = {};
-  for (const def of defs) {
-    byType[def.pageType] = (byType[def.pageType] ?? 0) + 1;
-  }
+  const valid = candidates.filter((d) => d.isValid);
+  const rejected = candidates.filter((d) => !d.isValid);
 
-  const sitePlan: SitePlan = {
-    generatedAt: new Date().toISOString(),
-    totalPages: defs.length,
-    byType: byType as Record<PageType, number>,
-    pages: defs,
-  };
-
+  // Build and write index
+  const index = buildPageIndex(candidates);
   fs.mkdirSync(INDEX_DIR, { recursive: true });
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(sitePlan, null, 2));
+  writePageIndex(INDEX_FILE, index);
 
-  console.log(`\nGenerated ${defs.length} page definitions`);
-  console.log('By type:');
-  for (const [type, count] of Object.entries(byType).sort()) {
-    console.log(`  ${type}: ${count}`);
+  // Build and write report
+  const report = buildReport(candidates, duplicateKeysRemoved);
+  writeReport(REPORT_FILE, report);
+
+  // Summary
+  console.log(`\nPage Definition Index`);
+  console.log(`---------------------`);
+  console.log(`Total candidates: ${candidates.length}`);
+  console.log(`Valid:            ${valid.length}`);
+  console.log(`Rejected:         ${rejected.length}`);
+  if (duplicateKeysRemoved > 0) {
+    console.log(`Duplicate keys:   ${duplicateKeysRemoved}`);
   }
-  console.log(`\nWrote: ${OUTPUT_FILE}`);
+
+  console.log('\nBy type:');
+  const byType: Record<string, { valid: number; rejected: number }> = {};
+  for (const def of candidates) {
+    if (!byType[def.pageType]) byType[def.pageType] = { valid: 0, rejected: 0 };
+    if (def.isValid) byType[def.pageType].valid++;
+    else byType[def.pageType].rejected++;
+  }
+  for (const [type, counts] of Object.entries(byType).sort()) {
+    const parts = [`${counts.valid} valid`];
+    if (counts.rejected > 0) parts.push(`${counts.rejected} rejected`);
+    console.log(`  ${type}: ${parts.join(', ')}`);
+  }
+
+  if (rejected.length > 0) {
+    console.log('\nRejected pages:');
+    for (const def of rejected) {
+      console.log(`  [${def.slug}] ${def.rejectionReason}`);
+    }
+  }
+
+  console.log(`\nWrote: ${INDEX_FILE}`);
+  console.log(`Wrote: ${REPORT_FILE}`);
 }
 
-main();
+try {
+  main();
+} catch (err) {
+  console.error('compute-pages failed:', err instanceof Error ? err.message : err);
+  process.exit(1);
+}

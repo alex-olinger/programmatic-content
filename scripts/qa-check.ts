@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { validateAll } from '../src/lib/validate.js';
-import type { SitePlan } from '../src/types/pages.js';
+import { loadPageIndex } from '../src/lib/pageIndex.js';
 
-const ROOT = path.resolve(process.cwd());
+const ROOT = path.resolve(new URL(import.meta.url).pathname, '../../');
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const INDEX_FILE = path.join(CONTENT_ROOT, 'index', 'page-definitions.json');
 const PAGES_DIR = path.join(CONTENT_ROOT, 'pages');
@@ -14,8 +14,9 @@ function main() {
     process.exit(1);
   }
 
-  const sitePlan: SitePlan = JSON.parse(fs.readFileSync(INDEX_FILE, 'utf-8'));
-  console.log(`Checking ${sitePlan.pages.length} page definitions...`);
+  const index = loadPageIndex(INDEX_FILE);
+  const validPages = index.pages.filter((d) => d.isValid);
+  console.log(`Checking ${validPages.length} valid page definitions (of ${index.totalCandidates} candidates)...`);
 
   // Load generated files
   const generatedFiles = new Map<string, string>();
@@ -28,7 +29,7 @@ function main() {
   }
   console.log(`Found ${generatedFiles.size} generated files...`);
 
-  const report = validateAll(sitePlan.pages, generatedFiles);
+  const report = validateAll(validPages, generatedFiles);
 
   console.log(`\nQA Report`);
   console.log(`---------`);
@@ -58,4 +59,9 @@ function main() {
   process.exit(report.errors.length > 0 ? 1 : 0);
 }
 
-main();
+try {
+  main();
+} catch (err) {
+  console.error('qa-check failed:', err instanceof Error ? err.message : err);
+  process.exit(1);
+}
