@@ -2,3 +2,4 @@ node_modules/
 content/pages/
 content/index/
 dist/
+.claude/
