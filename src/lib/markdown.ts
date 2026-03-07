@@ -9,9 +9,10 @@ function frontmatter(def: PageDefinition): string {
     `description: "${def.description}"`,
     `slug: "${def.slug}"`,
     `pageType: "${def.pageType}"`,
+    `canonicalKey: "${def.canonicalKey}"`,
     `generatedAt: "${new Date().toISOString()}"`,
+    `matchedToolIds: [${def.matchedToolIds.map((t) => `"${t}"`).join(', ')}]`,
     'entities:',
-    `  tools: [${entities.tools.map((t) => `"${t}"`).join(', ')}]`,
     `  categories: [${entities.categories.map((c) => `"${c}"`).join(', ')}]`,
     `  audiences: [${entities.audiences.map((a) => `"${a}"`).join(', ')}]`,
     `  useCases: [${entities.useCases.map((u) => `"${u}"`).join(', ')}]`,
@@ -24,7 +25,7 @@ function frontmatter(def: PageDefinition): string {
 function toolListSection(def: PageDefinition): string {
   // [DETERMINISTIC]
   const lines = [`## Tools`];
-  for (const tool of def.entities.tools) {
+  for (const tool of def.matchedToolIds) {
     lines.push(`- ${tool}`);
   }
   return lines.join('\n');
@@ -33,12 +34,15 @@ function toolListSection(def: PageDefinition): string {
 function comparisonTableSection(def: PageDefinition): string {
   // [DETERMINISTIC]
   if (def.pageType !== 'comparison') return '';
-  const [a, b] = def.entities.tools;
+  if (def.matchedToolIds.length < 2) {
+    return '<!-- comparison table unavailable: fewer than 2 tools -->';
+  }
+  const [a, b] = def.matchedToolIds;
   return [
     '## Comparison',
     '',
-    '| Feature | ' + a + ' | ' + b + ' |',
-    '|---------|' + '-'.repeat(a.length + 2) + '|' + '-'.repeat(b.length + 2) + '|',
+    `| Feature | ${a} | ${b} |`,
+    '|---------|---------|---------|',
     '| Categories | see data | see data |',
     '| Pricing | see data | see data |',
   ].join('\n');
@@ -47,6 +51,7 @@ function comparisonTableSection(def: PageDefinition): string {
 export function renderMarkdown(def: PageDefinition): string {
   const ctx = {
     pageType: def.pageType,
+    matchedToolIds: def.matchedToolIds,
     entities: def.entities,
     title: def.title,
   };

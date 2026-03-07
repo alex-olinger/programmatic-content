@@ -12,7 +12,7 @@
     "features": ["ai-suggestions", "templates", "collaboration"],
     "priceTiers": ["freemium", "premium"],
     "integrations": ["slack", "zapier", "google-drive"],
-    "alternatives": ["jasper", "copy-ai"]
+    "alternatives": ["jasper", "copy-ai", "otter-ai"]
   },
   {
     "id": "jasper",

@@ -1,19 +1,14 @@
-import type { PageDefinition, ValidationReport, ValidationResult } from '../types/pages.js';
+import type { PageDefinition, PageType, ValidationReport, ValidationResult } from '../types/pages.js';
+import { MIN_TOOLS } from './pageRules.js';
 
 const REQUIRED_FRONTMATTER = ['title', 'description', 'slug', 'pageType', 'generatedAt'];
 
-function parseFrontmatter(content: string): Record<string, string> | null {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return null;
-  const result: Record<string, string> = {};
-  for (const line of match[1].split('\n')) {
-    const colon = line.indexOf(':');
-    if (colon === -1) continue;
-    const key = line.slice(0, colon).trim();
-    const val = line.slice(colon + 1).trim().replace(/^"|"$/g, '');
-    result[key] = val;
-  }
-  return result;
+function hasFrontmatterField(content: string, field: string): boolean {
+  return content.includes(`\n${field}:`) || content.startsWith(`${field}:`);
+}
+
+function hasFrontmatter(content: string): boolean {
+  return content.startsWith('---\n') && content.includes('\n---');
 }
 
 export function validateAll(
@@ -23,7 +18,7 @@ export function validateAll(
   const errors: ValidationResult[] = [];
   const warnings: ValidationResult[] = [];
 
-  // 1. Duplicate slugs in page-definitions
+  // 1. Duplicate slugs in valid definitions
   const slugCounts = new Map<string, number>();
   for (const def of defs) {
     slugCounts.set(def.slug, (slugCounts.get(def.slug) ?? 0) + 1);
@@ -46,39 +41,52 @@ export function validateAll(
     }
   }
 
+  // 3. Duplicate canonical keys
+  const keyCounts = new Map<string, number>();
   for (const def of defs) {
-    // 3. Pages with zero matched tools
-    if (def.entities.tools.length === 0) {
+    keyCounts.set(def.canonicalKey, (keyCounts.get(def.canonicalKey) ?? 0) + 1);
+  }
+  for (const [key, count] of keyCounts) {
+    if (count > 1) {
+      errors.push({ slug: key, level: 'error', message: `Duplicate canonical key: ${key} (${count} times)` });
+    }
+  }
+
+  for (const def of defs) {
+    // 4. Pages with zero matched tools
+    if (def.matchedToolIds.length === 0) {
       errors.push({ slug: def.slug, level: 'error', message: 'Page has zero matched tools' });
     }
 
-    // 6. tool-detail missing website or description
-    if (def.pageType === 'tool-detail') {
-      if (def.entities.tools.length === 0) {
-        errors.push({ slug: def.slug, level: 'error', message: 'tool-detail has no tool entity' });
-      }
+    // 5. Threshold check (safety net — should be caught by pageIndex validation)
+    const minTools = MIN_TOOLS[def.pageType as PageType];
+    if (minTools !== undefined && def.supportCount < minTools) {
+      errors.push({
+        slug: def.slug,
+        level: 'error',
+        message: `Page type "${def.pageType}" requires >= ${minTools} tools, found ${def.supportCount}`,
+      });
     }
 
-    // 4 & 5. Check generated file
+    // 6. Check generated file
     const content = generatedFiles.get(def.slug);
     if (!content) {
       warnings.push({ slug: def.slug, level: 'warning', message: 'No generated file found for page' });
       continue;
     }
 
-    // 4. Invalid frontmatter
-    const fm = parseFrontmatter(content);
-    if (!fm) {
+    // 7. Invalid frontmatter
+    if (!hasFrontmatter(content)) {
       errors.push({ slug: def.slug, level: 'error', message: 'Missing or malformed YAML frontmatter' });
     } else {
       for (const field of REQUIRED_FRONTMATTER) {
-        if (!fm[field]) {
+        if (!hasFrontmatterField(content, field)) {
           errors.push({ slug: def.slug, level: 'error', message: `Frontmatter missing required field: ${field}` });
         }
       }
     }
 
-    // 5. Empty required sections
+    // 8. Empty required sections
     if (!content.includes('## Tools') || !content.includes('## FAQ')) {
       warnings.push({ slug: def.slug, level: 'warning', message: 'Missing expected section headings' });
     }
