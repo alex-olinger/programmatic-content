@@ -1,0 +1,16 @@
+{
+  "name": "programmatic-content",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compute-pages": "tsx scripts/compute-pages.ts",
+    "generate-pages": "tsx scripts/generate-pages.ts",
+    "qa-check": "tsx scripts/qa-check.ts",
+    "clean": "rm -rf content/pages content/index"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.4.0"
+  }
+}

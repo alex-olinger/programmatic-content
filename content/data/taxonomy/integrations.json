@@ -1,0 +1,26 @@
+[
+  {
+    "id": "slack",
+    "name": "Slack",
+    "slug": "slack",
+    "description": "Team messaging and collaboration platform."
+  },
+  {
+    "id": "zapier",
+    "name": "Zapier",
+    "slug": "zapier",
+    "description": "Automation platform connecting apps and workflows."
+  },
+  {
+    "id": "google-drive",
+    "name": "Google Drive",
+    "slug": "google-drive",
+    "description": "Cloud storage and file sharing by Google."
+  },
+  {
+    "id": "zoom",
+    "name": "Zoom",
+    "slug": "zoom",
+    "description": "Video conferencing and online meetings platform."
+  }
+]

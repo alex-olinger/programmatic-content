@@ -1,0 +1,26 @@
+[
+  {
+    "id": "writing",
+    "name": "Writing",
+    "slug": "writing",
+    "description": "AI tools for creating written content including blog posts, copy, and documents."
+  },
+  {
+    "id": "video",
+    "name": "Video",
+    "slug": "video",
+    "description": "AI tools for creating, editing, and generating video content."
+  },
+  {
+    "id": "productivity",
+    "name": "Productivity",
+    "slug": "productivity",
+    "description": "AI tools for improving workflow, organization, and overall productivity."
+  },
+  {
+    "id": "transcription",
+    "name": "Transcription",
+    "slug": "transcription",
+    "description": "AI tools for transcribing audio and video to text."
+  }
+]

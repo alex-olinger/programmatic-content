@@ -1,0 +1,26 @@
+[
+  {
+    "id": "blog-writing",
+    "name": "Blog Writing",
+    "slug": "blog-writing",
+    "description": "Creating long-form blog posts and articles with AI assistance."
+  },
+  {
+    "id": "note-taking",
+    "name": "Note Taking",
+    "slug": "note-taking",
+    "description": "Capturing, organizing, and retrieving notes and information."
+  },
+  {
+    "id": "video-ads",
+    "name": "Video Ads",
+    "slug": "video-ads",
+    "description": "Producing video advertisements and marketing videos."
+  },
+  {
+    "id": "meeting-notes",
+    "name": "Meeting Notes",
+    "slug": "meeting-notes",
+    "description": "Automatically capturing and summarizing meeting discussions."
+  }
+]

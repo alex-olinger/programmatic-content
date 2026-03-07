@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ai-suggestions",
+    "name": "AI Suggestions",
+    "slug": "ai-suggestions",
+    "description": "Real-time AI-powered content and writing suggestions."
+  },
+  {
+    "id": "templates",
+    "name": "Templates",
+    "slug": "templates",
+    "description": "Pre-built content templates for common use cases."
+  },
+  {
+    "id": "collaboration",
+    "name": "Collaboration",
+    "slug": "collaboration",
+    "description": "Real-time multi-user editing and commenting features."
+  },
+  {
+    "id": "transcription",
+    "name": "Transcription",
+    "slug": "transcription",
+    "description": "Converting spoken audio into written text."
+  },
+  {
+    "id": "video-generation",
+    "name": "Video Generation",
+    "slug": "video-generation",
+    "description": "AI-powered generation of video content from text or prompts."
+  }
+]

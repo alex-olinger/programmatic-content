@@ -1,0 +1,20 @@
+[
+  {
+    "id": "free",
+    "name": "Free",
+    "slug": "free",
+    "description": "Completely free tools with no paid tier required."
+  },
+  {
+    "id": "freemium",
+    "name": "Freemium",
+    "slug": "freemium",
+    "description": "Free tier available with optional paid upgrades."
+  },
+  {
+    "id": "premium",
+    "name": "Premium",
+    "slug": "premium",
+    "description": "Paid tools offering advanced features and higher usage limits."
+  }
+]

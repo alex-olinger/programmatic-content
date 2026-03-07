@@ -1,0 +1,26 @@
+[
+  {
+    "id": "students",
+    "name": "Students",
+    "slug": "students",
+    "description": "Academic learners looking for tools to improve study and research workflows."
+  },
+  {
+    "id": "marketers",
+    "name": "Marketers",
+    "slug": "marketers",
+    "description": "Marketing professionals creating campaigns, copy, and content at scale."
+  },
+  {
+    "id": "creators",
+    "name": "Creators",
+    "slug": "creators",
+    "description": "Content creators producing blogs, videos, podcasts, and social media."
+  },
+  {
+    "id": "startups",
+    "name": "Startups",
+    "slug": "startups",
+    "description": "Early-stage teams moving fast and needing scalable content solutions."
+  }
+]
