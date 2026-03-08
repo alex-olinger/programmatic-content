@@ -181,6 +181,79 @@ unless explicitly requested.
 
 ------------------------------------------------------------------------
 
+# AI Working Practices
+
+## Core Principles
+
+-   **Simplicity first**: make every change as simple as possible; impact minimal code
+-   **No laziness**: find root causes; no temporary fixes; senior developer standards
+-   **Minimal impact**: changes should only touch what is necessary; avoid introducing bugs
+
+------------------------------------------------------------------------
+
+## Plan Mode
+
+-   Enter plan mode for **any non-trivial task** (3+ steps or architectural decisions)
+-   Write detailed specs upfront to reduce ambiguity
+-   Use plan mode for verification steps, not just building
+-   If something goes sideways, **stop and re-plan immediately** — do not keep pushing
+
+------------------------------------------------------------------------
+
+## Task Management
+
+1.  **Plan first**: write plan to `tasks/todo.md` with checkable items
+2.  **Verify plan**: check in before starting implementation
+3.  **Track progress**: mark items complete as you go
+4.  **Explain changes**: high-level summary at each step
+5.  **Document results**: add review section to `tasks/todo.md`
+6.  **Capture lessons**: update `tasks/lessons.md` after corrections
+
+------------------------------------------------------------------------
+
+## Subagent Strategy
+
+-   Use subagents liberally to keep the main context window clean
+-   Offload research, exploration, and parallel analysis to subagents
+-   For complex problems, throw more compute at it via subagents
+-   One task per subagent for focused execution
+
+------------------------------------------------------------------------
+
+## Self-Improvement Loop
+
+-   After **any correction** from the user: update `tasks/lessons.md` with the pattern
+-   Write rules that prevent the same mistake from recurring
+-   Review `tasks/lessons.md` at session start for relevant prior lessons
+-   Ruthlessly iterate until mistake rate drops
+
+------------------------------------------------------------------------
+
+## Verification Before Done
+
+-   Never mark a task complete without proving it works
+-   Diff behavior between main and your changes when relevant
+-   Ask: "Would a staff engineer approve this?"
+-   Run tests, check logs, demonstrate correctness
+
+------------------------------------------------------------------------
+
+## Demand Elegance
+
+-   For non-trivial changes: pause and ask "is there a more elegant way?"
+-   If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+-   Skip this for simple, obvious fixes — do not over-engineer
+
+------------------------------------------------------------------------
+
+## Autonomous Bug Fixing
+
+-   When given a bug report: fix it — do not ask for hand-holding
+-   Point at logs, errors, failing tests, then resolve them
+-   Go fix failing CI tests without being told how
+
+------------------------------------------------------------------------
+
 # Development Workflow
 
 Typical local workflow:
