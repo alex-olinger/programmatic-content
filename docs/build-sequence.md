@@ -20,7 +20,7 @@ complexity.
 
 Goal: create the deterministic content-generation system.
 
-## 1. Master Scaffold
+## 1. Master Scaffold [COMPLETE]
 
 Create the initial content engine architecture.
 
@@ -39,7 +39,7 @@ Responsibilities:
 
 ------------------------------------------------------------------------
 
-## 2. Refactor / Tighten
+## 2. Refactor / Tighten [COMPLETE]
 
 Immediately clean up the scaffold.
 
@@ -53,7 +53,7 @@ Goals:
 
 ------------------------------------------------------------------------
 
-## 3. Page-Definition Index Layer
+## 3. Page-Definition Index Layer [COMPLETE]
 
 Add a structured page-definition computation step.
 
@@ -322,12 +322,12 @@ Tasks:
 
 # Final Build Order (Summary)
 
-1 Master Scaffold 2 Refactor / Tighten 3 Page-Definition Index 4
-Site-Plan Artifact 5 content-engine-rules.md 6 Bugfix / Audit 7 Dataset
-Expansion 8 LLM Integration 9 Quality Hardening 10 Frontend MVP 11
-Frontend Tightening 12 Verify Build 13 Build-Time Optimization 14
-Optimization Tightening 15 Expanded Architecture 16 Architecture
-Tightening
+1 Master Scaffold [COMPLETE] 2 Refactor / Tighten [COMPLETE] 3
+Page-Definition Index [COMPLETE] 4 Site-Plan Artifact 5
+content-engine-rules.md 6 Bugfix / Audit 7 Dataset Expansion 8 LLM
+Integration 9 Quality Hardening 10 Frontend MVP 11 Frontend Tightening
+12 Verify Build 13 Build-Time Optimization 14 Optimization Tightening
+15 Expanded Architecture 16 Architecture Tightening
 
 ------------------------------------------------------------------------
 
