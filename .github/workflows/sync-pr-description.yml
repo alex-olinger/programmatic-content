@@ -55,10 +55,18 @@ jobs:
 
             const sections = relevant.map(pr => {
               const body = pr.body ? pr.body.trim() : '_No description provided._';
-              return `### #${pr.number} — ${pr.title}\n\n${body}`;
+              return [
+                `### #${pr.number} — ${pr.title}`,
+                '',
+                body,
+              ].join('\n');
             });
 
-            const newBody = `## What's included\n\n${sections.join('\n\n---\n\n')}`;
+            const newBody = [
+              '## What\'s included',
+              '',
+              sections.join('\n\n---\n\n'),
+            ].join('\n');
 
             await github.rest.pulls.update({
               owner, repo,
