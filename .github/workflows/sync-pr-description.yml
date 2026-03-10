@@ -68,10 +68,14 @@ jobs:
               sections.join('\n\n---\n\n'),
             ].join('\n');
 
+            const date = new Date().toISOString().slice(0, 10);
+            const newTitle = `release: testing → main (${date})`;
+
             await github.rest.pulls.update({
               owner, repo,
               pull_number: testingPR.number,
+              title: newTitle,
               body: newBody,
             });
 
-            console.log(`Updated PR #${testingPR.number} with ${relevant.length} feature PR(s).`);
+            console.log(`Updated PR #${testingPR.number} — title: "${newTitle}", ${relevant.length} feature PR(s).`);
