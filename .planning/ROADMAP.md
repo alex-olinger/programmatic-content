@@ -29,7 +29,10 @@ Starting from a working page-definition index layer, this roadmap completes the 
   2. `site-plan-summary.json` contains valid pages grouped by pageType with slug listings and counts
   3. `site-plan-summary.json` contains zero rejected or diagnostic data — only valid pages
   4. Tool coverage stats are present in the summary (which tools appear in how many pages)
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 01-01-PLAN.md — Define SitePlanSummary type, implement build+write functions, wire into compute-pages
 
 ### Phase 2: Pipeline Integrity
 **Goal**: The full three-script pipeline runs cleanly with zero errors and zero warnings on the current dataset
@@ -103,7 +106,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Site-Plan Artifact | 0/TBD | Not started | - |
+| 1. Site-Plan Artifact | 0/1 | Not started | - |
 | 2. Pipeline Integrity | 0/TBD | Not started | - |
 | 3. Dataset Expansion | 0/TBD | Not started | - |
 | 4. LLM Narrative Integration | 0/TBD | Not started | - |
