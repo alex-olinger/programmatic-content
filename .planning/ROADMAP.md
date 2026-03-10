@@ -10,7 +10,7 @@ Starting from a working page-definition index layer, this roadmap completes the 
 - Integer phases (1, 2, 3): Planned milestone work
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 1: Site-Plan Artifact** - Add `buildSitePlanSummary()` to produce `content/index/site-plan-summary.json`
+- [x] **Phase 1: Site-Plan Artifact** - Add `buildSitePlanSummary()` to produce `content/index/site-plan-summary.json` (completed 2026-03-10)
 - [ ] **Phase 2: Pipeline Integrity** - Full pipeline runs cleanly with zero errors and zero warnings
 - [ ] **Phase 3: Dataset Expansion** - Expand tools and taxonomy entities to produce meaningful page coverage
 - [ ] **Phase 4: LLM Narrative Integration** - Connect real Claude API with rate limiting and caching
@@ -106,7 +106,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Site-Plan Artifact | 0/1 | Not started | - |
+| 1. Site-Plan Artifact | 1/1 | Complete   | 2026-03-10 |
 | 2. Pipeline Integrity | 0/TBD | Not started | - |
 | 3. Dataset Expansion | 0/TBD | Not started | - |
 | 4. LLM Narrative Integration | 0/TBD | Not started | - |

@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-03-10T22:40:58.254Z"
+stopped_at: Completed 01-site-plan-artifact/01-01-PLAN.md
+last_updated: "2026-03-10T22:54:00.663Z"
 last_activity: 2026-03-10 — Roadmap created; phases 1-7 derived from v1 requirements
 progress:
   total_phases: 7
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  completed_phases: 1
+  total_plans: 1
+  completed_plans: 1
   percent: 0
 ---
 
@@ -50,6 +50,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: -
 
 *Updated after each plan completion*
+| Phase 01-site-plan-artifact P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -61,6 +62,8 @@ Recent decisions affecting current work:
 - [Pre-roadmap]: Page definitions as intermediate artifact — decouples site plan from generation
 - [Pre-roadmap]: LLM writes prose only — slugs, matchedToolIds, sections are always computed
 - [Pre-roadmap]: Gitignore generated artifacts — fully reproducible, no point tracking them
+- [Phase 01-site-plan-artifact]: toolCoverage built from valid pages matchedToolIds only — zero-count tools naturally excluded
+- [Phase 01-site-plan-artifact]: SitePlanSummary contains no diagnostic fields — clean consumer view separate from full index
 
 ### Pending Todos
 
@@ -72,6 +75,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T22:40:58.243Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-site-plan-artifact/01-CONTEXT.md
+Last session: 2026-03-10T22:54:00.661Z
+Stopped at: Completed 01-site-plan-artifact/01-01-PLAN.md
+Resume file: None

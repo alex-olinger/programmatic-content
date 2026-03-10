@@ -9,9 +9,9 @@ Requirements for initial release. Maps to build-sequence.md steps 4–12.
 
 ### Site Plan
 
-- [ ] **PLAN-01**: `buildSitePlanSummary()` produces `content/index/site-plan-summary.json` with valid pages grouped by pageType, slug listings, counts, and tool coverage stats
-- [ ] **PLAN-02**: Site-plan artifact contains no rejected/diagnostic data — valid pages only
-- [ ] **PLAN-03**: `pnpm compute-pages` writes both `page-definitions.json` and `site-plan-summary.json`
+- [x] **PLAN-01**: `buildSitePlanSummary()` produces `content/index/site-plan-summary.json` with valid pages grouped by pageType, slug listings, counts, and tool coverage stats
+- [x] **PLAN-02**: Site-plan artifact contains no rejected/diagnostic data — valid pages only
+- [x] **PLAN-03**: `pnpm compute-pages` writes both `page-definitions.json` and `site-plan-summary.json`
 
 ### Pipeline Integrity
 
@@ -96,9 +96,9 @@ Updated: 2026-03-10 — roadmap created, all 30 v1 requirements mapped to phases
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PLAN-01 | Phase 1 | Pending |
-| PLAN-02 | Phase 1 | Pending |
-| PLAN-03 | Phase 1 | Pending |
+| PLAN-01 | Phase 1 | Complete |
+| PLAN-02 | Phase 1 | Complete |
+| PLAN-03 | Phase 1 | Complete |
 | PIPE-01 | Phase 2 | Pending |
 | PIPE-02 | Phase 2 | Pending |
 | PIPE-03 | Phase 2 | Pending |
