@@ -1,23 +1,28 @@
 import type { PageDefinition } from '../types/pages.js';
 import { generateNarrative } from './llm.js';
 
+/** Escape a string for use inside a YAML double-quoted scalar. */
+function yamlEscape(value: string): string {
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
 function frontmatter(def: PageDefinition): string {
   const entities = def.entities;
   return [
     '---',
-    `title: "${def.title}"`,
-    `description: "${def.description}"`,
-    `slug: "${def.slug}"`,
-    `pageType: "${def.pageType}"`,
-    `canonicalKey: "${def.canonicalKey}"`,
+    `title: "${yamlEscape(def.title)}"`,
+    `description: "${yamlEscape(def.description)}"`,
+    `slug: "${yamlEscape(def.slug)}"`,
+    `pageType: "${yamlEscape(def.pageType)}"`,
+    `canonicalKey: "${yamlEscape(def.canonicalKey)}"`,
     `generatedAt: "${new Date().toISOString()}"`,
-    `matchedToolIds: [${def.matchedToolIds.map((t) => `"${t}"`).join(', ')}]`,
+    `matchedToolIds: [${def.matchedToolIds.map((t) => `"${yamlEscape(t)}"`).join(', ')}]`,
     'entities:',
-    `  categories: [${entities.categories.map((c) => `"${c}"`).join(', ')}]`,
-    `  audiences: [${entities.audiences.map((a) => `"${a}"`).join(', ')}]`,
-    `  useCases: [${entities.useCases.map((u) => `"${u}"`).join(', ')}]`,
-    `  features: [${entities.features.map((f) => `"${f}"`).join(', ')}]`,
-    `  priceTiers: [${entities.priceTiers.map((p) => `"${p}"`).join(', ')}]`,
+    `  categories: [${entities.categories.map((c) => `"${yamlEscape(c)}"`).join(', ')}]`,
+    `  audiences: [${entities.audiences.map((a) => `"${yamlEscape(a)}"`).join(', ')}]`,
+    `  useCases: [${entities.useCases.map((u) => `"${yamlEscape(u)}"`).join(', ')}]`,
+    `  features: [${entities.features.map((f) => `"${yamlEscape(f)}"`).join(', ')}]`,
+    `  priceTiers: [${entities.priceTiers.map((p) => `"${yamlEscape(p)}"`).join(', ')}]`,
     '---',
   ].join('\n');
 }

@@ -86,7 +86,7 @@ Purpose:
 
 ------------------------------------------------------------------------
 
-## 5. Create `docs/content-engine-rules.md`
+## 5. Create `docs/content-engine-rules.md` [COMPLETE]
 
 Generate a repository rulebook documenting:
 
@@ -324,10 +324,10 @@ Tasks:
 
 1 Master Scaffold [COMPLETE] 2 Refactor / Tighten [COMPLETE] 3
 Page-Definition Index [COMPLETE] 4 Site-Plan Artifact 5
-content-engine-rules.md 6 Bugfix / Audit 7 Dataset Expansion 8 LLM
-Integration 9 Quality Hardening 10 Frontend MVP 11 Frontend Tightening
-12 Verify Build 13 Build-Time Optimization 14 Optimization Tightening
-15 Expanded Architecture 16 Architecture Tightening
+content-engine-rules.md [COMPLETE] 6 Bugfix / Audit 7 Dataset Expansion
+8 LLM Integration 9 Quality Hardening 10 Frontend MVP 11 Frontend
+Tightening 12 Verify Build 13 Build-Time Optimization 14 Optimization
+Tightening 15 Expanded Architecture 16 Architecture Tightening
 
 ------------------------------------------------------------------------
 

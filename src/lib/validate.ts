@@ -92,6 +92,14 @@ export function validateAll(
     }
   }
 
+  // 9. Orphan file detection: .md files that have no corresponding valid page
+  const validSlugs = new Set(defs.map((d) => d.slug));
+  for (const slug of generatedFiles.keys()) {
+    if (!validSlugs.has(slug)) {
+      errors.push({ slug, level: 'error', message: 'Orphan file: no valid page definition for this slug' });
+    }
+  }
+
   return {
     errors,
     warnings,
