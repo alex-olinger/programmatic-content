@@ -256,10 +256,19 @@ unless explicitly requested.
 
 ## Commit and PR Messages
 
--   Always write a commit message for every commit — never leave it blank
+**After completing any task that changes files, Claude must automatically:**
+
+1.  Create a new branch (if not already on a feature branch)
+2.  Stage and commit with a meaningful message — never leave it blank
+3.  Push the branch to remote
+4.  Open a PR targeting `testing` with a filled-in Summary + Test plan
+
+Do not wait to be asked. This is part of completing the task.
+
+Rules:
 -   Commit message format: `type: short description` (e.g. `docs:`, `fix:`, `feat:`, `ci:`)
 -   Body lines explain *why*, not *what* — the diff shows what changed
--   Always write a PR description using the Summary + Test plan format from `.github/pull_request_template.md`
+-   PR description must use the Summary + Test plan format — never submit an empty template
 -   PRs always target `testing` as base branch — never `main` directly
 -   Never push directly to `main` or `testing`
 
