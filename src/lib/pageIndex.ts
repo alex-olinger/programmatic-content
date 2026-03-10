@@ -1,5 +1,5 @@
 import fs from 'fs';
-import type { PageDefinition, PageIndex, PageDefinitionReport, PageType } from '../types/pages.js';
+import type { PageDefinition, PageIndex, PageDefinitionReport, PageType, SitePlanSummary } from '../types/pages.js';
 import { MIN_TOOLS, MIN_OVERLAP_SCORE } from './pageRules.js';
 
 /**
@@ -157,6 +157,59 @@ export function buildReport(
     warningsSummary: [...allWarnings],
     duplicateKeysRemoved,
   };
+}
+
+/**
+ * Build a consumer-friendly site-plan summary from processed candidates.
+ * Contains only valid pages — no diagnostic data.
+ */
+export function buildSitePlanSummary(candidates: PageDefinition[]): SitePlanSummary {
+  const validPages = candidates.filter((d) => d.isValid);
+
+  // Group by pageType — only valid pages, slugs sorted alphabetically
+  const byType: Record<string, { count: number; slugs: string[] }> = {};
+  for (const page of validPages) {
+    if (!byType[page.pageType]) {
+      byType[page.pageType] = { count: 0, slugs: [] };
+    }
+    byType[page.pageType].count++;
+    byType[page.pageType].slugs.push(page.slug);
+  }
+  for (const entry of Object.values(byType)) {
+    entry.slugs.sort();
+  }
+
+  // Tool coverage: page count per toolId, derived from valid pages only, sorted descending
+  const toolCounts: Record<string, number> = {};
+  for (const page of validPages) {
+    for (const toolId of page.matchedToolIds) {
+      toolCounts[toolId] = (toolCounts[toolId] ?? 0) + 1;
+    }
+  }
+  const toolCoverage = Object.fromEntries(
+    Object.entries(toolCounts).sort((a, b) => b[1] - a[1])
+  );
+
+  return {
+    generatedAt: new Date().toISOString(),
+    totalValidPages: validPages.length,
+    totalPageTypes: Object.keys(byType).length,
+    byType,
+    toolCoverage,
+  };
+}
+
+/**
+ * Write a site-plan summary to disk.
+ */
+export function writeSitePlanSummary(filePath: string, summary: SitePlanSummary): void {
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(summary, null, 2));
+  } catch (err) {
+    throw new Error(
+      `writeSitePlanSummary: failed to write "${filePath}": ${err instanceof Error ? err.message : String(err)}`
+    );
+  }
 }
 
 /**
