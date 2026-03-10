@@ -254,29 +254,6 @@ unless explicitly requested.
 
 ------------------------------------------------------------------------
 
-## Commit Review Gate (GSD Execution)
-
-**Before every `git commit` during GSD plan execution:**
-
-1. Stage the files (`git add <specific files>` — never `git add .`)
-2. Run `git diff --staged` and display the full output
-3. Stop and present a `checkpoint:human-verify`:
-
-```
-STAGED CHANGES — Task {N}: {task name}
-
-{git diff --staged output}
-
-Type "approved" to commit, or describe issues to fix first.
-```
-
-4. Wait for "approved" before running `git commit`
-5. If issues are described, fix them, re-stage, and show the diff again
-
-This applies to every task commit. Do not skip this gate.
-
-------------------------------------------------------------------------
-
 ## Commit and PR Messages
 
 **After completing any task that changes files, Claude must automatically:**
