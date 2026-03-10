@@ -20,6 +20,13 @@ function main() {
 
   fs.mkdirSync(PAGES_DIR, { recursive: true });
 
+  // Remove stale .md files from previous runs before writing new ones
+  for (const file of fs.readdirSync(PAGES_DIR)) {
+    if (file.endsWith('.md')) {
+      fs.unlinkSync(path.join(PAGES_DIR, file));
+    }
+  }
+
   let written = 0;
   for (const def of validPages) {
     const markdown = renderMarkdown(def);

@@ -1,4 +1,4 @@
-import type { PageType } from '../types/pages.js';
+import type { PageType, SectionName } from '../types/pages.js';
 
 export interface NarrativeContext {
   pageType: PageType;
@@ -13,7 +13,7 @@ export interface NarrativeContext {
   title: string;
 }
 
-export type NarrativeSection = 'introduction' | 'bestFor' | 'prosAndCons' | 'faq';
+export type NarrativeSection = Extract<SectionName, 'introduction' | 'bestFor' | 'prosAndCons' | 'faq'>;
 
 // Default: placeholder text. Swap implementation for real Claude/OpenAI integration.
 export function generateNarrative(section: NarrativeSection, ctx: NarrativeContext): string {
