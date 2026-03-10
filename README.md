@@ -87,17 +87,27 @@ Markdown generation reads the index and only produces pages for valid definition
 
 ## Canonical Keys
 
-Each page has a canonical key that prevents duplicate semantic meaning:
+The canonical key is the **semantic identity** of a page — separate from its URL slug.
+
+The problem it solves: two different slugs could represent the same page. Without canonical keys the system could generate both `notion-vs-jasper` and `jasper-vs-notion` as separate pages. They mean the same thing, just ordered differently.
+
+The canonical key encodes *what a page is about*, not how it's displayed:
 
 ```
 category|writing
 audience-category|marketers|writing
 use-case|blog-writing
-comparison|copy-ai|jasper
+comparison|copy-ai|jasper     ← IDs sorted, so order doesn't matter
 tool-detail|notion
 ```
 
-Keys use sorted entity IDs. Two candidates with the same canonical key are deduplicated (first wins).
+Entity IDs within a key are sorted alphabetically so the same combination always produces the same key regardless of iteration order.
+
+Two layers of uniqueness enforced by `deduplicateCandidates()`:
+1. **Canonical key** — prevents semantic duplicates (same meaning, different URL)
+2. **Slug** — prevents URL duplicates (safety net for edge cases)
+
+First-seen wins. If a second candidate arrives with an already-seen key, it is marked `isValid: false` and kept in the index as an audit trail — but never rendered.
 
 ## LLM Boundary
 
