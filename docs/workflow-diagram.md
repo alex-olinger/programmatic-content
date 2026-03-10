@@ -14,7 +14,8 @@
 │   7 flat JSON arrays — source of truth for all entities         │
 └──────────────────────────────┬──────────────────────────────────┘
                                │
-                               │  loadData()
+                               │  loadData()  ← scripts/compute-pages.ts only
+                               │              (generate-pages + qa-check do NOT call loadData)
                                ▼
                           Dataset{}
                   (tools, categories, audiences,
