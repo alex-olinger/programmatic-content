@@ -224,7 +224,7 @@ unless explicitly requested.
 
 -   After **any correction** from the user: update `tasks/lessons.md` with the pattern
 -   Write rules that prevent the same mistake from recurring
--   Review `tasks/lessons.md` at session start for relevant prior lessons
+-   At session start: read `tasks/lessons.md` for prior lessons; read any other `.md` files in `tasks/` to understand current and recent work
 -   Ruthlessly iterate until mistake rate drops
 
 ------------------------------------------------------------------------
