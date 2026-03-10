@@ -92,7 +92,7 @@ Deferred to future release.
 
 ## Traceability
 
-Updated during roadmap creation.
+Updated: 2026-03-10 — roadmap created, all 30 v1 requirements mapped to phases 1-7.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
