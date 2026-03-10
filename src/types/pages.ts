@@ -60,6 +60,14 @@ export interface PageDefinitionReport {
   duplicateKeysRemoved: number;
 }
 
+export interface SitePlanSummary {
+  generatedAt: string;
+  totalValidPages: number;
+  totalPageTypes: number;
+  byType: Record<string, { count: number; slugs: string[] }>;
+  toolCoverage: Record<string, number>;
+}
+
 export interface ValidationResult {
   slug: string;
   level: 'error' | 'warning';

@@ -9,6 +9,8 @@ import {
   buildReport,
   writePageIndex,
   writeReport,
+  buildSitePlanSummary,
+  writeSitePlanSummary,
 } from '../src/lib/pageIndex.js';
 
 const ROOT = path.resolve(new URL(import.meta.url).pathname, '../../');
@@ -16,6 +18,7 @@ const CONTENT_ROOT = path.join(ROOT, 'content');
 const INDEX_DIR = path.join(CONTENT_ROOT, 'index');
 const INDEX_FILE = path.join(INDEX_DIR, 'page-definitions.json');
 const REPORT_FILE = path.join(INDEX_DIR, 'page-definition-report.json');
+const SUMMARY_FILE = path.join(INDEX_DIR, 'site-plan-summary.json');
 
 function main() {
   console.log('Loading data...');
@@ -43,6 +46,10 @@ function main() {
   // Build and write report
   const report = buildReport(candidates, duplicateKeysRemoved);
   writeReport(REPORT_FILE, report);
+
+  // Build and write site-plan summary
+  const summary = buildSitePlanSummary(candidates);
+  writeSitePlanSummary(SUMMARY_FILE, summary);
 
   // Summary
   console.log(`\nPage Definition Index`);
@@ -76,6 +83,7 @@ function main() {
 
   console.log(`\nWrote: ${INDEX_FILE}`);
   console.log(`Wrote: ${REPORT_FILE}`);
+  console.log(`Wrote: ${SUMMARY_FILE}`);
 }
 
 try {
