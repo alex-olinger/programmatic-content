@@ -254,6 +254,17 @@ unless explicitly requested.
 
 ------------------------------------------------------------------------
 
+## Commit and PR Messages
+
+-   Always write a commit message for every commit — never leave it blank
+-   Commit message format: `type: short description` (e.g. `docs:`, `fix:`, `feat:`, `ci:`)
+-   Body lines explain *why*, not *what* — the diff shows what changed
+-   Always write a PR description using the Summary + Test plan format from `.github/pull_request_template.md`
+-   PRs always target `testing` as base branch — never `main` directly
+-   Never push directly to `main` or `testing`
+
+------------------------------------------------------------------------
+
 # Development Workflow
 
 Typical local workflow:

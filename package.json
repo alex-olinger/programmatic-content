@@ -6,7 +6,8 @@
     "compute-pages": "tsx scripts/compute-pages.ts",
     "generate-pages": "tsx scripts/generate-pages.ts",
     "qa-check": "tsx scripts/qa-check.ts",
-    "clean": "rm -rf content/pages content/index"
+    "clean": "rm -rf content/pages content/index",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
