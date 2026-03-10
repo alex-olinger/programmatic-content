@@ -1,0 +1,16 @@
+#!/bin/sh
+msg=$(cat "$1")
+
+# Strip comments and blank lines
+stripped=$(echo "$msg" | sed '/^#/d' | sed '/^$/d')
+
+if [ -z "$stripped" ]; then
+  echo "error: commit message cannot be empty" >&2
+  exit 1
+fi
+
+word_count=$(echo "$stripped" | wc -w)
+if [ "$word_count" -lt 3 ]; then
+  echo "error: commit message too short — write a meaningful message (got: '$stripped')" >&2
+  exit 1
+fi
