@@ -180,12 +180,20 @@ export function loadPageIndex(filePath: string): PageIndex {
  * Write a page index to disk.
  */
 export function writePageIndex(filePath: string, index: PageIndex): void {
-  fs.writeFileSync(filePath, JSON.stringify(index, null, 2));
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(index, null, 2));
+  } catch (err) {
+    throw new Error(`writePageIndex: failed to write "${filePath}": ${err instanceof Error ? err.message : String(err)}`);
+  }
 }
 
 /**
  * Write a report to disk.
  */
 export function writeReport(filePath: string, report: PageDefinitionReport): void {
-  fs.writeFileSync(filePath, JSON.stringify(report, null, 2));
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(report, null, 2));
+  } catch (err) {
+    throw new Error(`writeReport: failed to write "${filePath}": ${err instanceof Error ? err.message : String(err)}`);
+  }
 }

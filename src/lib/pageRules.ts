@@ -1,6 +1,5 @@
 import type { Dataset, Tool } from '../types/entities.js';
 import type { PageDefinition, PageType } from '../types/pages.js';
-import { slugify } from './slugify.js';
 import { buildPageDefinition } from './pageBuilders.js';
 
 // Minimum supportCount (matchedToolIds.length) for a page to be valid.
@@ -167,7 +166,7 @@ export function alternativesPages(dataset: Dataset): PageDefinition[] {
       slug,
       pageType: 'alternatives',
       title: `Best Alternatives to ${tool.name}`,
-      description: `Top AI tool alternatives to ${tool.name} for ${tool.categories.join(', ')}.`,
+      description: `Top AI tool alternatives to ${tool.name} for ${tool.categories.map((id) => dataset.categories.find((c) => c.id === id)?.name ?? id).join(', ')}.`,
       canonicalKey: `alternatives|${tool.id}`,
       matchedToolIds: [tool.id, ...alts.map((a) => a.id)],
       categories: tool.categories,
