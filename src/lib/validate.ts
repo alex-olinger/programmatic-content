@@ -1,5 +1,9 @@
 import type { PageDefinition, PageType, ValidationReport, ValidationResult } from '../types/pages.js'; // types for validation
 import { MIN_TOOLS } from './pageRules.js'; // minimum tool thresholds per page type
+import type { PageLinksIndex } from './pageLinks.js'; // type for related-page index (optional validation input)
+import type { TopicalClustersIndex } from './topicalClusters.js'; // type for cluster index (optional validation input)
+import type { EntityGraph } from './entityGraph.js'; // type for entity graph (optional validation input)
+import type { Dataset } from '../types/entities.js'; // type for full dataset (optional validation input)
 
 const REQUIRED_FRONTMATTER = ['title', 'description', 'slug', 'pageType', 'generatedAt']; // fields every page must declare
 
@@ -21,9 +25,18 @@ function requiredHeadingsFor(pageType: PageType): string[] {
   return [...base, '## Best For']; // all other types have Best For
 }
 
+/** GraphArtifacts bundles the optional graph-layer artifacts for Phase 5 validation */
+export interface GraphArtifacts {
+  pageLinksIndex?: PageLinksIndex; // page-links.json — checked when present
+  clustersIndex?: TopicalClustersIndex; // topical-clusters.json — checked when present
+  entityGraph?: EntityGraph; // entity-graph.json — checked when present
+  dataset?: Dataset; // raw dataset — used to verify graph completeness
+}
+
 export function validateAll(
   defs: PageDefinition[], // valid page definitions to check
-  generatedFiles: Map<string, string> // slug → file content for generated pages
+  generatedFiles: Map<string, string>, // slug → file content for generated pages
+  graphArtifacts: GraphArtifacts = {} // optional graph-layer artifacts from compute-graph
 ): ValidationReport {
   const errors: ValidationResult[] = []; // fatal issues — non-empty causes exit(1)
   const warnings: ValidationResult[] = []; // informational issues — do not block pipeline
@@ -128,6 +141,55 @@ export function validateAll(
   for (const slug of generatedFiles.keys()) {
     if (!validSlugs.has(slug)) {
       errors.push({ slug, level: 'error', message: 'Orphan file: no valid page definition for this slug' }); // orphan files indicate stale output
+    }
+  }
+
+  // 10. Graph-layer checks — only run when artifacts are provided
+  const { pageLinksIndex, clustersIndex, entityGraph, dataset } = graphArtifacts;
+
+  if (pageLinksIndex) {
+    // 10a. Every valid page must have an entry in page-links.json
+    for (const def of defs) {
+      if (!pageLinksIndex.pages[def.slug]) {
+        warnings.push({ slug: def.slug, level: 'warning', message: 'No entry in page-links.json — run pnpm compute-graph' }); // missing entry means compute-graph was not run with this page
+      }
+    }
+
+    // 10b. Every slug referenced in relatedPages frontmatter must exist as a valid page
+    for (const [slug, content] of generatedFiles) {
+      const match = content.match(/^relatedPages: \[([^\]]*)\]/m); // extract relatedPages YAML array line
+      if (!match || !match[1].trim()) continue; // skip if field is absent or empty
+      const slugs = match[1].split(',').map((s) => s.trim().replace(/^"|"$/g, '')); // parse quoted slug strings from array
+      for (const relSlug of slugs) {
+        if (relSlug && !validSlugs.has(relSlug)) {
+          errors.push({ slug, level: 'error', message: `relatedPages references unknown slug: "${relSlug}"` }); // orphan related link — would produce broken internal link
+        }
+      }
+    }
+  }
+
+  if (clustersIndex) {
+    // 10c. Every cluster pillar slug must exist as a valid page
+    for (const cluster of clustersIndex.clusters) {
+      if (!validSlugs.has(cluster.pillarSlug)) {
+        errors.push({ slug: cluster.pillarSlug, level: 'error', message: `Cluster pillar slug not found in valid pages` }); // stale cluster references a deleted or invalidated page
+      }
+    }
+  }
+
+  if (entityGraph && dataset) {
+    // 10d. entity-graph.json must have nodes for every tool and category in the dataset
+    for (const tool of dataset.tools) {
+      const key = `tool:${tool.id}`; // expected node key for this tool
+      if (!entityGraph.nodes[key]) {
+        errors.push({ slug: key, level: 'error', message: `Entity graph missing node for tool: ${tool.id}` }); // tool in dataset but missing from graph — graph is stale or incomplete
+      }
+    }
+    for (const cat of dataset.categories) {
+      const key = `category:${cat.id}`; // expected node key for this category
+      if (!entityGraph.nodes[key]) {
+        errors.push({ slug: key, level: 'error', message: `Entity graph missing node for category: ${cat.id}` }); // category in dataset but missing from graph
+      }
     }
   }
 

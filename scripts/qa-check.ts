@@ -3,10 +3,16 @@ import path from 'path'; // Node path for resolving directories
 import { fileURLToPath } from 'url'; // converts file:// URL to a cross-platform filesystem path
 import { validateAll } from '../src/lib/validate.js'; // QA validation logic
 import { loadPageIndex } from '../src/lib/pageIndex.js'; // page index loader
+import { loadData } from '../src/lib/loadData.js'; // dataset loader for entity graph verification
+import type { GraphArtifacts } from '../src/lib/validate.js'; // type for optional graph artifact bundle
+import type { PageLinksIndex } from '../src/lib/pageLinks.js'; // type for related-page index
+import type { TopicalClustersIndex } from '../src/lib/topicalClusters.js'; // type for cluster index
+import type { EntityGraph } from '../src/lib/entityGraph.js'; // type for entity graph
 
 const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../'); // project root — fileURLToPath handles Windows drive-letter URLs correctly
 const CONTENT_ROOT = path.join(ROOT, 'content'); // content/ directory
-const INDEX_FILE = path.join(CONTENT_ROOT, 'index', 'page-definitions.json'); // page index path
+const INDEX_DIR = path.join(CONTENT_ROOT, 'index'); // content/index/ for all generated artifacts
+const INDEX_FILE = path.join(INDEX_DIR, 'page-definitions.json'); // page index path
 const PAGES_DIR = path.join(CONTENT_ROOT, 'pages'); // generated pages directory
 
 /** padEnd pads a string to the target width for aligned column output */
@@ -35,7 +41,27 @@ function main() {
   }
   console.log(`Found ${generatedFiles.size} generated files.`);
 
-  const report = validateAll(validPages, generatedFiles); // run all validation checks
+  // Load graph-layer artifacts if available — compute-graph must have run first
+  const graphArtifacts: GraphArtifacts = {}; // start empty; populate only what is present on disk
+  const pageLinksPath = path.join(INDEX_DIR, 'page-links.json'); // expected location of page-links artifact
+  const clustersPath = path.join(INDEX_DIR, 'topical-clusters.json'); // expected location of clusters artifact
+  const graphPath = path.join(INDEX_DIR, 'entity-graph.json'); // expected location of graph artifact
+
+  if (fs.existsSync(pageLinksPath)) {
+    graphArtifacts.pageLinksIndex = JSON.parse(fs.readFileSync(pageLinksPath, 'utf-8')) as PageLinksIndex; // load and cast page-links index
+    console.log(`Loaded page-links.json (${graphArtifacts.pageLinksIndex.totalPages} entries).`);
+  }
+  if (fs.existsSync(clustersPath)) {
+    graphArtifacts.clustersIndex = JSON.parse(fs.readFileSync(clustersPath, 'utf-8')) as TopicalClustersIndex; // load and cast cluster index
+    console.log(`Loaded topical-clusters.json (${graphArtifacts.clustersIndex.totalClusters} clusters).`);
+  }
+  if (fs.existsSync(graphPath)) {
+    graphArtifacts.entityGraph = JSON.parse(fs.readFileSync(graphPath, 'utf-8')) as EntityGraph; // load and cast entity graph
+    graphArtifacts.dataset = loadData(CONTENT_ROOT); // load dataset for graph completeness check
+    console.log(`Loaded entity-graph.json (${graphArtifacts.entityGraph.nodeCount} nodes).`);
+  }
+
+  const report = validateAll(validPages, generatedFiles, graphArtifacts); // run all validation checks including graph layer
 
   // ── Summary ────────────────────────────────────────────────────────────────
   console.log('\nQA Summary');

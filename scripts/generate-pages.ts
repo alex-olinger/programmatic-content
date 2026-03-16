@@ -5,10 +5,12 @@ import { renderMarkdown } from '../src/lib/markdown.js'; // async markdown rende
 import { loadPageIndex } from '../src/lib/pageIndex.js'; // page index loader
 import { loadData } from '../src/lib/loadData.js'; // dataset loader for tool map
 import type { Tool } from '../src/types/entities.js'; // Tool type for the tool map
+import type { PageLinksIndex, RelatedPage } from '../src/lib/pageLinks.js'; // types for related-page lookup
 
 const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../'); // project root — fileURLToPath handles Windows drive-letter URLs correctly
 const CONTENT_ROOT = path.join(ROOT, 'content'); // content/ directory
 const INDEX_FILE = path.join(CONTENT_ROOT, 'index', 'page-definitions.json'); // page index path
+const PAGE_LINKS_FILE = path.join(CONTENT_ROOT, 'index', 'page-links.json'); // related-page index written by compute-graph
 const PAGES_DIR = path.join(CONTENT_ROOT, 'pages'); // output directory for generated markdown
 const CACHE_DIR = path.join(CONTENT_ROOT, 'cache', 'narratives'); // LLM narrative cache directory
 
@@ -27,6 +29,16 @@ async function main() {
   const toolMap = new Map<string, Tool>(dataset.tools.map((t) => [t.id, t])); // index tools by ID for O(1) lookup
   console.log(`Loaded ${toolMap.size} tools for content enrichment.`);
 
+  // Load page-links.json for related-page data — optional; falls back to empty if compute-graph was not run
+  let pageLinksIndex: PageLinksIndex | null = null; // null indicates links are unavailable
+  if (fs.existsSync(PAGE_LINKS_FILE)) {
+    const raw = fs.readFileSync(PAGE_LINKS_FILE, 'utf-8'); // read raw JSON from disk
+    pageLinksIndex = JSON.parse(raw) as PageLinksIndex; // cast to typed shape
+    console.log(`Loaded page-links.json (${pageLinksIndex.totalPages} entries).`);
+  } else {
+    console.log('page-links.json not found — run pnpm compute-graph to enable related pages.'); // warn but do not block
+  }
+
   // Indicate whether LLM generation is active or using placeholders
   const usingLLM = !!process.env.ANTHROPIC_API_KEY; // true if API key is present
   console.log(`LLM narrative: ${usingLLM ? `enabled (cache: ${CACHE_DIR})` : 'disabled (placeholders)'}`);
@@ -42,7 +54,8 @@ async function main() {
 
   let written = 0; // track number of files written
   for (const def of validPages) {
-    const markdown = await renderMarkdown(def, toolMap, CACHE_DIR); // async render with tool enrichment and caching
+    const related: RelatedPage[] = pageLinksIndex?.pages[def.slug]?.relatedPages ?? []; // look up pre-computed related pages or default to empty
+    const markdown = await renderMarkdown(def, toolMap, CACHE_DIR, related); // async render with tool enrichment, caching, and related pages
     const filePath = path.join(PAGES_DIR, `${def.slug}.md`); // output path derived from slug
     // Guard against a crafted slug escaping PAGES_DIR via path traversal (e.g. "../../../etc/evil")
     if (!filePath.startsWith(PAGES_DIR + path.sep)) {
