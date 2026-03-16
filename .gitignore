@@ -3,6 +3,7 @@ node_modules/
 C:*
 content/pages/
 content/index/
+content/cache/
 dist/
 .claude/settings.local.json
 tasks/

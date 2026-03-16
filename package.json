@@ -11,6 +11,9 @@
     "clean": "rm -rf content/pages content/index",
     "prepare": "git config core.hooksPath .githooks"
   },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "tsx": "^4.7.0",

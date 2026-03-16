@@ -1,26 +1,8 @@
 [
-  {
-    "id": "students",
-    "name": "Students",
-    "slug": "students",
-    "description": "Academic learners looking for tools to improve study and research workflows."
-  },
-  {
-    "id": "marketers",
-    "name": "Marketers",
-    "slug": "marketers",
-    "description": "Marketing professionals creating campaigns, copy, and content at scale."
-  },
-  {
-    "id": "creators",
-    "name": "Creators",
-    "slug": "creators",
-    "description": "Content creators producing blogs, videos, podcasts, and social media."
-  },
-  {
-    "id": "startups",
-    "name": "Startups",
-    "slug": "startups",
-    "description": "Early-stage teams moving fast and needing scalable content solutions."
-  }
+  { "id": "students", "name": "Students", "slug": "students", "description": "Academic learners looking for tools to improve study and research workflows." },
+  { "id": "marketers", "name": "Marketers", "slug": "marketers", "description": "Marketing professionals creating campaigns, copy, and content at scale." },
+  { "id": "creators", "name": "Creators", "slug": "creators", "description": "Content creators producing blogs, videos, podcasts, and social media." },
+  { "id": "startups", "name": "Startups", "slug": "startups", "description": "Early-stage teams moving fast and needing scalable content solutions." },
+  { "id": "freelancers", "name": "Freelancers", "slug": "freelancers", "description": "Independent freelancers creating and delivering content for clients." },
+  { "id": "agencies", "name": "Agencies", "slug": "agencies", "description": "Marketing and creative agencies managing multi-client content at scale." }
 ]
