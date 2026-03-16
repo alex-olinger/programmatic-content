@@ -255,7 +255,7 @@ Goal: prevent build times from scaling linearly with page count.
 
 ------------------------------------------------------------------------
 
-## 13. Build-Time Optimization Layer
+## 13. Build-Time Optimization Layer [COMPLETE]
 
 Introduce hybrid rendering.
 
@@ -271,9 +271,15 @@ Requirements:
 -   invalid slugs still return 404
 -   build time does not scale with total page count
 
+Implementation:
+
+-   `apps/web/lib/build-priority.ts` — `HIGH_PRIORITY_TYPES` set (category, tool-detail, alternatives, use-case, feature)
+-   `apps/web/lib/pages.ts` — `loadHighPrioritySlugs()` filters meta by priority tier
+-   `apps/web/app/[slug]/page.tsx` — `dynamicParams = true`, `revalidate = 86400`, `generateStaticParams` uses high-priority slugs only
+
 ------------------------------------------------------------------------
 
-## 14. Build-Time Optimization Tightening
+## 14. Build-Time Optimization Tightening [COMPLETE]
 
 Refine the hybrid rendering system.
 
@@ -283,6 +289,13 @@ Ensure:
 -   predictable routing
 -   simple implementation
 -   correct caching behavior
+
+Verification:
+
+-   `pnpm typecheck` passes with no errors
+-   `pnpm --filter web build` outputs ~56 pre-built static pages (high-priority types only)
+-   Low-priority pages (comparison, audience-*, pricing) render on-demand and are ISR-cached for 24 hours
+-   Invalid slugs return 404 via existing `loadPageBySlug` null check in `SlugPage`
 
 ------------------------------------------------------------------------
 
@@ -325,9 +338,9 @@ Tasks:
 1 Master Scaffold [COMPLETE] 2 Refactor / Tighten [COMPLETE] 3
 Page-Definition Index [COMPLETE] 4 Site-Plan Artifact [COMPLETE] 5
 content-engine-rules.md [COMPLETE] 6 Bugfix / Audit [COMPLETE] 7 Dataset Expansion
-8 LLM Integration 9 Quality Hardening 10 Frontend MVP 11 Frontend
-Tightening 12 Verify Build 13 Build-Time Optimization 14 Optimization
-Tightening 15 Expanded Architecture 16 Architecture Tightening
+8 LLM Integration 9 Quality Hardening 10 Frontend MVP [COMPLETE] 11 Frontend
+Tightening [COMPLETE] 12 Verify Build [COMPLETE] 13 Build-Time Optimization [COMPLETE] 14 Optimization
+Tightening [COMPLETE] 15 Expanded Architecture 16 Architecture Tightening
 
 ------------------------------------------------------------------------
 
