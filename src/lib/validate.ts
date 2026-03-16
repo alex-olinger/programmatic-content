@@ -59,12 +59,21 @@ export function validateAll(
     }
 
     // 5. Threshold check (safety net — should be caught by pageIndex validation)
-    const minTools = MIN_TOOLS[def.pageType as PageType];
-    if (minTools !== undefined && def.supportCount < minTools) {
+    const minTools = MIN_TOOLS[def.pageType]; // Record<PageType, number> — always defined
+    if (def.supportCount < minTools) {
       errors.push({
         slug: def.slug,
         level: 'error',
         message: `Page type "${def.pageType}" requires >= ${minTools} tools, found ${def.supportCount}`,
+      });
+    }
+
+    // 5b. Comparison pages must have an overlapScore — missing means page rules failed to set it
+    if (def.pageType === 'comparison' && def.overlapScore === undefined) {
+      errors.push({
+        slug: def.slug,
+        level: 'error',
+        message: 'Comparison page missing overlapScore — overlap validation was skipped',
       });
     }
 

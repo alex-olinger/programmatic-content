@@ -70,7 +70,7 @@ This becomes the **page registry layer**.
 
 ------------------------------------------------------------------------
 
-## 4. Site-Plan Artifact Layer
+## 4. Site-Plan Artifact Layer [COMPLETE]
 
 Elevate the page-definition index into the canonical **site plan**.
 
@@ -100,7 +100,7 @@ This file acts as **architectural guardrails for future AI edits**.
 
 ------------------------------------------------------------------------
 
-## 6. Bugfix / Audit
+## 6. Bugfix / Audit [COMPLETE]
 
 Audit the engine once the architecture exists.
 
@@ -323,8 +323,8 @@ Tasks:
 # Final Build Order (Summary)
 
 1 Master Scaffold [COMPLETE] 2 Refactor / Tighten [COMPLETE] 3
-Page-Definition Index [COMPLETE] 4 Site-Plan Artifact 5
-content-engine-rules.md [COMPLETE] 6 Bugfix / Audit 7 Dataset Expansion
+Page-Definition Index [COMPLETE] 4 Site-Plan Artifact [COMPLETE] 5
+content-engine-rules.md [COMPLETE] 6 Bugfix / Audit [COMPLETE] 7 Dataset Expansion
 8 LLM Integration 9 Quality Hardening 10 Frontend MVP 11 Frontend
 Tightening 12 Verify Build 13 Build-Time Optimization 14 Optimization
 Tightening 15 Expanded Architecture 16 Architecture Tightening
