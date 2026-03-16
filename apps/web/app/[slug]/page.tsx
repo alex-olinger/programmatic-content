@@ -1,14 +1,19 @@
 import { notFound } from 'next/navigation' // triggers Next.js 404 response
 import type { Metadata } from 'next' // return type for generateMetadata
-import { loadAllSlugs, loadPageBySlug } from '@/lib/pages' // content loaders
+import { loadHighPrioritySlugs, loadPageBySlug } from '@/lib/pages' // content loaders
 
-// Prevent Next.js from attempting to render slugs not in generateStaticParams
-// Any unrecognized slug returns 404 rather than trying dynamic generation
-export const dynamicParams = false
+// Allow Next.js to render slugs not in generateStaticParams on-demand (ISR)
+// Without this, unknown slugs would 404 at the router level rather than falling through to SlugPage
+export const dynamicParams = true
 
-// Pre-build a static page for every slug returned by the content engine
+// Cache on-demand (non-pre-built) pages for 24 hours via ISR
+// Pre-built high-priority pages are always static and unaffected by this setting
+export const revalidate = 86400
+
+// Pre-build only high-priority page types at deploy time (~56 pages)
+// Combinatorial/lower-priority types (~134 pages) render on first request and are ISR-cached
 export function generateStaticParams(): { slug: string }[] {
-  return loadAllSlugs().map(slug => ({ slug })) // each slug maps to one static HTML file
+  return loadHighPrioritySlugs().map(slug => ({ slug })) // each slug maps to one pre-built HTML file
 }
 
 // Generate <title> and <meta description> from the page's own frontmatter
