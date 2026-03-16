@@ -1,7 +1,8 @@
 node_modules/
+*:Zone.Identifier
 C:*
 content/pages/
 content/index/
 dist/
-.claude/
+.claude/settings.local.json
 tasks/
