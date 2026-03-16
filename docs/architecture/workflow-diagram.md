@@ -1,5 +1,71 @@
 # Workflow Diagram — Programmatic Content Site
 
+## High-Level Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     STRUCTURED DATA                         │
+│                      content/data/                          │
+│                                                             │
+│  tools.json   categories.json   audiences.json              │
+│  use-cases.json   features.json   pricing.json              │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   PAGE DEFINITION LAYER                     │
+│              src/lib/pageRules.ts → pageIndex.ts            │
+│                                                             │
+│  9 rule functions → 70 candidates → validateCandidates()    │
+│                          │                                  │
+│                     48 valid  +  22 rejected                │
+│                          │                                  │
+│              content/index/page-definitions.json            │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  CONTENT GENERATION LAYER                   │
+│             src/lib/markdown.ts + llm.ts                    │
+│                                                             │
+│   deterministic ──────────────────────── LLM               │
+│   (structure, slugs,                  (prose, summaries,    │
+│    entity links,                       FAQs, intros)        │
+│    tool matching)                                           │
+│                          │                                  │
+│                   content/pages/*.md                        │
+└─────────────────────────┬───────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   FRONTEND RENDER LAYER                     │
+│                       apps/web/                             │
+│                                                             │
+│   slug routing → markdown load → metadata → page layout     │
+│                                                             │
+│   static build (category, tool-detail, alternatives,        │
+│                  use-case, feature)                         │
+│   ISR 24h      (everything else)                            │
+└─────────────────────────────────────────────────────────────┘
+
+
+PIPELINE:  pnpm compute-pages → pnpm generate-pages → pnpm qa-check
+
+CORE LIB:  src/lib/   (46 symbols, fan-in 21)
+           ├── loadData.ts      ├── pageRules.ts
+           ├── slugify.ts       ├── pageIndex.ts
+           ├── validate.ts      ├── markdown.ts
+           └── llm.ts
+
+SCRIPTS:   scripts/compute-pages.ts   scripts/generate-pages.ts
+           scripts/qa-check.ts        scripts/compute-graph.ts
+           (thin orchestrators — all logic delegates to src/lib/)
+```
+
+---
+
+## Detailed Data-Flow
+
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        content/data/                            │
