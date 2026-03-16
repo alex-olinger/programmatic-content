@@ -5,9 +5,9 @@
 Before making architectural or structural changes, read the `docs/` directory.
 
 Key documents:
-- `docs/build-sequence.md` — official architectural evolution order
-- `docs/project-map.md` — directory structure and layer responsibilities
-- `docs/ai-editing-rules.md` — safety rules for AI-assisted modifications
+- `docs/architecture/build-sequence.md` — official architectural evolution order
+- `docs/architecture/project-map.md` — directory structure and layer responsibilities
+- `docs/rules/ai-editing-rules.md` — safety rules for AI-assisted modifications
 
 If implementation conflicts with documentation:
 1. Assume documentation reflects architectural intent
