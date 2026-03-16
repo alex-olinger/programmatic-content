@@ -1,23 +1,25 @@
-import type { PageDefinition } from '../types/pages.js';
-import { generateNarrative } from './llm.js';
+import type { PageDefinition } from '../types/pages.js'; // page definition type
+import type { Tool } from '../types/entities.js'; // full tool object for rich output
+import { generateNarrative } from './llm.js'; // async LLM narrative generator
 
-/** Escape a string for use inside a YAML double-quoted scalar. */
+/** yamlEscape escapes a string for safe use inside a YAML double-quoted scalar */
 function yamlEscape(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"'); // escape backslashes then double quotes
 }
 
+/** frontmatter renders the YAML front matter block for a page */
 function frontmatter(def: PageDefinition): string {
-  const entities = def.entities;
+  const entities = def.entities; // destructure for readability
   return [
     '---',
-    `title: "${yamlEscape(def.title)}"`,
-    `description: "${yamlEscape(def.description)}"`,
-    `slug: "${yamlEscape(def.slug)}"`,
-    `pageType: "${yamlEscape(def.pageType)}"`,
-    `canonicalKey: "${yamlEscape(def.canonicalKey)}"`,
-    `generatedAt: "${new Date().toISOString()}"`,
-    `matchedToolIds: [${def.matchedToolIds.map((t) => `"${yamlEscape(t)}"`).join(', ')}]`,
-    'entities:',
+    `title: "${yamlEscape(def.title)}"`, // page title — used in <title> and og:title
+    `description: "${yamlEscape(def.description)}"`, // meta description
+    `slug: "${yamlEscape(def.slug)}"`, // URL slug — must match filename
+    `pageType: "${yamlEscape(def.pageType)}"`, // page type — used for template selection
+    `canonicalKey: "${yamlEscape(def.canonicalKey)}"`, // unique semantic identity
+    `generatedAt: "${new Date().toISOString()}"`, // timestamp of this generation run
+    `matchedToolIds: [${def.matchedToolIds.map((t) => `"${yamlEscape(t)}"`).join(', ')}]`, // tool IDs for frontend lookup
+    'entities:', // taxonomy entity IDs scoped to this page
     `  categories: [${entities.categories.map((c) => `"${yamlEscape(c)}"`).join(', ')}]`,
     `  audiences: [${entities.audiences.map((a) => `"${yamlEscape(a)}"`).join(', ')}]`,
     `  useCases: [${entities.useCases.map((u) => `"${yamlEscape(u)}"`).join(', ')}]`,
@@ -27,61 +29,89 @@ function frontmatter(def: PageDefinition): string {
   ].join('\n');
 }
 
-function toolListSection(def: PageDefinition): string {
-  // [DETERMINISTIC]
-  const lines = [`## Tools`];
-  for (const tool of def.matchedToolIds) {
-    lines.push(`- ${tool}`);
+/** toolListSection renders the ## Tools section using full tool data when available */
+function toolListSection(def: PageDefinition, toolMap: Map<string, Tool>): string {
+  const lines = ['## Tools']; // section heading — required by QA check
+  for (const toolId of def.matchedToolIds) {
+    const tool = toolMap.get(toolId); // resolve full tool object from map
+    if (tool) {
+      lines.push(`- **[${tool.name}](${tool.website})** — ${tool.tagline}`); // rich entry: name, link, tagline
+    } else {
+      lines.push(`- ${toolId}`); // fallback to ID if tool not found in map
+    }
   }
   return lines.join('\n');
 }
 
-function comparisonTableSection(def: PageDefinition): string {
-  // [DETERMINISTIC]
-  if (def.pageType !== 'comparison') return '';
+/** comparisonTableSection renders the ## Comparison section with real tool data */
+function comparisonTableSection(def: PageDefinition, toolMap: Map<string, Tool>): string {
+  if (def.pageType !== 'comparison') return ''; // only applicable to comparison pages
   if (def.matchedToolIds.length < 2) {
-    return '<!-- comparison table unavailable: fewer than 2 tools -->';
+    return '<!-- comparison table unavailable: fewer than 2 tools -->'; // guard against malformed comparison pages
   }
-  const [a, b] = def.matchedToolIds;
+  const [idA, idB] = def.matchedToolIds; // first two tools are always the comparison pair
+  const toolA = toolMap.get(idA); // resolve first tool
+  const toolB = toolMap.get(idB); // resolve second tool
+  if (!toolA || !toolB) {
+    return '<!-- comparison table unavailable: tool data missing -->'; // fallback if tools not found
+  }
+
+  // Format categories, pricing, and features as comma-separated readable strings
+  const catsA = toolA.categories.join(', '); // tool A's category list
+  const catsB = toolB.categories.join(', '); // tool B's category list
+  const priceA = toolA.priceTiers.join(', '); // tool A's pricing tiers
+  const priceB = toolB.priceTiers.join(', '); // tool B's pricing tiers
+  const featsA = toolA.features.slice(0, 3).join(', '); // up to 3 key features for tool A
+  const featsB = toolB.features.slice(0, 3).join(', '); // up to 3 key features for tool B
+
   return [
     '## Comparison',
     '',
-    `| Feature | ${a} | ${b} |`,
-    '|---------|---------|---------|',
-    '| Categories | see data | see data |',
-    '| Pricing | see data | see data |',
+    `| | ${toolA.name} | ${toolB.name} |`, // column headers using tool names
+    '|---|---|---|',
+    `| Categories | ${catsA} | ${catsB} |`, // category row
+    `| Pricing | ${priceA} | ${priceB} |`, // pricing row
+    `| Key Features | ${featsA} | ${featsB} |`, // features row (first 3)
+    `| Website | [${toolA.name}](${toolA.website}) | [${toolB.name}](${toolB.website}) |`, // website row with links
   ].join('\n');
 }
 
-export function renderMarkdown(def: PageDefinition): string {
+/** renderMarkdown assembles a complete markdown page for one page definition */
+export async function renderMarkdown(
+  def: PageDefinition,
+  toolMap: Map<string, Tool>, // map from tool ID → Tool, used for rich content
+  cacheDir?: string // optional path to narrative cache directory
+): Promise<string> {
+  // Build the NarrativeContext with full tool objects — enriches LLM prompts
   const ctx = {
-    pageType: def.pageType,
-    matchedToolIds: def.matchedToolIds,
-    entities: def.entities,
-    title: def.title,
+    pageType: def.pageType, // determines which narrative sections are generated
+    matchedToolIds: def.matchedToolIds, // tool IDs for cache key stability
+    tools: def.matchedToolIds // resolved full tool objects for prompt context
+      .map((id) => toolMap.get(id))
+      .filter((t): t is Tool => t !== undefined), // filter out any unresolved IDs
+    entities: def.entities, // taxonomy entity IDs
+    title: def.title, // page title for prompts
   };
 
   const parts: string[] = [
-    frontmatter(def),
+    frontmatter(def), // YAML front matter block
     '',
-    `# ${def.title}`,
+    `# ${def.title}`, // h1 heading
     '',
-    // [LLM PLACEHOLDER]
-    generateNarrative('introduction', ctx),
+    await generateNarrative('introduction', ctx, cacheDir), // LLM or placeholder intro
     '',
-    toolListSection(def),
+    toolListSection(def, toolMap), // deterministic tool list with names and links
   ];
 
   if (def.pageType === 'comparison') {
-    parts.push('', comparisonTableSection(def));
+    parts.push('', comparisonTableSection(def, toolMap)); // comparison table with real data
   }
 
   parts.push(
     '',
     '## Best For',
     '',
-    // [LLM PLACEHOLDER]
-    generateNarrative('bestFor', ctx),
+    await generateNarrative('bestFor', ctx, cacheDir), // LLM or placeholder bestFor
   );
 
   if (def.pageType === 'tool-detail' || def.pageType === 'comparison') {
@@ -89,8 +119,7 @@ export function renderMarkdown(def: PageDefinition): string {
       '',
       '## Pros and Cons',
       '',
-      // [LLM PLACEHOLDER]
-      generateNarrative('prosAndCons', ctx),
+      await generateNarrative('prosAndCons', ctx, cacheDir), // LLM or placeholder prosAndCons
     );
   }
 
@@ -98,9 +127,8 @@ export function renderMarkdown(def: PageDefinition): string {
     '',
     '## FAQ',
     '',
-    // [LLM PLACEHOLDER]
-    generateNarrative('faq', ctx),
+    await generateNarrative('faq', ctx, cacheDir), // LLM or placeholder faq
   );
 
-  return parts.filter((p) => p !== undefined).join('\n');
+  return parts.filter((p) => p !== undefined).join('\n'); // join all parts, stripping any undefined
 }
