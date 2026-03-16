@@ -4,7 +4,11 @@ import { generateNarrative } from './llm.js'; // async LLM narrative generator
 
 /** yamlEscape escapes a string for safe use inside a YAML double-quoted scalar */
 function yamlEscape(value: string): string {
-  return value.replace(/\\/g, '\\\\').replace(/"/g, '\\"'); // escape backslashes then double quotes
+  return value
+    .replace(/\\/g, '\\\\') // escape backslashes first to avoid double-escaping
+    .replace(/"/g, '\\"') // escape double quotes — required for YAML double-quoted scalars
+    .replace(/\n/g, '\\n') // escape newlines — literal \n breaks YAML scalar parsing
+    .replace(/\r/g, '\\r'); // escape carriage returns — same reason as \n
 }
 
 /** frontmatter renders the YAML front matter block for a page */
@@ -130,5 +134,5 @@ export async function renderMarkdown(
     await generateNarrative('faq', ctx, cacheDir), // LLM or placeholder faq
   );
 
-  return parts.filter((p) => p !== undefined).join('\n'); // join all parts, stripping any undefined
+  return parts.join('\n'); // join all parts into the final markdown document
 }

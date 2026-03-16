@@ -77,6 +77,7 @@ export function deduplicateCandidates(
 
     // Slug duplicate (different canonical key but same slug)
     if (seenSlugs.has(def.slug)) {
+      duplicateKeysRemoved++; // count slug collisions alongside canonical key duplicates — both represent removed dupes
       process.stderr.write(`deduplicateCandidates: dropped duplicate slug "${def.slug}" (${def.canonicalKey})\n`);
       return {
         ...def,
