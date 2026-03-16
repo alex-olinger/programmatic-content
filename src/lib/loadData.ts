@@ -10,9 +10,11 @@ function readJson<T>(filePath: string): T {
     throw new Error(`loadData: file not found or unreadable: ${filePath}`);
   }
   try {
-    return JSON.parse(raw) as T;
-  } catch {
-    throw new Error(`loadData: invalid JSON in file: ${filePath}`);
+    return JSON.parse(raw) as T; // cast is safe: callers specify the expected shape
+  } catch (err) {
+    throw new Error(
+      `loadData: invalid JSON in file: ${filePath}: ${err instanceof Error ? err.message : String(err)}`
+    );
   }
 }
 

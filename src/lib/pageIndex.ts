@@ -223,9 +223,11 @@ export function loadPageIndex(filePath: string): PageIndex {
     throw new Error(`loadPageIndex: file not found or unreadable: ${filePath}`);
   }
   try {
-    return JSON.parse(raw) as PageIndex;
-  } catch {
-    throw new Error(`loadPageIndex: invalid JSON in file: ${filePath}`);
+    return JSON.parse(raw) as PageIndex; // cast is safe: schema is internal and stable
+  } catch (err) {
+    throw new Error(
+      `loadPageIndex: invalid JSON in file: ${filePath}: ${err instanceof Error ? err.message : String(err)}`
+    );
   }
 }
 
