@@ -1,11 +1,12 @@
 import fs from 'fs'; // Node fs for file operations
 import path from 'path'; // Node path for directory resolution
+import { fileURLToPath } from 'url'; // converts file:// URL to a cross-platform filesystem path
 import { renderMarkdown } from '../src/lib/markdown.js'; // async markdown renderer
 import { loadPageIndex } from '../src/lib/pageIndex.js'; // page index loader
 import { loadData } from '../src/lib/loadData.js'; // dataset loader for tool map
 import type { Tool } from '../src/types/entities.js'; // Tool type for the tool map
 
-const ROOT = path.resolve(new URL(import.meta.url).pathname, '../../'); // project root via import.meta.url
+const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../'); // project root — fileURLToPath handles Windows drive-letter URLs correctly
 const CONTENT_ROOT = path.join(ROOT, 'content'); // content/ directory
 const INDEX_FILE = path.join(CONTENT_ROOT, 'index', 'page-definitions.json'); // page index path
 const PAGES_DIR = path.join(CONTENT_ROOT, 'pages'); // output directory for generated markdown
@@ -43,6 +44,10 @@ async function main() {
   for (const def of validPages) {
     const markdown = await renderMarkdown(def, toolMap, CACHE_DIR); // async render with tool enrichment and caching
     const filePath = path.join(PAGES_DIR, `${def.slug}.md`); // output path derived from slug
+    // Guard against a crafted slug escaping PAGES_DIR via path traversal (e.g. "../../../etc/evil")
+    if (!filePath.startsWith(PAGES_DIR + path.sep)) {
+      throw new Error(`slug boundary violation: "${def.slug}" resolves outside PAGES_DIR`); // hard stop — never write outside content/pages/
+    }
     fs.writeFileSync(filePath, markdown, 'utf-8'); // write rendered markdown to disk
     written++;
   }
