@@ -136,6 +136,8 @@ pnpm --filter web dev    # start Next.js on http://localhost:3000
 
 Open `http://localhost:3000` in your browser. The frontend reads from `content/pages/` — regenerate pages and refresh to see content changes.
 
+To stop the server, press `Ctrl+C` in the terminal running `pnpm --filter web dev`.
+
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
