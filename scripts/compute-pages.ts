@@ -25,6 +25,11 @@ function main() {
   const dataset = loadData(CONTENT_ROOT);
   console.log(`  tools: ${dataset.tools.length}, categories: ${dataset.categories.length}, audiences: ${dataset.audiences.length}`);
 
+  // Guard against empty datasets — likely means data files exist but are missing content
+  if (dataset.tools.length === 0 || dataset.categories.length === 0) {
+    throw new Error('Dataset is empty — check content/data files contain valid entries');
+  }
+
   console.log('Computing page candidates...');
   const rawCandidates = applyAllRules(dataset);
   console.log(`  raw candidates: ${rawCandidates.length}`);
