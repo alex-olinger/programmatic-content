@@ -1,4 +1,5 @@
 node_modules/
+*:Zone.Identifier
 C:*
 content/pages/
 content/index/
