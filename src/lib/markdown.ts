@@ -1,6 +1,7 @@
 import type { PageDefinition } from '../types/pages.js'; // page definition type
 import type { Tool } from '../types/entities.js'; // full tool object for rich output
 import { generateNarrative } from './llm.js'; // async LLM narrative generator
+import type { RelatedPage } from './pageLinks.js'; // related page shape for the Related Pages section
 
 /** yamlEscape escapes a string for safe use inside a YAML double-quoted scalar */
 function yamlEscape(value: string): string {
@@ -12,8 +13,9 @@ function yamlEscape(value: string): string {
 }
 
 /** frontmatter renders the YAML front matter block for a page */
-function frontmatter(def: PageDefinition): string {
+function frontmatter(def: PageDefinition, related: RelatedPage[]): string {
   const entities = def.entities; // destructure for readability
+  const relatedSlugs = related.map((r) => r.slug); // extract slugs only for frontmatter storage
   return [
     '---',
     `title: "${yamlEscape(def.title)}"`, // page title — used in <title> and og:title
@@ -23,6 +25,7 @@ function frontmatter(def: PageDefinition): string {
     `canonicalKey: "${yamlEscape(def.canonicalKey)}"`, // unique semantic identity
     `generatedAt: "${new Date().toISOString()}"`, // timestamp of this generation run
     `matchedToolIds: [${def.matchedToolIds.map((t) => `"${yamlEscape(t)}"`).join(', ')}]`, // tool IDs for frontend lookup
+    `relatedPages: [${relatedSlugs.map((s) => `"${yamlEscape(s)}"`).join(', ')}]`, // related page slugs for internal linking
     'entities:', // taxonomy entity IDs scoped to this page
     `  categories: [${entities.categories.map((c) => `"${yamlEscape(c)}"`).join(', ')}]`,
     `  audiences: [${entities.audiences.map((a) => `"${yamlEscape(a)}"`).join(', ')}]`,
@@ -31,6 +34,16 @@ function frontmatter(def: PageDefinition): string {
     `  priceTiers: [${entities.priceTiers.map((p) => `"${yamlEscape(p)}"`).join(', ')}]`,
     '---',
   ].join('\n');
+}
+
+/** relatedPagesSection renders a ## Related Pages link list from pre-computed related pages */
+function relatedPagesSection(related: RelatedPage[]): string {
+  if (related.length === 0) return ''; // no related pages — omit section entirely
+  const lines = ['## Related Pages']; // section heading for internal navigation
+  for (const r of related) {
+    lines.push(`- [${r.title}](/${r.slug})`); // markdown link to related page using absolute site path
+  }
+  return lines.join('\n'); // join into a single block for insertion into parts array
 }
 
 /** toolListSection renders the ## Tools section using full tool data when available */
@@ -84,7 +97,8 @@ function comparisonTableSection(def: PageDefinition, toolMap: Map<string, Tool>)
 export async function renderMarkdown(
   def: PageDefinition,
   toolMap: Map<string, Tool>, // map from tool ID → Tool, used for rich content
-  cacheDir?: string // optional path to narrative cache directory
+  cacheDir?: string, // optional path to narrative cache directory
+  related: RelatedPage[] = [] // pre-computed related pages for internal linking section
 ): Promise<string> {
   // Build the NarrativeContext with full tool objects — enriches LLM prompts
   const ctx = {
@@ -98,7 +112,7 @@ export async function renderMarkdown(
   };
 
   const parts: string[] = [
-    frontmatter(def), // YAML front matter block
+    frontmatter(def, related), // YAML front matter block including relatedPages slugs
     '',
     `# ${def.title}`, // h1 heading
     '',
@@ -125,6 +139,12 @@ export async function renderMarkdown(
       '',
       await generateNarrative('prosAndCons', ctx, cacheDir), // LLM or placeholder prosAndCons
     );
+  }
+
+  // Insert Related Pages section before FAQ if any related pages were computed
+  const relatedSection = relatedPagesSection(related); // empty string if no related pages
+  if (relatedSection) {
+    parts.push('', relatedSection); // only add section when there are related pages to show
   }
 
   parts.push(

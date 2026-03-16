@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "compute-pages": "tsx scripts/compute-pages.ts",
+    "compute-graph": "tsx scripts/compute-graph.ts",
     "generate-pages": "tsx scripts/generate-pages.ts",
     "qa-check": "tsx scripts/qa-check.ts",
-    "pipeline": "pnpm compute-pages && pnpm generate-pages && pnpm qa-check",
+    "pipeline": "pnpm compute-pages && pnpm compute-graph && pnpm generate-pages && pnpm qa-check",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf content/pages content/index",
     "prepare": "git config core.hooksPath .githooks"

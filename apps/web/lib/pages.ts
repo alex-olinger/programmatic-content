@@ -16,6 +16,7 @@ export interface PageMeta {
   canonicalKey: string // unique content-engine key for deduplication
   generatedAt: string // ISO timestamp of when the page was generated
   matchedToolIds: string[] // list of tool IDs included on this page
+  relatedPages?: string[] // slugs of related pages for internal linking — absent on older pages
 }
 
 // Full page data returned when rendering a specific page — frontmatter + HTML body
