@@ -2,6 +2,7 @@ import fs from 'fs' // node file system for reading .md files from disk
 import path from 'path' // path utilities for building OS-safe file paths
 import matter from 'gray-matter' // frontmatter parser for YAML headers in .md files
 import { marked } from 'marked' // markdown-to-HTML converter
+import { HIGH_PRIORITY_TYPES } from './build-priority' // tier config for hybrid rendering
 
 // Absolute path to the generated content directory, two levels up from apps/web
 const PAGES_DIR = path.join(process.cwd(), '..', '..', 'content', 'pages')
@@ -41,6 +42,15 @@ export function loadAllSlugs(): string[] {
     .readdirSync(PAGES_DIR)
     .filter(f => f.endsWith('.md')) // ignore any non-markdown files
     .map(f => f.replace(/\.md$/, '')) // "alternatives-to-foo.md" → "alternatives-to-foo"
+}
+
+// Return slugs for high-priority page types only — used by generateStaticParams for hybrid rendering
+// Low-priority slugs are excluded here and rendered on-demand via ISR
+export function loadHighPrioritySlugs(): string[] {
+  const allMeta = loadAllPageMeta() // load frontmatter for every generated page
+  return allMeta
+    .filter(meta => HIGH_PRIORITY_TYPES.has(meta.pageType)) // keep only high-priority types
+    .map(meta => meta.slug) // extract slug strings for Next.js static params
 }
 
 // Load a single page by slug, returning full metadata plus rendered HTML
