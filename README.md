@@ -120,6 +120,24 @@ First-seen wins. If a second candidate arrives with an already-seen key, it is m
 4. Add a dry-run mode with cost/token estimation before committing to full generation.
 5. Cache generated narratives to avoid re-generating unchanged pages.
 
+## Local Testing
+
+Run the full pipeline, then start the Next.js dev server:
+
+```bash
+pnpm install
+
+pnpm compute-pages       # compute page-definitions.json
+pnpm generate-pages      # generate content/pages/*.md
+pnpm qa-check            # validate output (optional but recommended)
+
+pnpm --filter web dev    # start Next.js on http://localhost:3000
+```
+
+Open `http://localhost:3000` in your browser. The frontend reads from `content/pages/` — regenerate pages and refresh to see content changes.
+
+To stop the server, press `Ctrl+C` in the terminal running `pnpm --filter web dev`.
+
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
