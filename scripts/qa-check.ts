@@ -1,9 +1,10 @@
 import fs from 'fs'; // Node fs for reading generated files
 import path from 'path'; // Node path for resolving directories
+import { fileURLToPath } from 'url'; // converts file:// URL to a cross-platform filesystem path
 import { validateAll } from '../src/lib/validate.js'; // QA validation logic
 import { loadPageIndex } from '../src/lib/pageIndex.js'; // page index loader
 
-const ROOT = path.resolve(new URL(import.meta.url).pathname, '../../'); // project root via import.meta.url
+const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../'); // project root — fileURLToPath handles Windows drive-letter URLs correctly
 const CONTENT_ROOT = path.join(ROOT, 'content'); // content/ directory
 const INDEX_FILE = path.join(CONTENT_ROOT, 'index', 'page-definitions.json'); // page index path
 const PAGES_DIR = path.join(CONTENT_ROOT, 'pages'); // generated pages directory

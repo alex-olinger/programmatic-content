@@ -184,16 +184,15 @@ export function comparisonPages(dataset: Dataset): PageDefinition[] {
       const b = tools[j];
       const sharedCategories = a.categories.filter((c) => b.categories.includes(c));
       if (sharedCategories.length < 1) continue;
-      const [first, second] = [a, b].sort((x, y) => x.slug.localeCompare(y.slug));
-      const slug = `${first.slug}-vs-${second.slug}`;
-      const sortedIds = [a.id, b.id].sort();
-      const overlapScore = computeOverlapScore(a, b);
+      const [first, second] = [a, b].sort((x, y) => x.slug.localeCompare(y.slug)); // slug-sort determines URL and display order
+      const slug = `${first.slug}-vs-${second.slug}`; // URL slug derived from slug-sorted tool order
+      const overlapScore = computeOverlapScore(a, b); // overlap heuristic used for validation filtering
       results.push(buildPageDefinition({
         slug,
         pageType: 'comparison',
         title: `${first.name} vs ${second.name}: Which Is Better?`,
         description: `Detailed comparison of ${first.name} and ${second.name} across features, pricing, and use cases.`,
-        canonicalKey: `comparison|${sortedIds[0]}|${sortedIds[1]}`,
+        canonicalKey: `comparison|${first.id}|${second.id}`, // key uses same slug-sorted order as matchedToolIds and URL
         matchedToolIds: [first.id, second.id],
         categories: sharedCategories,
         overlapScore,

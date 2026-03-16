@@ -1,5 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'fs'; // Node fs for directory creation
+import path from 'path'; // Node path for resolving output paths
+import { fileURLToPath } from 'url'; // converts file:// URL to a cross-platform filesystem path
 import { loadData } from '../src/lib/loadData.js';
 import { applyAllRules } from '../src/lib/pageRules.js';
 import {
@@ -13,7 +14,7 @@ import {
   writeSitePlanSummary,
 } from '../src/lib/pageIndex.js';
 
-const ROOT = path.resolve(new URL(import.meta.url).pathname, '../../');
+const ROOT = path.resolve(fileURLToPath(import.meta.url), '../../'); // project root — fileURLToPath handles Windows drive-letter URLs correctly
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const INDEX_DIR = path.join(CONTENT_ROOT, 'index');
 const INDEX_FILE = path.join(INDEX_DIR, 'page-definitions.json');
