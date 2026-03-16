@@ -9,11 +9,11 @@
 
 ## Task Management
 
-1. **Plan first**: write plan to `tasks/todo.md` with checkable items
+1. **Plan first**: write plan to `docs/plans/<task-name>.md` with checkable items
 2. **Verify plan**: check in before starting implementation
 3. **Track progress**: mark items complete as you go
 4. **Explain changes**: high-level summary at each step
-5. **Document results**: add review section to `tasks/todo.md`
+5. **Document results**: add review section to the plan file in `docs/plans/`
 6. **Capture lessons**: update `tasks/lessons.md` after corrections
 
 ## Subagent Strategy

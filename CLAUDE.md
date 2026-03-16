@@ -29,15 +29,22 @@ The frontend decides **how pages are displayed**.
 Before making architectural or structural changes, AI assistants must
 read the documentation in the `docs/` directory.
 
+The `docs/` directory is organized into subcategories:
+
+- `docs/architecture/` — system structure, build order, entity graphs, workflow diagrams
+- `docs/rules/` — editing rules and content engine rules
+- `docs/walkthroughs/` — code walkthroughs and implementation deep-dives
+- `docs/plans/` — task plans written during development (checkable items, review sections)
+
 Key documents include:
 
-docs/build-sequence.md\
+docs/architecture/build-sequence.md\
 Defines the official architectural evolution order.
 
-docs/project-map.md\
+docs/architecture/project-map.md\
 Explains the directory structure and responsibilities of each layer.
 
-docs/ai-editing-rules.md\
+docs/rules/ai-editing-rules.md\
 Defines safety rules for AI-assisted modifications.
 
 Additional documentation may be added later in the project lifecycle and
@@ -202,11 +209,11 @@ unless explicitly requested.
 
 ## Task Management
 
-1. **Plan first**: write plan to `tasks/todo.md` with checkable items
+1. **Plan first**: write plan to `docs/plans/<task-name>.md` with checkable items
 2. **Verify plan**: check in before starting implementation
 3. **Track progress**: mark items complete as you go
 4. **Explain changes**: high-level summary at each step
-5. **Document results**: add review section to `tasks/todo.md`
+5. **Document results**: add review section to the plan file in `docs/plans/`
 6. **Capture lessons**: update `tasks/lessons.md` after corrections
 
 ------------------------------------------------------------------------

@@ -12,7 +12,10 @@ src/lib/             Engine libraries
 src/types/           TypeScript types
 scripts/             Pipeline scripts
 apps/web/            Frontend render layer (Phase 3)
-docs/                Architecture documentation
+docs/architecture/   System structure, build order, entity graphs, workflow diagrams
+docs/rules/          Editing rules and content engine rules
+docs/walkthroughs/   Code walkthroughs and implementation deep-dives
+docs/plans/          Task plans written during development
 ```
 
 ## Workflow
