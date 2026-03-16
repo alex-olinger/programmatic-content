@@ -1,26 +1,12 @@
 [
-  {
-    "id": "blog-writing",
-    "name": "Blog Writing",
-    "slug": "blog-writing",
-    "description": "Creating long-form blog posts and articles with AI assistance."
-  },
-  {
-    "id": "note-taking",
-    "name": "Note Taking",
-    "slug": "note-taking",
-    "description": "Capturing, organizing, and retrieving notes and information."
-  },
-  {
-    "id": "video-ads",
-    "name": "Video Ads",
-    "slug": "video-ads",
-    "description": "Producing video advertisements and marketing videos."
-  },
-  {
-    "id": "meeting-notes",
-    "name": "Meeting Notes",
-    "slug": "meeting-notes",
-    "description": "Automatically capturing and summarizing meeting discussions."
-  }
+  { "id": "blog-writing", "name": "Blog Writing", "slug": "blog-writing", "description": "Creating long-form blog posts and articles with AI assistance." },
+  { "id": "note-taking", "name": "Note Taking", "slug": "note-taking", "description": "Capturing, organizing, and retrieving notes and information." },
+  { "id": "video-ads", "name": "Video Ads", "slug": "video-ads", "description": "Producing video advertisements and marketing videos." },
+  { "id": "meeting-notes", "name": "Meeting Notes", "slug": "meeting-notes", "description": "Automatically capturing and summarizing meeting discussions." },
+  { "id": "social-media-posts", "name": "Social Media Posts", "slug": "social-media-posts", "description": "Creating optimized posts and content for social media platforms." },
+  { "id": "email-writing", "name": "Email Writing", "slug": "email-writing", "description": "Drafting and optimizing email campaigns and outreach sequences." },
+  { "id": "seo-content", "name": "SEO Content", "slug": "seo-content", "description": "Creating search-engine-optimized articles and web content." },
+  { "id": "podcast-editing", "name": "Podcast Editing", "slug": "podcast-editing", "description": "Editing and enhancing podcast audio recordings." },
+  { "id": "image-generation", "name": "Image Generation", "slug": "image-generation", "description": "Generating AI-powered images and visuals from text prompts." },
+  { "id": "research", "name": "Research", "slug": "research", "description": "Gathering, summarizing, and organizing research and information." }
 ]

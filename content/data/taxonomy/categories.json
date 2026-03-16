@@ -1,26 +1,8 @@
 [
-  {
-    "id": "writing",
-    "name": "Writing",
-    "slug": "writing",
-    "description": "AI tools for creating written content including blog posts, copy, and documents."
-  },
-  {
-    "id": "video",
-    "name": "Video",
-    "slug": "video",
-    "description": "AI tools for creating, editing, and generating video content."
-  },
-  {
-    "id": "productivity",
-    "name": "Productivity",
-    "slug": "productivity",
-    "description": "AI tools for improving workflow, organization, and overall productivity."
-  },
-  {
-    "id": "transcription",
-    "name": "Transcription",
-    "slug": "transcription",
-    "description": "AI tools for transcribing audio and video to text."
-  }
+  { "id": "writing", "name": "Writing", "slug": "writing", "description": "AI tools for creating written content including blog posts, copy, and documents." },
+  { "id": "video", "name": "Video", "slug": "video", "description": "AI tools for creating, editing, and generating video content." },
+  { "id": "productivity", "name": "Productivity", "slug": "productivity", "description": "AI tools for improving workflow, organization, and overall productivity." },
+  { "id": "transcription", "name": "Transcription", "slug": "transcription", "description": "AI tools for transcribing audio and video to text." },
+  { "id": "social-media", "name": "Social Media", "slug": "social-media", "description": "AI tools for creating and scheduling social media content." },
+  { "id": "image", "name": "Image", "slug": "image", "description": "AI tools for generating and editing images and visual content." }
 ]
