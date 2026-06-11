@@ -338,6 +338,45 @@ generate pages → commit → git push → hosting rebuilds site
 
 ------------------------------------------------------------------------
 
+# Knowledge Graph Tools
+
+Two tools are set up for codebase exploration and understanding.
+
+## Understand Anything (Claude Code plugin)
+
+Plugin: `Egonex-AI/Understand-Anything`
+
+Installed via:
+```
+/plugin marketplace add Egonex-AI/Understand-Anything
+/plugin install understand-anything
+```
+
+Key commands:
+- `/understand` — build/update the knowledge graph (incremental by default)
+- `/understand-dashboard` — open the interactive visual graph
+- `/understand-chat <question>` — ask anything about the codebase
+- `/understand-diff` — see impact of current changes
+- `/understand-domain` — extract business domain / flow view
+
+Graph is saved to `.understand-anything/knowledge-graph.json` — commit it so teammates skip the pipeline. Local scratch (intermediate files, diff overlay) is gitignored.
+
+## Graphify (Claude Code skill)
+
+Skill: `~/.claude/skills/graphify/` — globally installed, no per-project setup needed.
+
+Invoke with `/graphify` or ask any question about the codebase — the skill auto-triggers when `graphify-out/` exists.
+
+Key commands:
+- `/graphify` — full pipeline on current directory
+- `/graphify <path>` — target a subdirectory
+- `/graphify query "<question>"` — query the graph
+- `/graphify --update` — incremental rebuild (changed files only)
+
+Output in `graphify-out/`. The HTML render is gitignored; commit `graph.json` if you want a persistent cross-session graph.
+
+------------------------------------------------------------------------
+
 # Mental Model
 
 Treat this repository as:
