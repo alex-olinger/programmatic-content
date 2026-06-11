@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "graphify": {
+      "command": "/home/alexo/.local/share/uv/tools/graphifyy/bin/python",
+      "args": [
+        "-m",
+        "graphify.serve",
+        "/home/alexo/projects/programmatic-content/graphify-out/graph.json"
+      ]
+    }
+  }
+}

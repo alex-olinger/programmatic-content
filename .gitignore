@@ -12,8 +12,13 @@ tasks/
 .understand-anything/intermediate/
 .understand-anything/diff-overlay.json
 
-# Graphify — commit graphify-out/ if you want persistent graph; ignore local HTML render
+# Graphify — commit the persistent graph (graph.json) + report so the MCP server
+# and teammates work without rebuilding; ignore HTML render and local scratch.
 graphify-out/graph.html
+graphify-out/cache/
+graphify-out/cost.json
+graphify-out/.graphify_python
+graphify-out/.graphify_root
 
 # Rendered diagrams — generated in CI from docs/diagrams/*.puml
 docs/diagrams/*.svg
