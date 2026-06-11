@@ -17,5 +17,5 @@ Do not wait to be asked. This is part of completing the task.
 ## PR Rules
 
 - PR description must use the Summary + Test plan format — never submit an empty template
-- PRs always target `testing` as base branch — never `main` directly
-- Never push directly to `main` or `testing`
+- PRs always target `dev` as base branch — never `main` directly
+- Never push directly to `main` or `dev`
