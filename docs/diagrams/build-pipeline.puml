@@ -1,0 +1,70 @@
+@startuml build-pipeline
+title Programmatic Content — Build Pipeline (pnpm pipeline)
+
+skinparam backgroundColor white
+skinparam titleFontSize 16
+skinparam titleFontStyle bold
+skinparam defaultFontSize 11
+skinparam ArrowColor #444444
+skinparam activityBorderColor #6c8ebf
+skinparam activityBackgroundColor #dae8fc
+skinparam activityDiamondBackgroundColor #fff2cc
+skinparam activityDiamondBorderColor #d6b656
+skinparam noteBackgroundColor #fffacd
+skinparam noteBorderColor #d6b656
+
+|#e8f0fe|Source Data|
+start
+:content/data/tools/*.json
+content/data/taxonomy/*.json;
+note right: loadData() builds the in-memory Dataset
+
+|#fef7e0|compute-pages|
+:applyAllRules(dataset)
+9 rule functions emit raw candidates;
+:validateCandidates() — enforce MIN_TOOLS
++ structural checks;
+:deduplicateCandidates() by canonicalKey;
+:write artifacts;
+note right
+  content/index/page-definitions.json
+  content/index/page-definition-report.json
+  content/index/site-plan-summary.json
+end note
+
+|#e8f0fe|compute-graph|
+:buildEntityGraph(dataset)
+nodes + edges;
+:computeRelatedPages() from page index;
+:buildTopicalClusters();
+:write artifacts;
+note right
+  content/index/entity-graph.json
+  content/index/page-links.json
+end note
+
+|#fef7e0|generate-pages|
+while (more valid page definitions?) is (yes)
+  :renderMarkdown(def)
+  deterministic structure;
+  :generateNarrative() via Claude API
+  prose sections;
+  :write content/pages/<slug>.md;
+endwhile (no)
+
+|#e8f0fe|qa-check|
+:validateAll() — pages, files,
+graph + links artifacts;
+if (errors?) then (yes)
+  #f8cecc:exit non-zero;
+  stop
+else (no)
+  :report warnings;
+endif
+
+|#d5e8d4|Publish|
+:content/pages/*.md + content/index/*.json;
+:apps/web renders by slug;
+stop
+
+@enduml

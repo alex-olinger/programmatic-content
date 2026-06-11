@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programmatic Content — Architecture Diagrams</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      min-height: 100vh;
+    }
+
+    /* ── header ── */
+    .site-header {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 2rem 2.5rem;
+      border-bottom: 3px solid #3b82f6;
+    }
+    .site-header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.01em; }
+    .site-header p  { margin-top: 0.35rem; font-size: 0.85rem; color: #94a3b8; }
+    .site-header code {
+      font-family: "SF Mono", Menlo, monospace;
+      background: #1e293b;
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      font-size: 0.8em;
+    }
+
+    /* ── grid ── */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));
+      gap: 1.75rem;
+    }
+
+    /* ── card ── */
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: box-shadow 0.15s ease;
+    }
+    .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+    .card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .card-header h2 { font-size: 0.95rem; font-weight: 600; color: #0f172a; }
+    .card-header p  { font-size: 0.8rem; color: #64748b; margin-top: 0.25rem; line-height: 1.5; }
+
+    .card-body {
+      flex: 1;
+      padding: 1rem;
+      background: #fafafa;
+    }
+    .card-body a { display: block; }
+    .card-body img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .card-footer {
+      padding: 0.65rem 1.25rem;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .card-footer a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-family: "SF Mono", Menlo, monospace;
+    }
+    .card-footer a:hover { text-decoration: underline; }
+
+    /* ── responsive ── */
+    @media (max-width: 640px) {
+      .site-header { padding: 1.5rem 1.25rem; }
+      main { padding: 1.5rem 1rem; }
+      .grid { grid-template-columns: 1fr; gap: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1>Programmatic Content — Architecture Diagrams</h1>
+    <p>Auto-rendered from <code>docs/diagrams/*.puml</code> on every push to <code>main</code>. Click any diagram to open full-size.</p>
+  </header>
+
+  <main>
+    <div class="grid">
+
+      <article class="card">
+        <div class="card-header">
+          <h2>System Context</h2>
+          <p>High-level view: the Content Author actor, the content-engine boundary, and external systems — the Anthropic Claude API and static hosting.</p>
+        </div>
+        <div class="card-body">
+          <a href="diagrams/system-context.svg" target="_blank" title="Open full-size">
+            <img src="diagrams/system-context.svg" alt="System Context diagram">
+          </a>
+        </div>
+        <div class="card-footer">
+          Source: <a href="diagrams/system-context.puml">system-context.puml</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Entity Data Model</h2>
+          <p>The source-of-truth entities in <code>content/data</code> — Tool plus the Category, Audience, UseCase, Feature, PriceTier, and Integration taxonomy, assembled into the Dataset.</p>
+        </div>
+        <div class="card-body">
+          <a href="diagrams/entity-data-model.svg" target="_blank" title="Open full-size">
+            <img src="diagrams/entity-data-model.svg" alt="Entity Data Model diagram">
+          </a>
+        </div>
+        <div class="card-footer">
+          Source: <a href="diagrams/entity-data-model.puml">entity-data-model.puml</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Build Pipeline</h2>
+          <p>The deterministic <code>pnpm pipeline</code> flow: compute-pages → compute-graph → generate-pages → qa-check, with the artifacts each stage writes.</p>
+        </div>
+        <div class="card-body">
+          <a href="diagrams/build-pipeline.svg" target="_blank" title="Open full-size">
+            <img src="diagrams/build-pipeline.svg" alt="Build Pipeline diagram">
+          </a>
+        </div>
+        <div class="card-footer">
+          Source: <a href="diagrams/build-pipeline.puml">build-pipeline.puml</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <h2>Page-Definition Rules</h2>
+          <p>How <code>pageRules.ts</code> turns the Dataset into pages: 9 rule functions emit candidates, validation applies per-type MIN_TOOLS thresholds, and dedup splits valid from rejected.</p>
+        </div>
+        <div class="card-body">
+          <a href="diagrams/page-definition-rules.svg" target="_blank" title="Open full-size">
+            <img src="diagrams/page-definition-rules.svg" alt="Page-Definition Rules diagram">
+          </a>
+        </div>
+        <div class="card-footer">
+          Source: <a href="diagrams/page-definition-rules.puml">page-definition-rules.puml</a>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+</body>
+</html>

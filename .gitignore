@@ -14,3 +14,6 @@ tasks/
 
 # Graphify — commit graphify-out/ if you want persistent graph; ignore local HTML render
 graphify-out/graph.html
+
+# Rendered diagrams — generated in CI from docs/diagrams/*.puml
+docs/diagrams/*.svg

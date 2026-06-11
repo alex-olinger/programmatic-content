@@ -1,0 +1,67 @@
+@startuml page-definition-rules
+title Programmatic Content — Page-Definition Rules (src/lib/pageRules.ts)
+
+skinparam backgroundColor white
+skinparam titleFontSize 16
+skinparam titleFontStyle bold
+skinparam defaultFontSize 11
+skinparam ArrowColor #444444
+skinparam activityBorderColor #6c8ebf
+skinparam activityBackgroundColor #dae8fc
+skinparam activityDiamondBackgroundColor #fff2cc
+skinparam activityDiamondBorderColor #d6b656
+skinparam noteBackgroundColor #fffacd
+skinparam noteBorderColor #d6b656
+
+start
+
+:applyAllRules(dataset);
+
+note right
+  Each rule emits a PageDefinition per
+  entity combination that has >= 1 matched tool.
+  MIN_TOOLS sets the validity threshold per type.
+end note
+
+partition "9 rule functions (concatenated)" {
+  :categoryPages           — best-{category}-tools            [MIN_TOOLS 3];
+  :audienceCategoryPages   — {category}-tools-for-{audience}  [MIN_TOOLS 2];
+  :useCasePages            — tools-for-{use-case}             [MIN_TOOLS 2];
+  :audienceUseCasePages    — {use-case}-tools-for-{audience}  [MIN_TOOLS 2];
+  :featurePages            — tools-with-{feature}             [MIN_TOOLS 3];
+  :pricingPages            — {tier}-{category}-tools          [MIN_TOOLS 2];
+  :alternativesPages       — alternatives-to-{tool}           [MIN_TOOLS 3];
+  :comparisonPages         — {tool-a}-vs-{tool-b}             [MIN_TOOLS 2, overlap >= 2];
+  :toolDetailPages         — {tool}-review                    [MIN_TOOLS 1];
+}
+
+:raw candidates (PageDefinition[]);
+
+:validateCandidates();
+
+if (supportCount >= MIN_TOOLS[type]
+AND structural checks pass?) then (yes)
+  :isValid = true;
+else (no)
+  #f8cecc:isValid = false
+  set rejectionReason;
+endif
+
+:deduplicateCandidates() by canonicalKey;
+
+note right
+  Duplicate canonicalKeys collapse to one
+  definition; duplicateKeysRemoved is reported.
+end note
+
+split
+  #d5e8d4:valid pages
+  → page-definitions.json;
+split again
+  #f8cecc:rejected pages
+  → page-definition-report.json;
+end split
+
+stop
+
+@enduml

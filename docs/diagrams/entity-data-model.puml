@@ -1,0 +1,114 @@
+@startuml entity-data-model
+title Programmatic Content — Entity Data Model (content/data)
+
+skinparam backgroundColor white
+skinparam titleFontSize 16
+skinparam titleFontStyle bold
+skinparam defaultFontSize 11
+skinparam classAttributeIconSize 0
+skinparam ArrowFontBackground white
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.4
+skinparam nodesep 55
+skinparam ranksep 70
+
+skinparam class {
+  BackgroundColor #dae8fc
+  BorderColor #6c8ebf
+}
+
+skinparam class<<root>> {
+  BackgroundColor #d5e8d4
+  BorderColor #82b366
+}
+
+' Tool is the source-of-truth entity. Every other taxonomy entity is
+' referenced from Tool by id (string arrays), not by object ownership.
+class Tool {
+  +id : string <<PK>>
+  --
+  +name : string
+  +slug : string
+  +description : string
+  +tagline : string
+  +website : string
+  +categories : string[] <<ref>>
+  +audiences : string[] <<ref>>
+  +useCases : string[] <<ref>>
+  +features : string[] <<ref>>
+  +priceTiers : string[] <<ref>>
+  +integrations : string[] <<ref>>
+  +alternatives : string[] <<ref Tool>>
+}
+
+class Category {
+  +id : string <<PK>>
+  +name : string
+  +slug : string
+  +description : string
+}
+
+class Audience {
+  +id : string <<PK>>
+  +name : string
+  +slug : string
+  +description : string
+}
+
+class UseCase {
+  +id : string <<PK>>
+  +name : string
+  +slug : string
+  +description : string
+}
+
+class Feature {
+  +id : string <<PK>>
+  +name : string
+  +slug : string
+  +description : string
+}
+
+class PriceTier {
+  +id : string <<PK>>
+  +name : string
+  +slug : string
+  +description : string
+}
+
+class Integration {
+  +id : string <<PK>>
+  +name : string
+  +slug : string
+  +description : string
+}
+
+class Dataset <<root>> {
+  +tools : Tool[]
+  +categories : Category[]
+  +audiences : Audience[]
+  +useCases : UseCase[]
+  +features : Feature[]
+  +priceTiers : PriceTier[]
+  +integrations : Integration[]
+}
+
+' Dataset owns the collections loaded from content/data — composition.
+Dataset "1" *-- "0..*" Tool        : <back:white>tools</back>
+Dataset "1" *-- "0..*" Category    : <back:white>categories</back>
+Dataset "1" *-- "0..*" Audience    : <back:white>audiences</back>
+Dataset "1" *-- "0..*" UseCase     : <back:white>useCases</back>
+Dataset "1" *-- "0..*" Feature     : <back:white>features</back>
+Dataset "1" *-- "0..*" PriceTier   : <back:white>priceTiers</back>
+Dataset "1" *-- "0..*" Integration : <back:white>integrations</back>
+
+' Tool references taxonomy entities by id — directed associations.
+Tool "0..*" --> "0..*" Category    : <back:white>categories</back>
+Tool "0..*" --> "0..*" Audience    : <back:white>audiences</back>
+Tool "0..*" --> "0..*" UseCase     : <back:white>useCases</back>
+Tool "0..*" --> "0..*" Feature     : <back:white>features</back>
+Tool "0..*" --> "0..*" PriceTier   : <back:white>priceTiers</back>
+Tool "0..*" --> "0..*" Integration : <back:white>integrations</back>
+Tool        --> "0..*" Tool        : <back:white>alternatives</back>
+
+@enduml

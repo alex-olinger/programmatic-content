@@ -1,0 +1,39 @@
+@startuml system-context
+title Programmatic Content — System Context
+
+left to right direction
+
+skinparam backgroundColor white
+skinparam titleFontSize 16
+skinparam titleFontStyle bold
+skinparam defaultFontSize 11
+skinparam nodesep 60
+skinparam ranksep 80
+
+skinparam actor {
+  BackgroundColor #1168bd
+  BorderColor #08427b
+  FontColor white
+  FontSize 12
+}
+
+skinparam rectangle {
+  BackgroundColor #dae8fc
+  BorderColor #6c8ebf
+  FontSize 12
+  RoundCorner 8
+}
+
+actor "Content Author / Editor\n//[Person]//" as author
+
+rectangle "Programmatic Content Engine\n//[Software System]//\ndeterministic page plan + generated markdown" as engine
+
+rectangle "Anthropic Claude API\n//[External]//" as llm #f5f5f5
+rectangle "Static Hosting\n//[External]//\n(Next.js frontend)" as hosting #f5f5f5
+
+author --> engine : edits structured data\n(content/data/*.json)
+engine ..> llm : requests narrative prose\n(intros, summaries, FAQs)
+engine --> hosting : publishes generated\nmarkdown + site plan
+author --> hosting : reviews rendered pages
+
+@enduml
