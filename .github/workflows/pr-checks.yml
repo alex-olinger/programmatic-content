@@ -140,6 +140,8 @@ jobs:
     needs: [generate-changelog]
     if: always()
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     steps:
       - name: Check for Summary section with content
         # Fetch the live PR body via API — not the event context, which is stale
