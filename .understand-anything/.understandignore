@@ -1,0 +1,36 @@
+# .understandignore — patterns for files/dirs to exclude from analysis
+# Syntax: same as .gitignore (globs, # comments, ! negation, trailing / for dirs)
+# Lines below are suggestions — uncomment to activate.
+# Use ! prefix to force-include something excluded by defaults.
+#
+# Built-in defaults (always excluded unless negated):
+#   node_modules/, .git/, dist/, build/, obj/, *.lock, *.min.js, etc.
+#
+# --- From .gitignore (uncomment to exclude) ---
+
+# *:Zone.Identifier
+# C:*
+# content/pages/
+# content/index/
+# content/cache/
+# .claude/settings.local.json
+# tasks/
+# .understand-anything/intermediate/
+# .understand-anything/diff-overlay.json
+# graphify-out/graph.html
+
+# --- Detected directories (uncomment to exclude) ---
+
+# docs/
+# scripts/
+
+# --- Test file patterns (uncomment to exclude) ---
+
+# *.test.*
+# *.spec.*
+# *.snap
+
+# --- Generated content (recommended to exclude) ---
+
+content/pages/
+content/index/

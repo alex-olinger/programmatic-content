@@ -11,6 +11,7 @@ tasks/
 # Understand Anything — local scratch only; commit knowledge-graph.json and config.json
 .understand-anything/intermediate/
 .understand-anything/diff-overlay.json
+.understand-anything/.trash-*/
 
 # Graphify — commit the persistent graph (graph.json) + report so the MCP server
 # and teammates work without rebuilding; ignore HTML render and local scratch.
