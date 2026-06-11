@@ -1,0 +1,158 @@
+{
+  "/home/alexo/projects/programmatic-content/scripts/qa-check.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "63264bf3a044f60b5750d76c09f3bfc1"
+  },
+  "/home/alexo/projects/programmatic-content/scripts/compute-pages.ts": {
+    "mtime": 1773655484.947333,
+    "hash": "3945c28af444d152e692a5a5fd9354bb"
+  },
+  "/home/alexo/projects/programmatic-content/scripts/compute-graph.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "93880a49ff9b328186bb2df18afbd11c"
+  },
+  "/home/alexo/projects/programmatic-content/scripts/generate-pages.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "e03b0c350921af63197f9df51312e0ff"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/llm.ts": {
+    "mtime": 1773629239.374374,
+    "hash": "b1eac774ac9a086ddcca9a3d206110f5"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/validate.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "9f456447d899a5e122efc4c69640d170"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/pageBuilders.ts": {
+    "mtime": 1773627114.4029815,
+    "hash": "f2316cf8e4e845ba54b70388c3f35cfa"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/slugify.ts": {
+    "mtime": 1773627114.4029815,
+    "hash": "a089c4733c8a07368a3bde76c213235f"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/pageLinks.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "f31b27375f46fbb0f46d62de35ef4d83"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/pageRules.ts": {
+    "mtime": 1773655484.947333,
+    "hash": "487e7b2ed71caa2bb37e3877ac0707b9"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/topicalClusters.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "edf280c9292c8ec8e3be9772619b75c1"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/markdown.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "c10e86a07d4454141515dad0badc2d22"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/pageIndex.ts": {
+    "mtime": 1773655484.947333,
+    "hash": "c9da5fa4230f17d82cc623ca96751c5e"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/loadData.ts": {
+    "mtime": 1773628101.2943141,
+    "hash": "92f45508e0869e24ce34aa9d47fe1718"
+  },
+  "/home/alexo/projects/programmatic-content/src/lib/entityGraph.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "a76ba8b29e7f01505a26937a4143bb6b"
+  },
+  "/home/alexo/projects/programmatic-content/src/types/pages.ts": {
+    "mtime": 1773627114.4029815,
+    "hash": "89df05634bab4256c81dad6a3fcf6956"
+  },
+  "/home/alexo/projects/programmatic-content/src/types/entities.ts": {
+    "mtime": 1773627114.4029815,
+    "hash": "842bff8204aa12b9528e3ac010689f6f"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/next.config.js": {
+    "mtime": 1773656901.4659188,
+    "hash": "8e5d71a72fe33043a98fbe32bb3517c4"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/next-env.d.ts": {
+    "mtime": 1773656901.4659188,
+    "hash": "b5ed9dd8b4c5ba8e5ab8e6a379c15838"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/lib/build-priority.ts": {
+    "mtime": 1773659670.495569,
+    "hash": "a152b25cdfc5107fc385799a85875c49"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/lib/pages.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "a8c9a63c3b439b5c52be12785b6252da"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/lib/graph-data.ts": {
+    "mtime": 1773661172.8987987,
+    "hash": "3982cea7ccdefdf38544bfe7956beb36"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/app/layout.tsx": {
+    "mtime": 1773656901.4569187,
+    "hash": "22e475b091c640e351bfac3c17d934a3"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/app/not-found.tsx": {
+    "mtime": 1773656901.4659188,
+    "hash": "6f9d22b340cb0a1733f875ef4b87650f"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/app/page.tsx": {
+    "mtime": 1773661172.8987987,
+    "hash": "f6b41efaae03fa8d4b2769ad80bc5601"
+  },
+  "/home/alexo/projects/programmatic-content/apps/web/app/[slug]/page.tsx": {
+    "mtime": 1773661172.8987987,
+    "hash": "a342ec51a51b3abf7dbcef631175d04f"
+  },
+  "/home/alexo/projects/programmatic-content/README.md": {
+    "mtime": 1781171312.4250283,
+    "hash": "bab763c548ee90b1747707449d071885"
+  },
+  "/home/alexo/projects/programmatic-content/CLAUDE.md": {
+    "mtime": 1781169979.0917332,
+    "hash": "631611694535616d1066d53eb80d932e"
+  },
+  "/home/alexo/projects/programmatic-content/pnpm-workspace.yaml": {
+    "mtime": 1773656901.4659188,
+    "hash": "59edc4df7fd82ba580879b7a302458ae"
+  },
+  "/home/alexo/projects/programmatic-content/docs/index.html": {
+    "mtime": 1781170993.709649,
+    "hash": "29c66860215dbf8abb70d9bcc58eae15"
+  },
+  "/home/alexo/projects/programmatic-content/docs/plans/llm-production-hardening.md": {
+    "mtime": 1781150864.2012951,
+    "hash": "8d6642980ff413c1c35622084bab97fc"
+  },
+  "/home/alexo/projects/programmatic-content/docs/walkthroughs/code-walkthrough-src-lib-pageRules.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "b8c15a3433d3773dd55738ff7dfd4f62"
+  },
+  "/home/alexo/projects/programmatic-content/docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "62cd2fefdef76294a5fda7aaf30a6b22"
+  },
+  "/home/alexo/projects/programmatic-content/docs/rules/ai-editing-rules.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "8694ad1ce94d3373a1ade7e7bb1fc1d0"
+  },
+  "/home/alexo/projects/programmatic-content/docs/rules/content-engine-rules.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "2222e5e4a199711c4931824944b7636d"
+  },
+  "/home/alexo/projects/programmatic-content/docs/architecture/entity-graph-and-traversal.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "89f2afbd0fdb4f627eefc4fb83ad1b68"
+  },
+  "/home/alexo/projects/programmatic-content/docs/architecture/project-map.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "19f3f4311af83f3352a7b7aa4634468c"
+  },
+  "/home/alexo/projects/programmatic-content/docs/architecture/build-sequence.md": {
+    "mtime": 1773662354.3013575,
+    "hash": "f258e6ec7f527abfd120cb91206b0a0f"
+  },
+  "/home/alexo/projects/programmatic-content/docs/architecture/workflow-diagram.md": {
+    "mtime": 1773699730.3459513,
+    "hash": "f626fc53344998dc36ea29595c5bf418"
+  }
+}
