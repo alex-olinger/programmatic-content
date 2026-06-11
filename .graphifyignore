@@ -1,0 +1,10 @@
+# Generated content — produced by the content pipeline (compute-pages → generate-pages).
+# These are LLM/deterministic output, not source. Exclude from the knowledge graph.
+content/pages/
+
+# Site-plan artifact and generated indices are derived, not authored.
+content/index/page-definitions.json
+
+# graphify's own output
+graphify-out/
+.understand-anything/

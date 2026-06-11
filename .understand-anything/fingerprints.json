@@ -1,0 +1,1815 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "775c6d583d3435a1905c77d57e13183e4aab5c0e",
+  "generatedAt": "2026-06-11T04:35:45.588Z",
+  "files": {
+    ".claude/commands/pipeline.md": {
+      "filePath": ".claude/commands/pipeline.md",
+      "contentHash": "e40783b13becb8b6e69e31697ad9f84257504a964a9fc700d1ead1b171f0eb6b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/commands/status.md": {
+      "filePath": ".claude/commands/status.md",
+      "contentHash": "fd9aa60f856c511131c02cfb3d89c8f33ea8f8c790a4c4fc01f81d37644d90ab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 10,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/commands/typecheck.md": {
+      "filePath": ".claude/commands/typecheck.md",
+      "contentHash": "06f01dfbaf6598331061db1abc3ecef7c652d9f12417cf96e083ddba6ce8fb3c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/rules/architecture.md": {
+      "filePath": ".claude/rules/architecture.md",
+      "contentHash": "3be4cb9ce7c482378d2c605bed4a16f727c8b1989312f29485f1ba07f8374654",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/rules/code-quality.md": {
+      "filePath": ".claude/rules/code-quality.md",
+      "contentHash": "4417a78bc70d2f5e2d4a6d9dec5a5adfcb7fddf0b8bc1aa5bb90a7bf0d5c299a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 33,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/rules/commits.md": {
+      "filePath": ".claude/rules/commits.md",
+      "contentHash": "e8e72809dcdd29d55dd449af444f65fc97b6792d48ed7fc5d7d36eafeadc22e9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/rules/workflow.md": {
+      "filePath": ".claude/rules/workflow.md",
+      "contentHash": "d5eaad94007efd3d226405da490fac607433074003fd18df5e0364945525a273",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    ".claude/settings.json": {
+      "filePath": ".claude/settings.json",
+      "contentHash": "43fd9292d8554aea3381e56d82032711f710bf8de2cec4c06ef2966351c70934",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    ".githooks/commit-msg": {
+      "filePath": ".githooks/commit-msg",
+      "contentHash": "f5561922e9ed917c2525d292555fadc998e415ee78eb41bdf12323a046c97408",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": false
+    },
+    ".github/pull_request_template.md": {
+      "filePath": ".github/pull_request_template.md",
+      "contentHash": "dd43fb2b1cdf77cdf8c08ab98ea49d5a20a7d019889d142f3120e57b7abf9cc6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    ".github/workflows/pr-checks.yml": {
+      "filePath": ".github/workflows/pr-checks.yml",
+      "contentHash": "58fa5f6eddbbd98b375cb678b95b81977fe0aefcda39cb145a1f168956638060",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 171,
+      "hasStructuralAnalysis": true
+    },
+    ".github/workflows/render-diagrams.yml": {
+      "filePath": ".github/workflows/render-diagrams.yml",
+      "contentHash": "bef91868e0714e5f572ad665b44daef7ae400f11f247a21a2851f335c67e5b8d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "a6d31e004421f84e05a254e0df8dcbb04751ed0a37b7307bf3faa9314997bec7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": false
+    },
+    "apps/web/app/[slug]/page.tsx": {
+      "filePath": "apps/web/app/[slug]/page.tsx",
+      "contentHash": "5f35d879d5ac5dac62875df887669ad78b250f117e2bf0f3db44b3b8ef6b59c1",
+      "functions": [
+        {
+          "name": "generateStaticParams",
+          "params": [],
+          "returnType": "{ slug: string }[]",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "generateMetadata",
+          "params": [
+            "{\n  params,\n}"
+          ],
+          "returnType": "Promise<Metadata>",
+          "exported": true,
+          "lineCount": 12
+        },
+        {
+          "name": "SlugPage",
+          "params": [
+            "{ params }"
+          ],
+          "exported": true,
+          "lineCount": 54
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next/navigation",
+          "specifiers": [
+            "notFound"
+          ]
+        },
+        {
+          "source": "next",
+          "specifiers": [
+            "Metadata"
+          ]
+        },
+        {
+          "source": "next/link",
+          "specifiers": [
+            "Link"
+          ]
+        },
+        {
+          "source": "@/lib/pages",
+          "specifiers": [
+            "loadHighPrioritySlugs",
+            "loadPageBySlug",
+            "loadAllPageMeta"
+          ]
+        }
+      ],
+      "exports": [
+        "dynamicParams",
+        "revalidate",
+        "generateStaticParams",
+        "generateMetadata",
+        "SlugPage"
+      ],
+      "totalLines": 89,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/layout.tsx": {
+      "filePath": "apps/web/app/layout.tsx",
+      "contentHash": "c13099550a4dd8496aead46ab472d49e63e3c6ab8ee3f37c3519759569524fa1",
+      "functions": [
+        {
+          "name": "RootLayout",
+          "params": [
+            "{ children }"
+          ],
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next",
+          "specifiers": [
+            "Metadata"
+          ]
+        },
+        {
+          "source": "react",
+          "specifiers": [
+            "ReactNode"
+          ]
+        }
+      ],
+      "exports": [
+        "metadata",
+        "RootLayout"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/not-found.tsx": {
+      "filePath": "apps/web/app/not-found.tsx",
+      "contentHash": "5a6ee284275bcc438c7377adb24cfd34fee6af66c229e074e7efdcfea1be8563",
+      "functions": [
+        {
+          "name": "NotFound",
+          "params": [],
+          "exported": true,
+          "lineCount": 17
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "NotFound"
+      ],
+      "totalLines": 19,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/app/page.tsx": {
+      "filePath": "apps/web/app/page.tsx",
+      "contentHash": "c042a9050cfc6b86a62c2de4e864738b97e103b051f0636137cf4e9d0eac7330",
+      "functions": [
+        {
+          "name": "groupByType",
+          "params": [
+            "pages"
+          ],
+          "returnType": "Record<string, PageMeta[]>",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "tryLoadClusters",
+          "params": [],
+          "returnType": "TopicalClustersIndex | null",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "HomePage",
+          "params": [],
+          "exported": true,
+          "lineCount": 83
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "next/link",
+          "specifiers": [
+            "Link"
+          ]
+        },
+        {
+          "source": "@/lib/pages",
+          "specifiers": [
+            "loadAllPageMeta"
+          ]
+        },
+        {
+          "source": "@/lib/pages",
+          "specifiers": [
+            "PageMeta"
+          ]
+        },
+        {
+          "source": "@/lib/graph-data",
+          "specifiers": [
+            "loadTopicalClusters"
+          ]
+        },
+        {
+          "source": "@/lib/graph-data",
+          "specifiers": [
+            "TopicalClustersIndex"
+          ]
+        }
+      ],
+      "exports": [
+        "HomePage"
+      ],
+      "totalLines": 109,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/lib/build-priority.ts": {
+      "filePath": "apps/web/lib/build-priority.ts",
+      "contentHash": "8d6cc53915c3efa8e05d7a887a93d378929d16d4db5c62bdf1c551f6348dc75a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "HIGH_PRIORITY_TYPES"
+      ],
+      "totalLines": 18,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/lib/graph-data.ts": {
+      "filePath": "apps/web/lib/graph-data.ts",
+      "contentHash": "6158d0e7484c8da483cea737eeb697eae538a7e32f9862852caf003cc3269fa8",
+      "functions": [
+        {
+          "name": "loadTopicalClusters",
+          "params": [],
+          "returnType": "TopicalClustersIndex",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "loadPageLinks",
+          "params": [],
+          "returnType": "PageLinksIndex",
+          "exported": true,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        }
+      ],
+      "exports": [
+        "loadTopicalClusters",
+        "loadPageLinks"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/lib/pages.ts": {
+      "filePath": "apps/web/lib/pages.ts",
+      "contentHash": "fb03ab87adb2fdc75683ee54ce7664b8d0d90435c888e8bb6a2283e8ea255f6b",
+      "functions": [
+        {
+          "name": "loadAllPageMeta",
+          "params": [],
+          "returnType": "PageMeta[]",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "loadAllSlugs",
+          "params": [],
+          "returnType": "string[]",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "loadHighPrioritySlugs",
+          "params": [],
+          "returnType": "string[]",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "loadPageBySlug",
+          "params": [
+            "slug"
+          ],
+          "returnType": "PageData | null",
+          "exported": true,
+          "lineCount": 9
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "gray-matter",
+          "specifiers": [
+            "matter"
+          ]
+        },
+        {
+          "source": "marked",
+          "specifiers": [
+            "marked"
+          ]
+        },
+        {
+          "source": "./build-priority",
+          "specifiers": [
+            "HIGH_PRIORITY_TYPES"
+          ]
+        }
+      ],
+      "exports": [
+        "loadAllPageMeta",
+        "loadAllSlugs",
+        "loadHighPrioritySlugs",
+        "loadPageBySlug"
+      ],
+      "totalLines": 67,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/next-env.d.ts": {
+      "filePath": "apps/web/next-env.d.ts",
+      "contentHash": "9dd9d642cdb87d4d5b3173217e0c45429b3e47a6f5cf5fb0ead6c644ec5fed01",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 6,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/next.config.js": {
+      "filePath": "apps/web/next.config.js",
+      "contentHash": "04d06076404319d43d04ab49140f4bf63ac0ed9dd5c440e87250f0bf61fb2ad2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 7,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/package.json": {
+      "filePath": "apps/web/package.json",
+      "contentHash": "9896717f091db631320893a2d0cb90850d6174d5ca99e327b973c231955b6657",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "apps/web/tsconfig.json": {
+      "filePath": "apps/web/tsconfig.json",
+      "contentHash": "f376074b41f9ea59f63682af69f0a3b19879dc22751dc68479e8cacf83255600",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "cd37278480585d069997b8075cdb6e73151afe81079553ad1703019a6bc1f2f1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 385,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/taxonomy/audiences.json": {
+      "filePath": "content/data/taxonomy/audiences.json",
+      "contentHash": "e8f8b9ee42d5fb7738628cc04fd1c4710c0924948ceee00658b0841bce17147a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/taxonomy/categories.json": {
+      "filePath": "content/data/taxonomy/categories.json",
+      "contentHash": "56e5decdb2d8cfb8e7499f4bca327d0aa42dc9c3f33959d88a1a8628b5909076",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/taxonomy/features.json": {
+      "filePath": "content/data/taxonomy/features.json",
+      "contentHash": "eab551a0adeec39c4ccb1df18e15bbfa3097180d91d0c1ef1283602223607b51",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/taxonomy/integrations.json": {
+      "filePath": "content/data/taxonomy/integrations.json",
+      "contentHash": "551aaf7d487b50f3269a5bddaa624ff282a672574475ee0ad3b347ccd98c2781",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/taxonomy/price-tiers.json": {
+      "filePath": "content/data/taxonomy/price-tiers.json",
+      "contentHash": "b2b4111ab783e6d51f88de5abb02bd96c6848987115e7c9c12c1e93e27cc9bd0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/taxonomy/use-cases.json": {
+      "filePath": "content/data/taxonomy/use-cases.json",
+      "contentHash": "93a7935749865f5c90c5af33c6ee9269b2fa6f7c30d6d3ffd830a3334e1c3d8d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "content/data/tools/tools.json": {
+      "filePath": "content/data/tools/tools.json",
+      "contentHash": "51b939946c71166e51dd93f5aeaeffa75e1db180356f3a078de2ba3fad28cf89",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 243,
+      "hasStructuralAnalysis": true
+    },
+    "docs/architecture/build-sequence.md": {
+      "filePath": "docs/architecture/build-sequence.md",
+      "contentHash": "4c088f82321898a27e5024fcaf7e63b3bff76e30feaaf5faff8cbe1d9871bf66",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 355,
+      "hasStructuralAnalysis": true
+    },
+    "docs/architecture/entity-graph-and-traversal.md": {
+      "filePath": "docs/architecture/entity-graph-and-traversal.md",
+      "contentHash": "b1990c8460a54fa2945f013bbd2d369749db5df8d958af1ec934b168b346e498",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 209,
+      "hasStructuralAnalysis": true
+    },
+    "docs/architecture/project-map.md": {
+      "filePath": "docs/architecture/project-map.md",
+      "contentHash": "1ea832b6886f74a22c1397a78912eef29d6d6406fb85e18eef2a159c5eff2c0a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 205,
+      "hasStructuralAnalysis": true
+    },
+    "docs/architecture/workflow-diagram.md": {
+      "filePath": "docs/architecture/workflow-diagram.md",
+      "contentHash": "31315122e7a609e551b2fa47c40b5f593330b83df3d5ddb4c86c186b304fc2b4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 191,
+      "hasStructuralAnalysis": true
+    },
+    "docs/plans/llm-production-hardening.md": {
+      "filePath": "docs/plans/llm-production-hardening.md",
+      "contentHash": "76aa8fa35db9ee2103da10b474824431ffda5b6b2c274bdb4537c2e72fde1b59",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 94,
+      "hasStructuralAnalysis": true
+    },
+    "docs/rules/ai-editing-rules.md": {
+      "filePath": "docs/rules/ai-editing-rules.md",
+      "contentHash": "c963cadea0b78c5bb6cc299e7acc424b3214d4f6b8c3a145b89bcbd00e56377b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    "docs/rules/content-engine-rules.md": {
+      "filePath": "docs/rules/content-engine-rules.md",
+      "contentHash": "1e98080224df27666687abcb81990a1a862e2d8b90d24369c1282092d0553a97",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 340,
+      "hasStructuralAnalysis": true
+    },
+    "docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md": {
+      "filePath": "docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md",
+      "contentHash": "154db77acae9d999b39555fe771b915f3b5d3ee8e0ab6e177e551088e6ea762c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 347,
+      "hasStructuralAnalysis": true
+    },
+    "docs/walkthroughs/code-walkthrough-src-lib-pageRules.md": {
+      "filePath": "docs/walkthroughs/code-walkthrough-src-lib-pageRules.md",
+      "contentHash": "82853c1076660c88b418ee669a81334d1a1dbede647bb61d9293c92164f8dbd8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 155,
+      "hasStructuralAnalysis": true
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "ba4dff3d6effc7ab1e299127a592f5599ba1f2daab819dfc58ee8b4e9fda6f4d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "pnpm-workspace.yaml": {
+      "filePath": "pnpm-workspace.yaml",
+      "contentHash": "bea704eb6f74a5c026718988f9080741b79ef74d5f423b0f917aa30e7b55fa31",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 3,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "4a18255fb0558a06b07e29f9a7a6283dd80994150b23a8356b08a272e2825399",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 153,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/compute-graph.ts": {
+      "filePath": "scripts/compute-graph.ts",
+      "contentHash": "6cb05dccf414e2f002970b44e734ce89d4d33c778ee9e421be0374efda018fbb",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 43
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "url",
+          "specifiers": [
+            "fileURLToPath"
+          ]
+        },
+        {
+          "source": "../src/lib/loadData.js",
+          "specifiers": [
+            "loadData"
+          ]
+        },
+        {
+          "source": "../src/lib/pageIndex.js",
+          "specifiers": [
+            "loadPageIndex"
+          ]
+        },
+        {
+          "source": "../src/lib/entityGraph.js",
+          "specifiers": [
+            "buildEntityGraph"
+          ]
+        },
+        {
+          "source": "../src/lib/pageLinks.js",
+          "specifiers": [
+            "computeRelatedPages"
+          ]
+        },
+        {
+          "source": "../src/lib/topicalClusters.js",
+          "specifiers": [
+            "buildTopicalClusters"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 63,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/compute-pages.ts": {
+      "filePath": "scripts/compute-pages.ts",
+      "contentHash": "fc37a1f50c45175bbb09ce0a08c15c32167fd5381d5c2d166f5aa6ae0dcce84d",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 70
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "url",
+          "specifiers": [
+            "fileURLToPath"
+          ]
+        },
+        {
+          "source": "../src/lib/loadData.js",
+          "specifiers": [
+            "loadData"
+          ]
+        },
+        {
+          "source": "../src/lib/pageRules.js",
+          "specifiers": [
+            "applyAllRules"
+          ]
+        },
+        {
+          "source": "../src/lib/pageIndex.js",
+          "specifiers": [
+            "validateCandidates",
+            "deduplicateCandidates",
+            "buildPageIndex",
+            "buildReport",
+            "writePageIndex",
+            "writeReport",
+            "buildSitePlanSummary",
+            "writeSitePlanSummary"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/generate-pages.ts": {
+      "filePath": "scripts/generate-pages.ts",
+      "contentHash": "dd49c0d29d801f7b9b6d3690e0d968f7130e8a38b8ca2f511bd6a65897fdc00a",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 53
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "url",
+          "specifiers": [
+            "fileURLToPath"
+          ]
+        },
+        {
+          "source": "../src/lib/markdown.js",
+          "specifiers": [
+            "renderMarkdown"
+          ]
+        },
+        {
+          "source": "../src/lib/pageIndex.js",
+          "specifiers": [
+            "loadPageIndex"
+          ]
+        },
+        {
+          "source": "../src/lib/loadData.js",
+          "specifiers": [
+            "loadData"
+          ]
+        },
+        {
+          "source": "../src/types/entities.js",
+          "specifiers": [
+            "Tool"
+          ]
+        },
+        {
+          "source": "../src/lib/pageLinks.js",
+          "specifiers": [
+            "PageLinksIndex",
+            "RelatedPage"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 75,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/qa-check.ts": {
+      "filePath": "scripts/qa-check.ts",
+      "contentHash": "47780d064707101a8a825d782968446028f9677db947ae9fcc61c2e20709e23d",
+      "functions": [
+        {
+          "name": "padEnd",
+          "params": [
+            "s",
+            "width"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 103
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "url",
+          "specifiers": [
+            "fileURLToPath"
+          ]
+        },
+        {
+          "source": "../src/lib/validate.js",
+          "specifiers": [
+            "validateAll"
+          ]
+        },
+        {
+          "source": "../src/lib/pageIndex.js",
+          "specifiers": [
+            "loadPageIndex"
+          ]
+        },
+        {
+          "source": "../src/lib/loadData.js",
+          "specifiers": [
+            "loadData"
+          ]
+        },
+        {
+          "source": "../src/lib/validate.js",
+          "specifiers": [
+            "GraphArtifacts"
+          ]
+        },
+        {
+          "source": "../src/lib/pageLinks.js",
+          "specifiers": [
+            "PageLinksIndex"
+          ]
+        },
+        {
+          "source": "../src/lib/topicalClusters.js",
+          "specifiers": [
+            "TopicalClustersIndex"
+          ]
+        },
+        {
+          "source": "../src/lib/entityGraph.js",
+          "specifiers": [
+            "EntityGraph"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 133,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/entityGraph.ts": {
+      "filePath": "src/lib/entityGraph.ts",
+      "contentHash": "b5743730eda3d7f63e3f8e707575f7cb9697256279420f44dbb0dd822629531c",
+      "functions": [
+        {
+          "name": "addBidirectionalEdge",
+          "params": [
+            "nodes",
+            "keyA",
+            "keyB"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "buildEntityGraph",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "EntityGraph",
+          "exported": true,
+          "lineCount": 55
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/entities.js",
+          "specifiers": [
+            "Dataset"
+          ]
+        }
+      ],
+      "exports": [
+        "buildEntityGraph"
+      ],
+      "totalLines": 83,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/llm.ts": {
+      "filePath": "src/lib/llm.ts",
+      "contentHash": "c474675548dc0c2a454f9dc13603395f278bc31a90fdced328d61248461e5732",
+      "functions": [
+        {
+          "name": "buildPrompt",
+          "params": [
+            "section",
+            "ctx"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "cacheKey",
+          "params": [
+            "section",
+            "ctx"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "readCache",
+          "params": [
+            "cacheDir",
+            "key"
+          ],
+          "returnType": "string | null",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "writeCache",
+          "params": [
+            "cacheDir",
+            "key",
+            "content"
+          ],
+          "returnType": "void",
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "generateNarrative",
+          "params": [
+            "section",
+            "ctx",
+            "cacheDir"
+          ],
+          "returnType": "Promise<string>",
+          "exported": true,
+          "lineCount": 36
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "@anthropic-ai/sdk",
+          "specifiers": [
+            "Anthropic"
+          ]
+        },
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "crypto",
+          "specifiers": [
+            "crypto"
+          ]
+        },
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageType",
+            "SectionName"
+          ]
+        },
+        {
+          "source": "../types/entities.js",
+          "specifiers": [
+            "Tool"
+          ]
+        }
+      ],
+      "exports": [
+        "generateNarrative"
+      ],
+      "totalLines": 109,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/loadData.ts": {
+      "filePath": "src/lib/loadData.ts",
+      "contentHash": "ce1ac7efd8b73e659c102e294ee3a8b0a406d3e735d9a2f54616fbab59de1f3e",
+      "functions": [
+        {
+          "name": "readJson",
+          "params": [
+            "filePath"
+          ],
+          "returnType": "T",
+          "exported": false,
+          "lineCount": 15
+        },
+        {
+          "name": "loadData",
+          "params": [
+            "contentRoot"
+          ],
+          "returnType": "Dataset",
+          "exported": true,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "path",
+          "specifiers": [
+            "path"
+          ]
+        },
+        {
+          "source": "../types/entities.js",
+          "specifiers": [
+            "Dataset",
+            "Tool",
+            "Category",
+            "Audience",
+            "UseCase",
+            "Feature",
+            "PriceTier",
+            "Integration"
+          ]
+        }
+      ],
+      "exports": [
+        "loadData"
+      ],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/markdown.ts": {
+      "filePath": "src/lib/markdown.ts",
+      "contentHash": "415ca6bff6d4128994c1c7ae3497f5b9ab98739aae15e1aed189cadcd7abbab5",
+      "functions": [
+        {
+          "name": "yamlEscape",
+          "params": [
+            "value"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "frontmatter",
+          "params": [
+            "def",
+            "related"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 22
+        },
+        {
+          "name": "relatedPagesSection",
+          "params": [
+            "related"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "toolListSection",
+          "params": [
+            "def",
+            "toolMap"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "comparisonTableSection",
+          "params": [
+            "def",
+            "toolMap"
+          ],
+          "returnType": "string",
+          "exported": false,
+          "lineCount": 31
+        },
+        {
+          "name": "renderMarkdown",
+          "params": [
+            "def",
+            "toolMap",
+            "cacheDir",
+            "related"
+          ],
+          "returnType": "Promise<string>",
+          "exported": true,
+          "lineCount": 62
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition"
+          ]
+        },
+        {
+          "source": "../types/entities.js",
+          "specifiers": [
+            "Tool"
+          ]
+        },
+        {
+          "source": "./llm.js",
+          "specifiers": [
+            "generateNarrative"
+          ]
+        },
+        {
+          "source": "./pageLinks.js",
+          "specifiers": [
+            "RelatedPage"
+          ]
+        }
+      ],
+      "exports": [
+        "renderMarkdown"
+      ],
+      "totalLines": 159,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/pageBuilders.ts": {
+      "filePath": "src/lib/pageBuilders.ts",
+      "contentHash": "c5e1cc106b585f08cbce294810ebe784fa9324d09d8611098363128554b1c95a",
+      "functions": [
+        {
+          "name": "sectionsFor",
+          "params": [
+            "pageType"
+          ],
+          "returnType": "Partial<Record<SectionName, 'deterministic' | 'llm'>>",
+          "exported": false,
+          "lineCount": 28
+        },
+        {
+          "name": "buildPageDefinition",
+          "params": [
+            "params"
+          ],
+          "returnType": "PageDefinition",
+          "exported": true,
+          "lineCount": 41
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition",
+            "PageType",
+            "SectionName"
+          ]
+        }
+      ],
+      "exports": [
+        "buildPageDefinition"
+      ],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/pageIndex.ts": {
+      "filePath": "src/lib/pageIndex.ts",
+      "contentHash": "e56e479ac051dcf046d9033000de7d99017a7004b82da8872d5740f52a25b9f9",
+      "functions": [
+        {
+          "name": "validateCandidates",
+          "params": [
+            "candidates"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 44
+        },
+        {
+          "name": "deduplicateCandidates",
+          "params": [
+            "candidates"
+          ],
+          "returnType": "{ result: PageDefinition[]; duplicateKeysRemoved: number }",
+          "exported": true,
+          "lineCount": 38
+        },
+        {
+          "name": "buildPageIndex",
+          "params": [
+            "candidates"
+          ],
+          "returnType": "PageIndex",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "buildReport",
+          "params": [
+            "candidates",
+            "duplicateKeysRemoved"
+          ],
+          "returnType": "PageDefinitionReport",
+          "exported": true,
+          "lineCount": 47
+        },
+        {
+          "name": "buildSitePlanSummary",
+          "params": [
+            "candidates"
+          ],
+          "returnType": "SitePlanSummary",
+          "exported": true,
+          "lineCount": 35
+        },
+        {
+          "name": "writeSitePlanSummary",
+          "params": [
+            "filePath",
+            "summary"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "loadPageIndex",
+          "params": [
+            "filePath"
+          ],
+          "returnType": "PageIndex",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "writePageIndex",
+          "params": [
+            "filePath",
+            "index"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "writeReport",
+          "params": [
+            "filePath",
+            "report"
+          ],
+          "returnType": "void",
+          "exported": true,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "fs",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition",
+            "PageIndex",
+            "PageDefinitionReport",
+            "PageType",
+            "SitePlanSummary"
+          ]
+        },
+        {
+          "source": "./pageRules.js",
+          "specifiers": [
+            "MIN_TOOLS",
+            "MIN_OVERLAP_SCORE"
+          ]
+        }
+      ],
+      "exports": [
+        "validateCandidates",
+        "deduplicateCandidates",
+        "buildPageIndex",
+        "buildReport",
+        "buildSitePlanSummary",
+        "writeSitePlanSummary",
+        "loadPageIndex",
+        "writePageIndex",
+        "writeReport"
+      ],
+      "totalLines": 256,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/pageLinks.ts": {
+      "filePath": "src/lib/pageLinks.ts",
+      "contentHash": "ea2291c01652117fbc3880cf2bc939c131fac19e96c4be9a12ec3f3ccf50b727",
+      "functions": [
+        {
+          "name": "computeEntitySet",
+          "params": [
+            "page"
+          ],
+          "returnType": "Set<string>",
+          "exported": true,
+          "lineCount": 10
+        },
+        {
+          "name": "jaccardSimilarity",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returnType": "number",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "computeRelatedPages",
+          "params": [
+            "validPages"
+          ],
+          "returnType": "PageLinksIndex",
+          "exported": true,
+          "lineCount": 40
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition"
+          ]
+        }
+      ],
+      "exports": [
+        "MAX_RELATED_PAGES",
+        "computeEntitySet",
+        "jaccardSimilarity",
+        "computeRelatedPages"
+      ],
+      "totalLines": 94,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/pageRules.ts": {
+      "filePath": "src/lib/pageRules.ts",
+      "contentHash": "01d4a22b3abe46acac7847dfb46aab880458e55c059fe0c803d5c616066cdedd",
+      "functions": [
+        {
+          "name": "computeOverlapScore",
+          "params": [
+            "a",
+            "b"
+          ],
+          "returnType": "number",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "categoryPages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "audienceCategoryPages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "useCasePages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "audienceUseCasePages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "featurePages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 15
+        },
+        {
+          "name": "pricingPages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 23
+        },
+        {
+          "name": "alternativesPages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "comparisonPages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 26
+        },
+        {
+          "name": "toolDetailPages",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 20
+        },
+        {
+          "name": "applyAllRules",
+          "params": [
+            "dataset"
+          ],
+          "returnType": "PageDefinition[]",
+          "exported": true,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/entities.js",
+          "specifiers": [
+            "Dataset",
+            "Tool"
+          ]
+        },
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition",
+            "PageType"
+          ]
+        },
+        {
+          "source": "./pageBuilders.js",
+          "specifiers": [
+            "buildPageDefinition"
+          ]
+        }
+      ],
+      "exports": [
+        "MIN_TOOLS",
+        "MIN_OVERLAP_SCORE",
+        "computeOverlapScore",
+        "categoryPages",
+        "audienceCategoryPages",
+        "useCasePages",
+        "audienceUseCasePages",
+        "featurePages",
+        "pricingPages",
+        "alternativesPages",
+        "comparisonPages",
+        "toolDetailPages",
+        "applyAllRules"
+      ],
+      "totalLines": 240,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/slugify.ts": {
+      "filePath": "src/lib/slugify.ts",
+      "contentHash": "85e02d2f4955d06eb3f3768d0be787e12299d99931ce6e63ff259c305f2eeec0",
+      "functions": [
+        {
+          "name": "slugify",
+          "params": [
+            "str"
+          ],
+          "returnType": "string",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [
+        "slugify"
+      ],
+      "totalLines": 13,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/topicalClusters.ts": {
+      "filePath": "src/lib/topicalClusters.ts",
+      "contentHash": "cc07324c859c0cc5a4e5adf6293de2835b27d89458097c3d6a586fcec76926e8",
+      "functions": [
+        {
+          "name": "buildTopicalClusters",
+          "params": [
+            "validPages"
+          ],
+          "returnType": "TopicalClustersIndex",
+          "exported": true,
+          "lineCount": 46
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition"
+          ]
+        }
+      ],
+      "exports": [
+        "buildTopicalClusters"
+      ],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "src/lib/validate.ts": {
+      "filePath": "src/lib/validate.ts",
+      "contentHash": "1b4c12f29735d92663f2f6553cdf7a9e7ff0b6cafaba975205c7a5f37dfe2bf0",
+      "functions": [
+        {
+          "name": "hasFrontmatterField",
+          "params": [
+            "content",
+            "field"
+          ],
+          "returnType": "boolean",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "hasFrontmatter",
+          "params": [
+            "content"
+          ],
+          "returnType": "boolean",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "requiredHeadingsFor",
+          "params": [
+            "pageType"
+          ],
+          "returnType": "string[]",
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "validateAll",
+          "params": [
+            "defs",
+            "generatedFiles",
+            "graphArtifacts"
+          ],
+          "returnType": "ValidationReport",
+          "exported": true,
+          "lineCount": 167
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "../types/pages.js",
+          "specifiers": [
+            "PageDefinition",
+            "PageType",
+            "ValidationReport",
+            "ValidationResult"
+          ]
+        },
+        {
+          "source": "./pageRules.js",
+          "specifiers": [
+            "MIN_TOOLS"
+          ]
+        },
+        {
+          "source": "./pageLinks.js",
+          "specifiers": [
+            "PageLinksIndex"
+          ]
+        },
+        {
+          "source": "./topicalClusters.js",
+          "specifiers": [
+            "TopicalClustersIndex"
+          ]
+        },
+        {
+          "source": "./entityGraph.js",
+          "specifiers": [
+            "EntityGraph"
+          ]
+        },
+        {
+          "source": "../types/entities.js",
+          "specifiers": [
+            "Dataset"
+          ]
+        }
+      ],
+      "exports": [
+        "validateAll"
+      ],
+      "totalLines": 203,
+      "hasStructuralAnalysis": true
+    },
+    "src/types/entities.ts": {
+      "filePath": "src/types/entities.ts",
+      "contentHash": "54ee05bf93dab9a64a25abe231a4a39390a9ae33da62da68ef870f883b0ffa58",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "src/types/pages.ts": {
+      "filePath": "src/types/pages.ts",
+      "contentHash": "92ac483dfb67de0c0c823c8903704ee624e35e35877cd2904ae03b7e51cf10d1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 83,
+      "hasStructuralAnalysis": true
+    },
+    "tsconfig.json": {
+      "filePath": "tsconfig.json",
+      "contentHash": "2ca4f58d9f3d6d4a59acbee317e26f21f33bf160a3da83b2de2cd3beb73d9bee",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 16,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

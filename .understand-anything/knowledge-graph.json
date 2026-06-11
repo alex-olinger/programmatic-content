@@ -1,0 +1,2851 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "programmatic-content",
+    "languages": [
+      "typescript",
+      "javascript",
+      "json",
+      "markdown",
+      "yaml"
+    ],
+    "frameworks": [
+      "Next.js",
+      "React",
+      "GitHub Actions"
+    ],
+    "description": "A deterministic content factory: structured JSON datasets \u2192 computed page definitions \u2192 page-definition index \u2192 generated markdown files \u2192 frontend rendering.",
+    "analyzedAt": "2026-06-11T04:35:11.507488Z",
+    "gitCommitHash": "775c6d583d3435a1905c77d57e13183e4aab5c0e"
+  },
+  "nodes": [
+    {
+      "id": "file:scripts/compute-graph.ts",
+      "type": "file",
+      "name": "compute-graph.ts",
+      "filePath": "scripts/compute-graph.ts",
+      "summary": "Entry-point script that orchestrates graph artifact generation: loads the page index, builds the entity graph, computes related-page links via Jaccard similarity, and produces topical clusters \u2014 writing all three artifacts to disk.",
+      "tags": [
+        "entry-point",
+        "script",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compute-graph.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compute-graph.ts",
+      "lineRange": [
+        15,
+        57
+      ],
+      "summary": "Orchestrates the full graph-computation pipeline: validates the page index exists, loads data, builds entity graph, page links, and topical clusters, then writes all three JSON artifacts.",
+      "tags": [
+        "entry-point",
+        "data-pipeline",
+        "orchestration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/qa-check.ts",
+      "type": "file",
+      "name": "qa-check.ts",
+      "filePath": "scripts/qa-check.ts",
+      "summary": "QA validation script that cross-checks generated markdown pages against the page-definition index, verifying frontmatter, required headings, slug uniqueness, and related-page link integrity.",
+      "tags": [
+        "entry-point",
+        "validation",
+        "script"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:scripts/qa-check.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/qa-check.ts",
+      "lineRange": [
+        23,
+        125
+      ],
+      "summary": "Runs end-to-end QA: loads the page index and generated files, invokes validateAll, then prints per-type page counts, tool-coverage stats, warning and error summaries, and exits non-zero on errors.",
+      "tags": [
+        "validation",
+        "entry-point",
+        "reporting"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/lib/entityGraph.ts",
+      "type": "file",
+      "name": "entityGraph.ts",
+      "filePath": "src/lib/entityGraph.ts",
+      "summary": "Builds a bidirectional entity relationship graph from the structured dataset, connecting tools, categories, use cases, features, audiences, and pricing nodes with shared-membership edges.",
+      "tags": [
+        "service",
+        "data-model",
+        "graph"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/entityGraph.ts:buildEntityGraph",
+      "type": "function",
+      "name": "buildEntityGraph",
+      "filePath": "src/lib/entityGraph.ts",
+      "lineRange": [
+        28,
+        82
+      ],
+      "summary": "Constructs the full entity graph by iterating over all entities in the dataset and creating bidirectional edges between co-occurring nodes across multiple relationship dimensions.",
+      "tags": [
+        "data-model",
+        "graph",
+        "factory"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/lib/pageLinks.ts",
+      "type": "file",
+      "name": "pageLinks.ts",
+      "filePath": "src/lib/pageLinks.ts",
+      "summary": "Computes related-page links for every valid page using Jaccard similarity over entity sets, producing a scored and ranked list of related pages per page.",
+      "tags": [
+        "service",
+        "utility",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageLinks.ts:computeRelatedPages",
+      "type": "function",
+      "name": "computeRelatedPages",
+      "filePath": "src/lib/pageLinks.ts",
+      "lineRange": [
+        54,
+        93
+      ],
+      "summary": "Iterates all valid pages pairwise, scores each pair by Jaccard similarity over entity sets, and returns the top-N related pages per page.",
+      "tags": [
+        "utility",
+        "data-pipeline",
+        "similarity"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageLinks.ts:jaccardSimilarity",
+      "type": "function",
+      "name": "jaccardSimilarity",
+      "filePath": "src/lib/pageLinks.ts",
+      "lineRange": [
+        43,
+        51
+      ],
+      "summary": "Computes the Jaccard similarity coefficient between two entity sets as intersection size divided by union size.",
+      "tags": [
+        "utility",
+        "similarity",
+        "math"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/pageLinks.ts:computeEntitySet",
+      "type": "function",
+      "name": "computeEntitySet",
+      "filePath": "src/lib/pageLinks.ts",
+      "lineRange": [
+        31,
+        40
+      ],
+      "summary": "Flattens all entity identifiers from a page definition (tools, categories, use cases, audiences, features, pricing) into a single Set for similarity comparison.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/topicalClusters.ts",
+      "type": "file",
+      "name": "topicalClusters.ts",
+      "filePath": "src/lib/topicalClusters.ts",
+      "summary": "Groups valid pages into topical clusters around category and use-case pillar pages, mapping each pillar to a list of member pages that share its primary entity.",
+      "tags": [
+        "service",
+        "data-pipeline",
+        "data-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/topicalClusters.ts:buildTopicalClusters",
+      "type": "function",
+      "name": "buildTopicalClusters",
+      "filePath": "src/lib/topicalClusters.ts",
+      "lineRange": [
+        28,
+        73
+      ],
+      "summary": "Identifies pillar pages (category and use-case pages) and builds a cluster for each, collecting all member pages that share the pillar's primary entity.",
+      "tags": [
+        "data-pipeline",
+        "data-model",
+        "factory"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/validate.ts",
+      "type": "file",
+      "name": "validate.ts",
+      "filePath": "src/lib/validate.ts",
+      "summary": "Comprehensive validation module that checks page definitions and generated markdown files for slug uniqueness, frontmatter correctness, required headings, orphaned files, and broken related-page references.",
+      "tags": [
+        "validation",
+        "utility",
+        "service"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/validate.ts:validateAll",
+      "type": "function",
+      "name": "validateAll",
+      "filePath": "src/lib/validate.ts",
+      "lineRange": [
+        36,
+        202
+      ],
+      "summary": "Master validation function that runs all checks across page definitions and generated markdown: duplicate slugs, missing files, frontmatter fields, required headings, orphaned files, and broken page link references.",
+      "tags": [
+        "validation",
+        "service",
+        "entry-point"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:apps/web/app/[slug]/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "apps/web/app/[slug]/page.tsx",
+      "summary": "Next.js dynamic slug page that loads a generated markdown page by slug, renders its content, and builds a related-links sidebar; exports generateStaticParams and generateMetadata for static generation.",
+      "tags": [
+        "api-handler",
+        "component",
+        "entry-point",
+        "next-js"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:apps/web/app/[slug]/page.tsx:generateStaticParams",
+      "type": "function",
+      "name": "generateStaticParams",
+      "filePath": "apps/web/app/[slug]/page.tsx",
+      "lineRange": [
+        16,
+        18
+      ],
+      "summary": "Returns the list of high-priority slugs for Next.js static generation at build time.",
+      "tags": [
+        "next-js",
+        "static-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/app/[slug]/page.tsx:generateMetadata",
+      "type": "function",
+      "name": "generateMetadata",
+      "filePath": "apps/web/app/[slug]/page.tsx",
+      "lineRange": [
+        21,
+        32
+      ],
+      "summary": "Generates Open Graph and page metadata for a slug by loading its page definition.",
+      "tags": [
+        "next-js",
+        "metadata",
+        "seo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/app/[slug]/page.tsx:SlugPage",
+      "type": "function",
+      "name": "SlugPage",
+      "filePath": "apps/web/app/[slug]/page.tsx",
+      "lineRange": [
+        35,
+        88
+      ],
+      "summary": "Default export React component that renders a full content page for a given slug, including markdown body, related links, page-type label, and generation timestamp.",
+      "tags": [
+        "component",
+        "api-handler",
+        "next-js"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:apps/web/app/page.tsx",
+      "type": "file",
+      "name": "page.tsx",
+      "filePath": "apps/web/app/page.tsx",
+      "summary": "Next.js home page component that renders all generated content pages grouped by type, with an optional topical clusters section when cluster data is available.",
+      "tags": [
+        "component",
+        "entry-point",
+        "next-js"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:apps/web/app/page.tsx:groupByType",
+      "type": "function",
+      "name": "groupByType",
+      "filePath": "apps/web/app/page.tsx",
+      "lineRange": [
+        8,
+        14
+      ],
+      "summary": "Groups an array of page metadata records into a map keyed by pageType for organized display.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/app/page.tsx:HomePage",
+      "type": "function",
+      "name": "HomePage",
+      "filePath": "apps/web/app/page.tsx",
+      "lineRange": [
+        26,
+        108
+      ],
+      "summary": "Default export async React component that loads all page metadata and optional cluster data, then renders the site index grouped by content type with alphabetical ordering.",
+      "tags": [
+        "component",
+        "entry-point",
+        "next-js"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:apps/web/lib/build-priority.ts",
+      "type": "file",
+      "name": "build-priority.ts",
+      "filePath": "apps/web/lib/build-priority.ts",
+      "summary": "Exports a constant Set of high-priority page types that should be statically pre-rendered at build time.",
+      "tags": [
+        "configuration",
+        "utility",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:apps/web/lib/graph-data.ts",
+      "type": "file",
+      "name": "graph-data.ts",
+      "filePath": "apps/web/lib/graph-data.ts",
+      "summary": "Provides loader functions for supplemental graph data artifacts \u2014 topical clusters and page-to-page link relationships \u2014 read from the content index at runtime.",
+      "tags": [
+        "utility",
+        "data-model",
+        "service"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:apps/web/lib/graph-data.ts:loadTopicalClusters",
+      "type": "function",
+      "name": "loadTopicalClusters",
+      "filePath": "apps/web/lib/graph-data.ts",
+      "lineRange": [
+        62,
+        66
+      ],
+      "summary": "Reads and parses the topical-clusters JSON artifact from the content index directory.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/lib/graph-data.ts:loadPageLinks",
+      "type": "function",
+      "name": "loadPageLinks",
+      "filePath": "apps/web/lib/graph-data.ts",
+      "lineRange": [
+        69,
+        73
+      ],
+      "summary": "Reads and parses the page-links JSON artifact from the content index directory.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:apps/web/lib/pages.ts",
+      "type": "file",
+      "name": "pages.ts",
+      "filePath": "apps/web/lib/pages.ts",
+      "summary": "Core data-access module for the Next.js frontend; reads generated markdown page files from disk, parses frontmatter, and exposes loaders for all pages, slugs, high-priority slugs, and individual page content.",
+      "tags": [
+        "service",
+        "data-model",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:apps/web/lib/pages.ts:loadAllPageMeta",
+      "type": "function",
+      "name": "loadAllPageMeta",
+      "filePath": "apps/web/lib/pages.ts",
+      "lineRange": [
+        28,
+        37
+      ],
+      "summary": "Scans the pages directory, parses frontmatter from every markdown file, and returns an array of page metadata objects.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/lib/pages.ts:loadAllSlugs",
+      "type": "function",
+      "name": "loadAllSlugs",
+      "filePath": "apps/web/lib/pages.ts",
+      "lineRange": [
+        40,
+        46
+      ],
+      "summary": "Returns an array of all available slug strings derived from markdown filenames in the pages directory.",
+      "tags": [
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/lib/pages.ts:loadHighPrioritySlugs",
+      "type": "function",
+      "name": "loadHighPrioritySlugs",
+      "filePath": "apps/web/lib/pages.ts",
+      "lineRange": [
+        50,
+        55
+      ],
+      "summary": "Filters page metadata to return only slugs whose pageType is in the HIGH_PRIORITY_TYPES set for build-time pre-rendering.",
+      "tags": [
+        "utility",
+        "static-generation"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/lib/pages.ts:loadPageBySlug",
+      "type": "function",
+      "name": "loadPageBySlug",
+      "filePath": "apps/web/lib/pages.ts",
+      "lineRange": [
+        58,
+        66
+      ],
+      "summary": "Loads a single page by slug: reads the markdown file, parses frontmatter, converts body to HTML with marked, and returns null when the file does not exist.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/compute-pages.ts",
+      "type": "file",
+      "name": "compute-pages.ts",
+      "filePath": "scripts/compute-pages.ts",
+      "summary": "Main entry-point script that orchestrates the full page-definition pipeline: loads structured data, applies all page rules, validates and deduplicates candidates, builds the page index, and writes the index, report, and site-plan summary artifacts to disk.",
+      "tags": [
+        "entry-point",
+        "script",
+        "data-pipeline",
+        "orchestration"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/compute-pages.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/compute-pages.ts",
+      "lineRange": [
+        24,
+        93
+      ],
+      "summary": "Top-level async orchestrator that sequences loadData \u2192 applyAllRules \u2192 validateCandidates \u2192 deduplicateCandidates \u2192 buildPageIndex \u2192 write artifacts, then prints a summary report to stdout.",
+      "tags": [
+        "entry-point",
+        "orchestration",
+        "data-pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:src/lib/pageBuilders.ts",
+      "type": "file",
+      "name": "pageBuilders.ts",
+      "filePath": "src/lib/pageBuilders.ts",
+      "summary": "Provides the core factory function for constructing normalized PageDefinition objects from raw rule parameters, including section list resolution by page type.",
+      "tags": [
+        "factory",
+        "utility",
+        "data-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageBuilders.ts:buildPageDefinition",
+      "type": "function",
+      "name": "buildPageDefinition",
+      "filePath": "src/lib/pageBuilders.ts",
+      "lineRange": [
+        32,
+        72
+      ],
+      "summary": "Exported factory that constructs a complete PageDefinition object from provided entity parameters, delegating section resolution to the internal sectionsFor helper.",
+      "tags": [
+        "factory",
+        "data-model",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/pageIndex.ts",
+      "type": "file",
+      "name": "pageIndex.ts",
+      "filePath": "src/lib/pageIndex.ts",
+      "summary": "Implements validation, deduplication, indexing, reporting, and persistence of page-definition candidates \u2014 the full post-rule processing pipeline before artifacts are written to disk.",
+      "tags": [
+        "service",
+        "validation",
+        "data-pipeline",
+        "serialization"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/pageIndex.ts:validateCandidates",
+      "type": "function",
+      "name": "validateCandidates",
+      "filePath": "src/lib/pageIndex.ts",
+      "lineRange": [
+        9,
+        52
+      ],
+      "summary": "Validates every page-definition candidate and annotates each with a validation status and any error messages, without filtering \u2014 callers decide what to do with invalid entries.",
+      "tags": [
+        "validation",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageIndex.ts:deduplicateCandidates",
+      "type": "function",
+      "name": "deduplicateCandidates",
+      "filePath": "src/lib/pageIndex.ts",
+      "lineRange": [
+        58,
+        95
+      ],
+      "summary": "Removes duplicate candidates by composite key and slug, writing warnings to stderr for each duplicate dropped.",
+      "tags": [
+        "validation",
+        "data-pipeline",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageIndex.ts:buildPageIndex",
+      "type": "function",
+      "name": "buildPageIndex",
+      "filePath": "src/lib/pageIndex.ts",
+      "lineRange": [
+        100,
+        110
+      ],
+      "summary": "Assembles the final page-index artifact from validated candidates, partitioning them into valid and invalid lists with a generation timestamp.",
+      "tags": [
+        "data-pipeline",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/pageIndex.ts:buildReport",
+      "type": "function",
+      "name": "buildReport",
+      "filePath": "src/lib/pageIndex.ts",
+      "lineRange": [
+        115,
+        161
+      ],
+      "summary": "Builds a structured JSON report summarising valid/invalid counts, warning messages, and per-type breakdowns for the compute-pages run.",
+      "tags": [
+        "reporting",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageIndex.ts:buildSitePlanSummary",
+      "type": "function",
+      "name": "buildSitePlanSummary",
+      "filePath": "src/lib/pageIndex.ts",
+      "lineRange": [
+        167,
+        201
+      ],
+      "summary": "Produces a human-readable site-plan summary object grouping valid pages by type, listing their slugs and tool coverage counts.",
+      "tags": [
+        "reporting",
+        "data-pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageIndex.ts:writePageIndex",
+      "type": "function",
+      "name": "writePageIndex",
+      "filePath": "src/lib/pageIndex.ts",
+      "lineRange": [
+        238,
+        244
+      ],
+      "summary": "Serializes and writes the page index JSON artifact to a given file path.",
+      "tags": [
+        "serialization",
+        "utility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/pageRules.ts",
+      "type": "file",
+      "name": "pageRules.ts",
+      "filePath": "src/lib/pageRules.ts",
+      "summary": "Defines all page-generation rules that derive PageDefinition candidates from the structured dataset, covering category, audience, use-case, feature, pricing, alternatives, comparison, and tool-detail page types.",
+      "tags": [
+        "service",
+        "data-pipeline",
+        "factory",
+        "business-logic"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/pageRules.ts:applyAllRules",
+      "type": "function",
+      "name": "applyAllRules",
+      "filePath": "src/lib/pageRules.ts",
+      "lineRange": [
+        227,
+        239
+      ],
+      "summary": "Exported aggregator that invokes every individual rule function and returns a flat array of all PageDefinition candidates generated from the dataset.",
+      "tags": [
+        "orchestration",
+        "data-pipeline",
+        "factory"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/pageRules.ts:comparisonPages",
+      "type": "function",
+      "name": "comparisonPages",
+      "filePath": "src/lib/pageRules.ts",
+      "lineRange": [
+        178,
+        203
+      ],
+      "summary": "Generates comparison page definitions for tool pairs that share category overlap above a minimum overlap score threshold.",
+      "tags": [
+        "factory",
+        "data-pipeline",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/lib/pageRules.ts:alternativesPages",
+      "type": "function",
+      "name": "alternativesPages",
+      "filePath": "src/lib/pageRules.ts",
+      "lineRange": [
+        156,
+        175
+      ],
+      "summary": "Generates alternatives page definitions for tools that have explicit alternative relationships and shared category membership.",
+      "tags": [
+        "factory",
+        "data-pipeline",
+        "business-logic"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/types/pages.ts",
+      "type": "file",
+      "name": "pages.ts",
+      "filePath": "src/types/pages.ts",
+      "summary": "Defines the core TypeScript types and interfaces for page definitions, page indexes, and related structures used throughout the content generation pipeline.",
+      "tags": [
+        "type-definition",
+        "data-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/generate-pages.ts",
+      "type": "file",
+      "name": "generate-pages.ts",
+      "filePath": "scripts/generate-pages.ts",
+      "summary": "CLI entry point that orchestrates the page generation pipeline: loads the page index and dataset, iterates over valid page definitions, renders each to markdown, and writes the output files to content/pages.",
+      "tags": [
+        "entry-point",
+        "data-pipeline",
+        "script"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:scripts/generate-pages.ts:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "scripts/generate-pages.ts",
+      "lineRange": [
+        17,
+        69
+      ],
+      "summary": "Orchestrates the full page generation run: validates prerequisites, loads page index and structured data, clears stale output files, renders each page definition to markdown, and writes results to disk.",
+      "tags": [
+        "entry-point",
+        "data-pipeline",
+        "script"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/llm.ts",
+      "type": "file",
+      "name": "llm.ts",
+      "filePath": "src/lib/llm.ts",
+      "summary": "LLM integration layer that generates narrative prose sections for pages via the Anthropic API, with SHA-256-keyed disk caching to avoid redundant API calls.",
+      "tags": [
+        "service",
+        "api-handler",
+        "utility"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Uses crypto.createHash for deterministic cache keys derived from the prompt content and matched tool IDs."
+    },
+    {
+      "id": "function:src/lib/llm.ts:generateNarrative",
+      "type": "function",
+      "name": "generateNarrative",
+      "filePath": "src/lib/llm.ts",
+      "lineRange": [
+        73,
+        108
+      ],
+      "summary": "Exported function that generates a narrative text section for a page by checking a disk cache first, calling the Anthropic API on a cache miss, and persisting the result.",
+      "tags": [
+        "api-handler",
+        "service",
+        "utility"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/loadData.ts",
+      "type": "file",
+      "name": "loadData.ts",
+      "filePath": "src/lib/loadData.ts",
+      "summary": "Loads and parses all structured JSON entity datasets (tools, categories, audiences, use cases, features, price tiers) from the content/data directory into a typed in-memory dataset.",
+      "tags": [
+        "utility",
+        "data-model",
+        "service"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/loadData.ts:loadData",
+      "type": "function",
+      "name": "loadData",
+      "filePath": "src/lib/loadData.ts",
+      "lineRange": [
+        21,
+        34
+      ],
+      "summary": "Exported function that reads all entity JSON files from a given content root directory and returns a fully typed dataset object.",
+      "tags": [
+        "utility",
+        "data-model"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/lib/markdown.ts",
+      "type": "file",
+      "name": "markdown.ts",
+      "filePath": "src/lib/markdown.ts",
+      "summary": "Renders a complete markdown page file from a page definition, including YAML frontmatter, tool lists, comparison tables, related pages section, and LLM-generated narrative sections.",
+      "tags": [
+        "utility",
+        "serialization",
+        "data-pipeline"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/markdown.ts:renderMarkdown",
+      "type": "function",
+      "name": "renderMarkdown",
+      "filePath": "src/lib/markdown.ts",
+      "lineRange": [
+        97,
+        158
+      ],
+      "summary": "Exported function that assembles a full markdown page string by composing frontmatter, narrative prose (via LLM), tool lists, comparison tables, and related pages sections.",
+      "tags": [
+        "utility",
+        "serialization"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:src/lib/markdown.ts:comparisonTableSection",
+      "type": "function",
+      "name": "comparisonTableSection",
+      "filePath": "src/lib/markdown.ts",
+      "lineRange": [
+        64,
+        94
+      ],
+      "summary": "Builds a markdown comparison table for two tools, showing categories, pricing tiers, top features, and website links side by side.",
+      "tags": [
+        "utility",
+        "serialization"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/types/entities.ts",
+      "type": "file",
+      "name": "entities.ts",
+      "filePath": "src/types/entities.ts",
+      "summary": "Core TypeScript type definitions for all domain entities \u2014 Tool, Category, Audience, UseCase, Feature, PriceTier \u2014 and the Dataset aggregate that groups them together.",
+      "tags": [
+        "type-definition",
+        "data-model"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/pr-checks.yml",
+      "type": "pipeline",
+      "name": "pr-checks.yml",
+      "filePath": ".github/workflows/pr-checks.yml",
+      "summary": "GitHub Actions workflow that runs on every pull request to validate PR title format against conventional commits, validate that the PR description contains a populated Summary section, and auto-generate a grouped changelog in the PR body for dev-to-main promotion PRs.",
+      "tags": [
+        "ci-cd",
+        "pull-request",
+        "validation",
+        "changelog",
+        "automation"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "pipeline:.github/workflows/render-diagrams.yml",
+      "type": "pipeline",
+      "name": "render-diagrams.yml",
+      "filePath": ".github/workflows/render-diagrams.yml",
+      "summary": "GitHub Actions workflow that renders PlantUML diagram files in docs/diagrams to SVG on pushes to main and deploys the entire docs directory to GitHub Pages.",
+      "tags": [
+        "ci-cd",
+        "deployment",
+        "documentation",
+        "diagram-rendering",
+        "github-pages"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/commands/pipeline.md",
+      "type": "document",
+      "name": "pipeline.md",
+      "filePath": ".claude/commands/pipeline.md",
+      "summary": "Claude Code slash-command definition for running the full content generation pipeline (compute-pages, generate-pages, qa-check) as a single developer shortcut.",
+      "tags": [
+        "documentation",
+        "ci-cd",
+        "data-pipeline",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/commands/status.md",
+      "type": "document",
+      "name": "status.md",
+      "filePath": ".claude/commands/status.md",
+      "summary": "Claude Code slash-command definition that reports current project build status, outstanding page counts, and pipeline health at a glance.",
+      "tags": [
+        "documentation",
+        "ci-cd",
+        "monitoring",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/commands/typecheck.md",
+      "type": "document",
+      "name": "typecheck.md",
+      "filePath": ".claude/commands/typecheck.md",
+      "summary": "Claude Code slash-command definition that runs TypeScript type-checking across all workspace packages and surfaces type errors to the developer.",
+      "tags": [
+        "documentation",
+        "configuration",
+        "build-system",
+        "ci-cd"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/architecture.md",
+      "type": "document",
+      "name": "architecture.md",
+      "filePath": ".claude/rules/architecture.md",
+      "summary": "AI assistant rules governing architecture boundaries, frozen stable layers, and the deterministic vs LLM responsibility split for the programmatic content site.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "configuration",
+        "ai-rules"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.claude/rules/code-quality.md",
+      "type": "document",
+      "name": "code-quality.md",
+      "filePath": ".claude/rules/code-quality.md",
+      "summary": "AI assistant rules enforcing simplicity-first code design, anti-over-engineering principles, and elegance checks before presenting code changes.",
+      "tags": [
+        "documentation",
+        "code-quality",
+        "configuration",
+        "ai-rules"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/commits.md",
+      "type": "document",
+      "name": "commits.md",
+      "filePath": ".claude/rules/commits.md",
+      "summary": "AI assistant rules defining commit message format, PR description requirements, and branch targeting conventions for this project.",
+      "tags": [
+        "documentation",
+        "configuration",
+        "ai-rules",
+        "ci-cd"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.claude/rules/workflow.md",
+      "type": "document",
+      "name": "workflow.md",
+      "filePath": ".claude/rules/workflow.md",
+      "summary": "AI assistant rules covering plan mode, task management, subagent strategy, self-improvement loops, verification requirements, and autonomous bug fixing practices.",
+      "tags": [
+        "documentation",
+        "configuration",
+        "ai-rules",
+        "development"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Primary AI assistant instructions file defining architecture boundaries, editing rules, workflow practices, and knowledge graph tooling for the programmatic content site. Covers all four architecture layers, deterministic vs LLM responsibilities, and commit/PR conventions.",
+      "tags": [
+        "documentation",
+        "ai-instructions",
+        "architecture",
+        "development",
+        "entry-point"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project overview and developer reference covering the full data-to-frontend pipeline, page types, canonical keys, LLM boundary rules, and local testing workflow for the programmatic content site.",
+      "tags": [
+        "documentation",
+        "entry-point",
+        "overview",
+        "architecture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "Monorepo root package configuration defining pipeline scripts (compute-pages, generate-pages, qa-check) and shared dependencies for the programmatic content site.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "monorepo",
+        "scripts"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:pnpm-workspace.yaml",
+      "type": "config",
+      "name": "pnpm-workspace.yaml",
+      "filePath": "pnpm-workspace.yaml",
+      "summary": "pnpm workspace configuration declaring the monorepo package glob patterns that define which directories are treated as workspace packages.",
+      "tags": [
+        "configuration",
+        "monorepo",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "tsconfig.json",
+      "summary": "Root TypeScript compiler configuration for the monorepo, setting shared compiler options and include/exclude patterns inherited by workspace packages.",
+      "tags": [
+        "configuration",
+        "typescript",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/taxonomy/audiences.json",
+      "type": "config",
+      "name": "audiences.json",
+      "filePath": "content/data/taxonomy/audiences.json",
+      "summary": "Defines the 6 target audience segments (students, marketers, creators, startups, freelancers, agencies) used as taxonomy entities throughout the page generation pipeline.",
+      "tags": [
+        "configuration",
+        "taxonomy",
+        "data-model",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/taxonomy/categories.json",
+      "type": "config",
+      "name": "categories.json",
+      "filePath": "content/data/taxonomy/categories.json",
+      "summary": "Defines the 6 top-level tool categories (writing, video, productivity, transcription, social-media, image) that drive category page generation and tool classification.",
+      "tags": [
+        "configuration",
+        "taxonomy",
+        "data-model",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/taxonomy/features.json",
+      "type": "config",
+      "name": "features.json",
+      "filePath": "content/data/taxonomy/features.json",
+      "summary": "Defines 9 filterable tool features (ai-suggestions, templates, collaboration, transcription, video-generation, analytics, multi-language, brand-voice, api-access) used for faceted page matching.",
+      "tags": [
+        "configuration",
+        "taxonomy",
+        "data-model",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/taxonomy/integrations.json",
+      "type": "config",
+      "name": "integrations.json",
+      "filePath": "content/data/taxonomy/integrations.json",
+      "summary": "Defines supported third-party integrations (Slack, Zapier, Google Drive, Zoom) used as taxonomy entities for integration-based page generation.",
+      "tags": [
+        "configuration",
+        "taxonomy",
+        "data-model",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/taxonomy/price-tiers.json",
+      "type": "config",
+      "name": "price-tiers.json",
+      "filePath": "content/data/taxonomy/price-tiers.json",
+      "summary": "Defines the 3 pricing tier taxonomy values (free, freemium, premium) used to classify tools and drive pricing-filtered page variants.",
+      "tags": [
+        "configuration",
+        "taxonomy",
+        "data-model",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/taxonomy/use-cases.json",
+      "type": "config",
+      "name": "use-cases.json",
+      "filePath": "content/data/taxonomy/use-cases.json",
+      "summary": "Defines 10 specific use-case taxonomy entities (blog-writing, note-taking, video-ads, meeting-notes, social-media-posts, email-writing, seo-content, podcast-editing, image-generation, research) that map tools to user intents for page generation.",
+      "tags": [
+        "configuration",
+        "taxonomy",
+        "data-model",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/architecture/build-sequence.md",
+      "type": "document",
+      "name": "build-sequence.md",
+      "filePath": "docs/architecture/build-sequence.md",
+      "summary": "Authoritative build sequence defining the 5-phase, 16-step evolution of the programmatic content site \u2014 from content engine foundation through deployment optimization and advanced scaling, with completion status and architectural principles.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "build-system",
+        "development"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/architecture/entity-graph-and-traversal.md",
+      "type": "document",
+      "name": "entity-graph-and-traversal.md",
+      "filePath": "docs/architecture/entity-graph-and-traversal.md",
+      "summary": "Documents the entity relationship graph and traversal algorithms (1-hop vs 2-hop) used to compute page relatedness, comparing Jaccard similarity against graph traversal strategies.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "data-pipeline",
+        "schema-definition"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/architecture/project-map.md",
+      "type": "document",
+      "name": "project-map.md",
+      "filePath": "docs/architecture/project-map.md",
+      "summary": "Comprehensive directory and layer map of the programmatic content site, describing the responsibilities of content/, scripts/, src/, apps/, and docs/ directories and how data flows through the system.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "overview",
+        "entry-point"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/architecture/workflow-diagram.md",
+      "type": "document",
+      "name": "workflow-diagram.md",
+      "filePath": "docs/architecture/workflow-diagram.md",
+      "summary": "ASCII and text-based workflow diagrams showing the high-level architecture overview and detailed data-flow through the deterministic content pipeline, including pipeline commands for local development.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "data-pipeline",
+        "deployment"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.claude/settings.json",
+      "type": "config",
+      "name": "settings.json",
+      "filePath": ".claude/settings.json",
+      "summary": "Claude Code project settings listing enabled plugins (understand-anything) for this repository.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "claude-code"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.githooks/commit-msg",
+      "type": "file",
+      "name": "commit-msg",
+      "filePath": ".githooks/commit-msg",
+      "summary": "Git hook script that enforces Conventional Commits format on every commit message before it is accepted.",
+      "tags": [
+        "git",
+        "validation",
+        "ci-cd"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.github/pull_request_template.md",
+      "type": "document",
+      "name": "pull_request_template.md",
+      "filePath": ".github/pull_request_template.md",
+      "summary": "GitHub PR template with Summary and Test plan sections to standardize pull request descriptions across the project.",
+      "tags": [
+        "documentation",
+        "github",
+        "workflow"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Ignore file for the Understand Anything plugin, excluding generated content, node_modules, and build artifacts from knowledge graph analysis.",
+      "tags": [
+        "configuration",
+        "tooling",
+        "ignore-rules"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:apps/web/app/layout.tsx",
+      "type": "file",
+      "name": "layout.tsx",
+      "filePath": "apps/web/app/layout.tsx",
+      "summary": "Next.js root layout component that wraps all pages with shared HTML structure, global metadata, and font configuration.",
+      "tags": [
+        "entry-point",
+        "component",
+        "next-js"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/app/layout.tsx:RootLayout",
+      "type": "function",
+      "name": "RootLayout",
+      "filePath": "apps/web/app/layout.tsx",
+      "lineRange": [
+        11,
+        28
+      ],
+      "summary": "Exported default Next.js root layout that renders the HTML shell with children slotted inside, applying global font and metadata.",
+      "tags": [
+        "component",
+        "entry-point",
+        "next-js"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:apps/web/app/not-found.tsx",
+      "type": "file",
+      "name": "not-found.tsx",
+      "filePath": "apps/web/app/not-found.tsx",
+      "summary": "Next.js 404 not-found page component rendered when a route cannot be matched, providing a user-friendly error page.",
+      "tags": [
+        "component",
+        "error-handler",
+        "next-js"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:apps/web/app/not-found.tsx:NotFound",
+      "type": "function",
+      "name": "NotFound",
+      "filePath": "apps/web/app/not-found.tsx",
+      "lineRange": [
+        2,
+        18
+      ],
+      "summary": "Exported default 404 component that displays a not-found message and navigation link back to the homepage.",
+      "tags": [
+        "component",
+        "error-handler",
+        "next-js"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:apps/web/next-env.d.ts",
+      "type": "file",
+      "name": "next-env.d.ts",
+      "filePath": "apps/web/next-env.d.ts",
+      "summary": "Auto-generated Next.js TypeScript environment declaration file that makes Next.js types available to the compiler.",
+      "tags": [
+        "type-definition",
+        "next-js",
+        "configuration"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:apps/web/next.config.js",
+      "type": "file",
+      "name": "next.config.js",
+      "filePath": "apps/web/next.config.js",
+      "summary": "Minimal Next.js configuration file enabling React strict mode for the web application.",
+      "tags": [
+        "configuration",
+        "next-js",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:apps/web/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "apps/web/package.json",
+      "summary": "Package manifest for the Next.js web app, declaring dependencies (Next.js, React), dev dependencies (TypeScript, Tailwind), and npm scripts for dev, build, and start.",
+      "tags": [
+        "configuration",
+        "build-system",
+        "next-js"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:apps/web/tsconfig.json",
+      "type": "config",
+      "name": "tsconfig.json",
+      "filePath": "apps/web/tsconfig.json",
+      "summary": "TypeScript compiler configuration for the Next.js web app, enabling strict mode and path aliases required by Next.js.",
+      "tags": [
+        "configuration",
+        "typescript",
+        "build-system"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:content/data/tools/tools.json",
+      "type": "config",
+      "name": "tools.json",
+      "filePath": "content/data/tools/tools.json",
+      "summary": "Source-of-truth JSON dataset defining all tools in the content engine, with each entry containing id, name, categories, audiences, use cases, and feature flags used to drive page generation.",
+      "tags": [
+        "data",
+        "source-of-truth",
+        "content-engine"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/plans/llm-production-hardening.md",
+      "type": "document",
+      "name": "llm-production-hardening.md",
+      "filePath": "docs/plans/llm-production-hardening.md",
+      "summary": "Task plan for hardening the LLM narrative generation pipeline, covering retry logic, per-page error recovery, prompt-content cache keys, configurable model/token budgets, dry-run mode, and QA validation across 7 implementation steps.",
+      "tags": [
+        "documentation",
+        "planning",
+        "llm"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/rules/ai-editing-rules.md",
+      "type": "document",
+      "name": "ai-editing-rules.md",
+      "filePath": "docs/rules/ai-editing-rules.md",
+      "summary": "Authoritative AI editing rules document with 10 rules governing how AI assistants must interact with the codebase, enforcing architecture boundaries, deterministic pipeline preservation, and simplicity.",
+      "tags": [
+        "documentation",
+        "rules",
+        "architecture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/rules/content-engine-rules.md",
+      "type": "document",
+      "name": "content-engine-rules.md",
+      "filePath": "docs/rules/content-engine-rules.md",
+      "summary": "Comprehensive rules document for the content engine covering all 9 page types, minimum tool thresholds, the 4-step validation pipeline, canonical keys, LLM integration boundaries, and key invariants.",
+      "tags": [
+        "documentation",
+        "rules",
+        "content-engine"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md",
+      "type": "document",
+      "name": "code-walkthrough-pagedefinition-to-pageindex.md",
+      "filePath": "docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md",
+      "summary": "Detailed code walkthrough tracing the full pipeline from PageDefinition candidate emission through validation, deduplication, index assembly, and disk persistence in compute-pages.ts.",
+      "tags": [
+        "documentation",
+        "walkthrough",
+        "content-engine"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:docs/walkthroughs/code-walkthrough-src-lib-pageRules.md",
+      "type": "document",
+      "name": "code-walkthrough-src-lib-pageRules.md",
+      "filePath": "docs/walkthroughs/code-walkthrough-src-lib-pageRules.md",
+      "summary": "Code walkthrough of the categoryPages() function in pageRules.ts, explaining per-tool filtering, candidacy gate, and flatMap collection order with annotated execution steps.",
+      "tags": [
+        "documentation",
+        "walkthrough",
+        "content-engine"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/lib/slugify.ts",
+      "type": "file",
+      "name": "slugify.ts",
+      "filePath": "src/lib/slugify.ts",
+      "summary": "Exports the slugify utility function that converts arbitrary strings to URL-safe lowercase hyphenated slugs used throughout the content engine for deterministic URL generation.",
+      "tags": [
+        "utility",
+        "url-generation",
+        "content-engine"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/lib/slugify.ts:slugify",
+      "type": "function",
+      "name": "slugify",
+      "filePath": "src/lib/slugify.ts",
+      "lineRange": [
+        1,
+        12
+      ],
+      "summary": "Converts a string to a URL-safe slug by lowercasing, stripping non-alphanumeric characters, collapsing whitespace to hyphens, and trimming leading/trailing hyphens.",
+      "tags": [
+        "utility",
+        "url-generation",
+        "pure-function"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:scripts/compute-graph.ts",
+      "target": "file:src/lib/entityGraph.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-graph.ts",
+      "target": "file:src/lib/loadData.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-graph.ts",
+      "target": "file:src/lib/pageIndex.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-graph.ts",
+      "target": "file:src/lib/pageLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-graph.ts",
+      "target": "file:src/lib/topicalClusters.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-graph.ts",
+      "target": "function:scripts/compute-graph.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "function:scripts/compute-graph.ts:main",
+      "target": "function:src/lib/entityGraph.ts:buildEntityGraph",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-graph.ts:main",
+      "target": "function:src/lib/pageLinks.ts:computeRelatedPages",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-graph.ts:main",
+      "target": "function:src/lib/topicalClusters.ts:buildTopicalClusters",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "file:src/lib/entityGraph.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "file:src/lib/loadData.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "file:src/lib/pageIndex.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "file:src/lib/pageLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "file:src/lib/topicalClusters.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "file:src/lib/validate.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/qa-check.ts",
+      "target": "function:scripts/qa-check.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "function:scripts/qa-check.ts:main",
+      "target": "function:src/lib/validate.ts:validateAll",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/entityGraph.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/entityGraph.ts",
+      "target": "function:src/lib/entityGraph.ts:buildEntityGraph",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/entityGraph.ts",
+      "target": "function:src/lib/entityGraph.ts:buildEntityGraph",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "function:src/lib/pageLinks.ts:computeRelatedPages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "function:src/lib/pageLinks.ts:jaccardSimilarity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "function:src/lib/pageLinks.ts:computeEntitySet",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "function:src/lib/pageLinks.ts:computeRelatedPages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "function:src/lib/pageLinks.ts:jaccardSimilarity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageLinks.ts",
+      "target": "function:src/lib/pageLinks.ts:computeEntitySet",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/topicalClusters.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/topicalClusters.ts",
+      "target": "function:src/lib/topicalClusters.ts:buildTopicalClusters",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/topicalClusters.ts",
+      "target": "function:src/lib/topicalClusters.ts:buildTopicalClusters",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "file:src/lib/entityGraph.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "file:src/lib/pageLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "file:src/lib/pageRules.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "file:src/lib/topicalClusters.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "function:src/lib/validate.ts:validateAll",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/validate.ts",
+      "target": "function:src/lib/validate.ts:validateAll",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "file:apps/web/lib/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "function:apps/web/app/[slug]/page.tsx:generateStaticParams",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "function:apps/web/app/[slug]/page.tsx:generateMetadata",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "function:apps/web/app/[slug]/page.tsx:SlugPage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "function:apps/web/app/[slug]/page.tsx:generateStaticParams",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "function:apps/web/app/[slug]/page.tsx:generateMetadata",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/app/[slug]/page.tsx",
+      "target": "function:apps/web/app/[slug]/page.tsx:SlugPage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/app/[slug]/page.tsx:generateStaticParams",
+      "target": "function:apps/web/lib/pages.ts:loadHighPrioritySlugs",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/app/[slug]/page.tsx:generateMetadata",
+      "target": "function:apps/web/lib/pages.ts:loadPageBySlug",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/app/[slug]/page.tsx:SlugPage",
+      "target": "function:apps/web/lib/pages.ts:loadPageBySlug",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/app/[slug]/page.tsx:SlugPage",
+      "target": "function:apps/web/lib/pages.ts:loadAllPageMeta",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/app/page.tsx",
+      "target": "file:apps/web/lib/graph-data.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:apps/web/app/page.tsx",
+      "target": "file:apps/web/lib/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:apps/web/app/page.tsx",
+      "target": "function:apps/web/app/page.tsx:groupByType",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/page.tsx",
+      "target": "function:apps/web/app/page.tsx:HomePage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/page.tsx",
+      "target": "function:apps/web/app/page.tsx:HomePage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/app/page.tsx:HomePage",
+      "target": "function:apps/web/lib/pages.ts:loadAllPageMeta",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/app/page.tsx:HomePage",
+      "target": "function:apps/web/lib/graph-data.ts:loadTopicalClusters",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "file:apps/web/lib/build-priority.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadAllPageMeta",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadAllSlugs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadHighPrioritySlugs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadPageBySlug",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadAllPageMeta",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadAllSlugs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadHighPrioritySlugs",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/lib/pages.ts",
+      "target": "function:apps/web/lib/pages.ts:loadPageBySlug",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:apps/web/lib/pages.ts:loadHighPrioritySlugs",
+      "target": "function:apps/web/lib/pages.ts:loadAllPageMeta",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/lib/graph-data.ts",
+      "target": "function:apps/web/lib/graph-data.ts:loadTopicalClusters",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/lib/graph-data.ts",
+      "target": "function:apps/web/lib/graph-data.ts:loadPageLinks",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/lib/graph-data.ts",
+      "target": "function:apps/web/lib/graph-data.ts:loadTopicalClusters",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/lib/graph-data.ts",
+      "target": "function:apps/web/lib/graph-data.ts:loadPageLinks",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:scripts/compute-pages.ts",
+      "target": "function:scripts/compute-pages.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/compute-pages.ts",
+      "target": "file:src/lib/loadData.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-pages.ts",
+      "target": "file:src/lib/pageIndex.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/compute-pages.ts",
+      "target": "file:src/lib/pageRules.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/loadData.ts:loadData",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageRules.ts:applyAllRules",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageIndex.ts:validateCandidates",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageIndex.ts:deduplicateCandidates",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageIndex.ts:buildPageIndex",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageIndex.ts:buildReport",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageIndex.ts:buildSitePlanSummary",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/compute-pages.ts:main",
+      "target": "function:src/lib/pageIndex.ts:writePageIndex",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageBuilders.ts",
+      "target": "function:src/lib/pageBuilders.ts:buildPageDefinition",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageBuilders.ts",
+      "target": "function:src/lib/pageBuilders.ts:buildPageDefinition",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageBuilders.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:validateCandidates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:deduplicateCandidates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:buildPageIndex",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:buildReport",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:buildSitePlanSummary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:writePageIndex",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:validateCandidates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:deduplicateCandidates",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:buildPageIndex",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:buildReport",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:buildSitePlanSummary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "function:src/lib/pageIndex.ts:writePageIndex",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "file:src/lib/pageRules.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/pageIndex.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "function:src/lib/pageRules.ts:applyAllRules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "function:src/lib/pageRules.ts:comparisonPages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "function:src/lib/pageRules.ts:alternativesPages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "function:src/lib/pageRules.ts:applyAllRules",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "function:src/lib/pageRules.ts:comparisonPages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "function:src/lib/pageRules.ts:alternativesPages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "file:src/lib/pageBuilders.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/pageRules.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:src/lib/pageRules.ts:applyAllRules",
+      "target": "function:src/lib/pageRules.ts:comparisonPages",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/pageRules.ts:applyAllRules",
+      "target": "function:src/lib/pageRules.ts:alternativesPages",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/pageRules.ts:comparisonPages",
+      "target": "function:src/lib/pageBuilders.ts:buildPageDefinition",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:src/lib/pageRules.ts:alternativesPages",
+      "target": "function:src/lib/pageBuilders.ts:buildPageDefinition",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:scripts/generate-pages.ts",
+      "target": "function:scripts/generate-pages.ts:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:scripts/generate-pages.ts",
+      "target": "file:src/lib/loadData.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/generate-pages.ts",
+      "target": "file:src/lib/markdown.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/generate-pages.ts",
+      "target": "file:src/lib/pageIndex.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/generate-pages.ts",
+      "target": "file:src/lib/pageLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/generate-pages.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:scripts/generate-pages.ts:main",
+      "target": "function:src/lib/loadData.ts:loadData",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:scripts/generate-pages.ts:main",
+      "target": "function:src/lib/markdown.ts:renderMarkdown",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/llm.ts",
+      "target": "function:src/lib/llm.ts:generateNarrative",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/llm.ts",
+      "target": "function:src/lib/llm.ts:generateNarrative",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/llm.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/llm.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/loadData.ts",
+      "target": "function:src/lib/loadData.ts:loadData",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/loadData.ts",
+      "target": "function:src/lib/loadData.ts:loadData",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/loadData.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "function:src/lib/markdown.ts:renderMarkdown",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "function:src/lib/markdown.ts:renderMarkdown",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "function:src/lib/markdown.ts:comparisonTableSection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "file:src/lib/llm.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "file:src/lib/pageLinks.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "file:src/types/entities.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/lib/markdown.ts",
+      "target": "file:src/types/pages.ts",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "function:src/lib/markdown.ts:renderMarkdown",
+      "target": "function:src/lib/llm.ts:generateNarrative",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "document:.claude/rules/architecture.md",
+      "target": "document:.claude/rules/workflow.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:.claude/rules/code-quality.md",
+      "target": "document:.claude/rules/workflow.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:.claude/rules/commits.md",
+      "target": "document:.claude/rules/workflow.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:CLAUDE.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:pnpm-workspace.yaml",
+      "target": "config:package.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/architecture/build-sequence.md",
+      "target": "document:docs/architecture/project-map.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/build-sequence.md",
+      "target": "document:docs/architecture/workflow-diagram.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/entity-graph-and-traversal.md",
+      "target": "document:docs/architecture/project-map.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/workflow-diagram.md",
+      "target": "document:docs/architecture/project-map.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:apps/web/app/layout.tsx",
+      "target": "function:apps/web/app/layout.tsx:RootLayout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/layout.tsx",
+      "target": "function:apps/web/app/layout.tsx:RootLayout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:apps/web/app/not-found.tsx",
+      "target": "function:apps/web/app/not-found.tsx:NotFound",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:apps/web/app/not-found.tsx",
+      "target": "function:apps/web/app/not-found.tsx:NotFound",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/lib/slugify.ts",
+      "target": "function:src/lib/slugify.ts:slugify",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:src/lib/slugify.ts",
+      "target": "function:src/lib/slugify.ts:slugify",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "config:apps/web/tsconfig.json",
+      "target": "file:apps/web/app/layout.tsx",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:apps/web/tsconfig.json",
+      "target": "file:apps/web/app/not-found.tsx",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:apps/web/package.json",
+      "target": "file:apps/web/app/layout.tsx",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md",
+      "target": "config:content/data/tools/tools.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/walkthroughs/code-walkthrough-src-lib-pageRules.md",
+      "target": "config:content/data/tools/tools.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/rules/content-engine-rules.md",
+      "target": "config:content/data/tools/tools.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/rules/ai-editing-rules.md",
+      "target": "file:src/lib/slugify.ts",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:structured-data",
+      "name": "Structured Data Layer",
+      "description": "Source-of-truth JSON datasets defining all domain entities \u2014 tools, taxonomy categories, audiences, features, use cases, price tiers, and integrations \u2014 that drive every downstream page-generation decision.",
+      "nodeIds": [
+        "config:content/data/taxonomy/audiences.json",
+        "config:content/data/taxonomy/categories.json",
+        "config:content/data/taxonomy/features.json",
+        "config:content/data/taxonomy/integrations.json",
+        "config:content/data/taxonomy/price-tiers.json",
+        "config:content/data/taxonomy/use-cases.json",
+        "config:content/data/tools/tools.json"
+      ]
+    },
+    {
+      "id": "layer:engine",
+      "name": "Engine Library Layer",
+      "description": "Core TypeScript libraries that implement the deterministic content pipeline \u2014 loading data, applying page rules, building page definitions, computing entity graphs, resolving page links, rendering markdown, and integrating with the LLM for narrative prose.",
+      "nodeIds": [
+        "file:src/lib/entityGraph.ts",
+        "file:src/lib/pageLinks.ts",
+        "file:src/lib/topicalClusters.ts",
+        "file:src/lib/validate.ts",
+        "file:src/lib/pageBuilders.ts",
+        "file:src/lib/pageIndex.ts",
+        "file:src/lib/pageRules.ts",
+        "file:src/lib/llm.ts",
+        "file:src/lib/loadData.ts",
+        "file:src/lib/markdown.ts",
+        "file:src/lib/slugify.ts",
+        "file:src/types/pages.ts",
+        "file:src/types/entities.ts"
+      ]
+    },
+    {
+      "id": "layer:pipeline-scripts",
+      "name": "Pipeline Scripts Layer",
+      "description": "CLI entry-point scripts that orchestrate the full content generation pipeline \u2014 computing page definitions, generating markdown files, building entity graphs, and running QA validation checks.",
+      "nodeIds": [
+        "file:scripts/compute-pages.ts",
+        "file:scripts/generate-pages.ts",
+        "file:scripts/compute-graph.ts",
+        "file:scripts/qa-check.ts"
+      ]
+    },
+    {
+      "id": "layer:frontend",
+      "name": "Frontend Render Layer",
+      "description": "Next.js web application that handles slug routing, markdown rendering, static generation, and page layout \u2014 consuming pre-generated content artifacts without computing any page definitions itself.",
+      "nodeIds": [
+        "file:apps/web/app/[slug]/page.tsx",
+        "file:apps/web/app/page.tsx",
+        "file:apps/web/app/layout.tsx",
+        "file:apps/web/app/not-found.tsx",
+        "file:apps/web/lib/build-priority.ts",
+        "file:apps/web/lib/graph-data.ts",
+        "file:apps/web/lib/pages.ts",
+        "file:apps/web/next-env.d.ts",
+        "file:apps/web/next.config.js",
+        "config:apps/web/package.json",
+        "config:apps/web/tsconfig.json"
+      ]
+    },
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD & Git Automation Layer",
+      "description": "GitHub Actions workflows and git hooks that enforce conventional commits, validate pull request descriptions, render PlantUML diagrams to GitHub Pages, and automate changelog generation.",
+      "nodeIds": [
+        "pipeline:.github/workflows/pr-checks.yml",
+        "pipeline:.github/workflows/render-diagrams.yml",
+        "document:.github/pull_request_template.md",
+        "file:.githooks/commit-msg"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation Layer",
+      "description": "Project documentation covering architecture decisions, build sequences, content engine rules, AI editing rules, code walkthroughs, and developer guides \u2014 authored as markdown and rendered to GitHub Pages.",
+      "nodeIds": [
+        "document:CLAUDE.md",
+        "document:README.md",
+        "document:docs/architecture/build-sequence.md",
+        "document:docs/architecture/entity-graph-and-traversal.md",
+        "document:docs/architecture/project-map.md",
+        "document:docs/architecture/workflow-diagram.md",
+        "document:docs/plans/llm-production-hardening.md",
+        "document:docs/rules/ai-editing-rules.md",
+        "document:docs/rules/content-engine-rules.md",
+        "document:docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md",
+        "document:docs/walkthroughs/code-walkthrough-src-lib-pageRules.md",
+        "document:.claude/commands/pipeline.md",
+        "document:.claude/commands/status.md",
+        "document:.claude/commands/typecheck.md",
+        "document:.claude/rules/architecture.md",
+        "document:.claude/rules/code-quality.md",
+        "document:.claude/rules/commits.md",
+        "document:.claude/rules/workflow.md"
+      ]
+    },
+    {
+      "id": "layer:configuration",
+      "name": "Configuration Layer",
+      "description": "Monorepo build configuration, TypeScript compiler settings, pnpm workspace definitions, Claude Code project settings, and the Understand Anything ignore rules that govern tooling behavior across all packages.",
+      "nodeIds": [
+        "config:package.json",
+        "config:pnpm-workspace.yaml",
+        "config:tsconfig.json",
+        "config:.claude/settings.json",
+        "file:.understand-anything/.understandignore"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Start with the README to understand what this project is and why it exists. It describes a deterministic content factory where structured JSON data flows through a pipeline to produce markdown pages that a Next.js frontend renders \u2014 understanding this mental model upfront makes every subsequent file click into place.",
+      "nodeIds": [
+        "document:README.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Architecture Map",
+      "description": "The project-map document enumerates every directory and its responsibility, and the workflow-diagram doc shows the data-flow visually. Reading these two together gives you the 7-layer architecture \u2014 Structured Data, Engine Library, Pipeline Scripts, Frontend, CI/CD, Documentation, and Configuration \u2014 before touching a single source file.",
+      "nodeIds": [
+        "document:docs/architecture/project-map.md",
+        "document:docs/architecture/workflow-diagram.md"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Source-of-Truth Data",
+      "description": "All content originates in the `content/data/` JSON files. The taxonomy files \u2014 categories, audiences, use-cases, features, price-tiers, integrations \u2014 define the vocabulary of the site, while `tools.json` is the primary subject-matter record that every page ultimately describes. Nothing in the pipeline invents entities; it only recombines these.",
+      "nodeIds": [
+        "config:content/data/tools/tools.json",
+        "config:content/data/taxonomy/categories.json",
+        "config:content/data/taxonomy/audiences.json",
+        "config:content/data/taxonomy/use-cases.json",
+        "config:content/data/taxonomy/features.json"
+      ],
+      "languageLesson": "JSON is used here as a typed, version-controlled database substitute. Because the data never changes at runtime, there is no need for a database \u2014 the pipeline reads it once at startup, and the TypeScript type system validates the shape at compile time."
+    },
+    {
+      "order": 4,
+      "title": "Domain Type System",
+      "description": "Before any pipeline logic runs, two type files establish the vocabulary the entire codebase shares. `src/types/entities.ts` models every JSON entity (Tool, Category, Audience, UseCase, etc.), and `src/types/pages.ts` \u2014 imported by 10 different modules, the highest fan-in in the graph \u2014 defines PageDefinition, PageIndex, and every related structure. These types are the contract between all layers.",
+      "nodeIds": [
+        "file:src/types/entities.ts",
+        "file:src/types/pages.ts"
+      ],
+      "languageLesson": "TypeScript interfaces defined in separate `types/` files create a single source of truth for shared shapes. When a type is imported by 10 modules it acts as a schema: changing it surfaces every breakage at compile time before any runtime failure occurs."
+    },
+    {
+      "order": 5,
+      "title": "Pipeline Orchestrator",
+      "description": "With data and types understood, `scripts/compute-pages.ts` is the natural entry point: it calls `loadData()`, passes the dataset to `applyAllRules()` from pageRules, and then hands the candidates to `pageIndex` for deduplication and persistence. This single script wires the full first half of the pipeline and is the right place to trace execution from.",
+      "nodeIds": [
+        "file:scripts/compute-pages.ts"
+      ],
+      "languageLesson": "Pipeline scripts act as thin orchestrators: they import library modules, call them in order, and exit. Keeping orchestration separate from logic means the same library modules can be reused by compute-graph.ts, generate-pages.ts, and qa-check.ts without duplication."
+    },
+    {
+      "order": 6,
+      "title": "Data Loader",
+      "description": "`loadData.ts` is imported by every pipeline script \u2014 the second-highest fan-in node. It reads all the JSON files from `content/data/` and assembles a single typed in-memory dataset that every downstream library module receives as its input. Understanding what `loadData` returns is prerequisite to understanding any rule or builder.",
+      "nodeIds": [
+        "file:src/lib/loadData.ts"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Page Rules Engine",
+      "description": "`pageRules.ts` is the intellectual heart of the content engine: it defines all page-generation rules that scan the dataset and produce PageDefinition candidates. Each rule encodes a business decision \u2014 for example, every (category \u00d7 audience) pair becomes its own page. The content-engine-rules document describes all 9 page types these rules cover.",
+      "nodeIds": [
+        "file:src/lib/pageRules.ts",
+        "document:docs/rules/content-engine-rules.md"
+      ],
+      "languageLesson": "Rule functions follow the pattern of a pure transformation: Dataset in, PageDefinition[] out, no side effects. This makes each rule independently testable and easy to extend without risk of breaking other rules."
+    },
+    {
+      "order": 8,
+      "title": "Page Builder & Slug Utility",
+      "description": "`pageBuilders.ts` is the factory that constructs normalized PageDefinition objects from raw rule inputs, and `slugify.ts` is the shared utility (imported by 3 modules) that converts entity names to URL-safe slugs. Every page slug in the site flows through `slugify`, making it a critical invariant: if the slug format changes here, all existing URLs change.",
+      "nodeIds": [
+        "file:src/lib/pageBuilders.ts",
+        "file:src/lib/slugify.ts"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Page Index & Validation",
+      "description": "Once rules produce candidates, `pageIndex.ts` validates, deduplicates, and persists them to `content/index/page-definitions.json`. It delegates structural validation to `validate.ts`, which is also independently called by `qa-check.ts` later. The detailed code walkthrough in `docs/walkthroughs/` traces this exact flow step by step for anyone who wants to follow the data through each function call.",
+      "nodeIds": [
+        "file:src/lib/pageIndex.ts",
+        "file:src/lib/validate.ts",
+        "document:docs/walkthroughs/code-walkthrough-pagedefinition-to-pageindex.md"
+      ]
+    },
+    {
+      "order": 10,
+      "title": "Markdown Generation",
+      "description": "`scripts/generate-pages.ts` is the second pipeline stage: it reads the page-definition index, calls `markdown.ts` to render structured content, and calls `llm.ts` to generate narrative prose sections via the Anthropic API. The LLM layer is intentionally limited to prose \u2014 it never alters page structure or slugs, which are determined deterministically in the previous stage.",
+      "nodeIds": [
+        "file:scripts/generate-pages.ts",
+        "file:src/lib/markdown.ts",
+        "file:src/lib/llm.ts"
+      ],
+      "languageLesson": "Separating deterministic structure from LLM-generated prose is a key architectural decision. The LLM is called only for narrative fields; caching responses to disk means re-running the pipeline does not re-incur API costs unless the page definition itself changes."
+    },
+    {
+      "order": 11,
+      "title": "Graph Artifacts",
+      "description": "`scripts/compute-graph.ts` is the third pipeline script, running after pages are generated. It builds a bidirectional entity relationship graph (`entityGraph.ts`), computes Jaccard-similarity-based page links (`pageLinks.ts`), and groups pages into topical clusters (`topicalClusters.ts`). These graph artifacts are what enables related-page recommendations in the frontend.",
+      "nodeIds": [
+        "file:scripts/compute-graph.ts",
+        "file:src/lib/entityGraph.ts",
+        "file:src/lib/pageLinks.ts",
+        "file:src/lib/topicalClusters.ts",
+        "document:docs/architecture/entity-graph-and-traversal.md"
+      ],
+      "languageLesson": "Jaccard similarity measures overlap between two sets as |A \u2229 B| / |A \u222a B|. Here it ranks how related two pages are by comparing their entity sets \u2014 a category page and a tool page sharing 3 of 4 entities score higher than one sharing 1 of 10."
+    },
+    {
+      "order": 12,
+      "title": "QA Check",
+      "description": "`scripts/qa-check.ts` is the final pipeline script and acts as a safety net: it cross-checks every generated markdown file against the page-definition index, using `validate.ts` to confirm no pages are missing, malformed, or orphaned. Running this after generation gives confidence that what was planned matches what was produced.",
+      "nodeIds": [
+        "file:scripts/qa-check.ts"
+      ]
+    },
+    {
+      "order": 13,
+      "title": "Frontend Data Access",
+      "description": "The Next.js frontend (`apps/web`) never runs the pipeline \u2014 it only reads the artifacts it produced. `apps/web/lib/pages.ts` is the core data-access module (fan-in of 3) that reads generated markdown files from disk, while `graph-data.ts` loads topical clusters and page-link relationships. These two modules are the only bridge between the pipeline's output and the frontend's rendering logic.",
+      "nodeIds": [
+        "file:apps/web/lib/pages.ts",
+        "file:apps/web/lib/graph-data.ts",
+        "file:apps/web/lib/build-priority.ts"
+      ]
+    },
+    {
+      "order": 14,
+      "title": "Frontend Rendering",
+      "description": "The two Next.js page components complete the pipeline story. `apps/web/app/page.tsx` renders the home page by listing all generated pages grouped by type, and `apps/web/app/[slug]/page.tsx` handles every dynamic content page by loading a single markdown file by slug. Because slugs are generated deterministically by `slugify.ts` in Step 8, the frontend routing is guaranteed to match the generated files.",
+      "nodeIds": [
+        "file:apps/web/app/page.tsx",
+        "file:apps/web/app/[slug]/page.tsx"
+      ],
+      "languageLesson": "Next.js App Router uses the filesystem as the routing layer. A folder named `[slug]` creates a dynamic segment \u2014 Next.js calls `generateStaticParams()` at build time to enumerate all valid slugs and pre-render them as static HTML, giving fast page loads without a server at runtime."
+    },
+    {
+      "order": 15,
+      "title": "CI/CD & Monorepo Setup",
+      "description": "The two GitHub Actions workflows automate quality gates: `pr-checks.yml` runs validation on every pull request, and `render-diagrams.yml` rebuilds and publishes the PlantUML architecture diagrams to GitHub Pages whenever docs change. The monorepo is managed with pnpm workspaces, with `package.json` at the root defining the `compute-pages`, `generate-pages`, `compute-graph`, and `qa-check` pipeline scripts that tie everything together.",
+      "nodeIds": [
+        "pipeline:.github/workflows/pr-checks.yml",
+        "pipeline:.github/workflows/render-diagrams.yml",
+        "config:package.json",
+        "config:pnpm-workspace.yaml"
+      ],
+      "languageLesson": "pnpm workspaces allow multiple packages (root scripts, apps/web) to share a single node_modules hoist while keeping their own package.json manifests. The root package.json scripts act as the public CLI surface for the entire monorepo \u2014 contributors only need to know `pnpm compute-pages`, `pnpm generate-pages`, etc."
+    }
+  ]
+}
