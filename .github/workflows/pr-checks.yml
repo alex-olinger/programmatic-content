@@ -1,0 +1,168 @@
+name: PR Checks
+
+on:
+  pull_request:
+    # Run on all branches whenever a PR is opened, edited, or updated
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  generate-changelog:
+    name: Generate Promotion Changelog
+    # Runs whenever a dev → main promotion PR is opened, updated, or reopened
+    if: >
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.ref == 'dev' &&
+      (github.event.action == 'opened' ||
+       github.event.action == 'synchronize' ||
+       github.event.action == 'reopened')
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write  # Required to update the PR body
+
+    steps:
+      - name: Generate changelog from merged testing PRs
+        id: changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Find the merge date of the most recent dev → main promotion PR
+          # ISO 8601 dates sort lexicographically so string comparison works
+          LAST_PROMOTION_DATE=$(gh pr list \
+            --repo "$REPO" \
+            --base main \
+            --head dev \
+            --state merged \
+            --json mergedAt \
+            --jq '.[0].mergedAt // empty' \
+            --limit 1)
+
+          # Fall back to epoch if this is the first-ever promotion (include all PRs)
+          if [ -z "$LAST_PROMOTION_DATE" ]; then
+            LAST_PROMOTION_DATE="2000-01-01T00:00:00Z"
+          fi
+
+          echo "Last promotion date: $LAST_PROMOTION_DATE"
+
+          # Fetch all PRs merged into testing since the last promotion (up to 200)
+          MERGED_PRS=$(gh pr list \
+            --repo "$REPO" \
+            --base dev \
+            --state merged \
+            --json number,title,mergedAt \
+            --jq "[.[] | select(.mergedAt > \"$LAST_PROMOTION_DATE\")]" \
+            --limit 200)
+
+          echo "Merged PRs since last promotion:"
+          echo "$MERGED_PRS"
+
+          # Build the changelog body grouped by conventional commit type
+          BODY="## Summary\n\n- Promotion of \`dev\` into \`main\`.\n"
+
+          # Map of type prefix → display label (order determines section order in output)
+          declare -A LABELS=(
+            [feat]="Features"
+            [fix]="Bug Fixes"
+            [perf]="Performance"
+            [refactor]="Refactoring"
+            [docs]="Documentation"
+            [test]="Tests"
+            [ci]="CI"
+            [chore]="Chores"
+            [style]="Style"
+            [build]="Build"
+            [revert]="Reverts"
+          )
+
+          # Explicit ordering since bash associative arrays are unordered
+          TYPE_ORDER=(feat fix perf refactor docs test ci chore style build revert)
+
+          for TYPE in "${TYPE_ORDER[@]}"; do
+            LABEL="${LABELS[$TYPE]}"
+            # Match titles starting with this type (e.g. "feat:" or "feat(scope):")
+            # Use #number only — GitHub auto-renders the PR title as the link text, avoiding duplication
+            MATCHES=$(echo "$MERGED_PRS" | jq -r \
+              "[.[] | select(.title | test(\"^${TYPE}[:(]\"))] | .[] | \"- #\(.number)\"")
+            if [ -n "$MATCHES" ]; then
+              BODY+="\n### ${LABEL}\n${MATCHES}\n"
+            fi
+          done
+
+          # Catch any PRs that don't match conventional commit format
+          UNCATEGORIZED=$(echo "$MERGED_PRS" | jq -r \
+            "[.[] | select(.title | test(\"^(feat|fix|docs|chore|refactor|test|ci|style|perf|build|revert)[:(]\") | not)] | .[] | \"- #\(.number)\"")
+          if [ -n "$UNCATEGORIZED" ]; then
+            BODY+="\n### Other\n${UNCATEGORIZED}\n"
+          fi
+
+          # Write body to a temp file to avoid shell escaping issues with multiline markdown
+          printf "%b" "$BODY" > /tmp/pr_body.md
+          echo "Generated body:"
+          cat /tmp/pr_body.md
+
+      - name: Update PR body with changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Update the PR body using the generated changelog file
+          gh pr edit "$PR_NUMBER" \
+            --repo "$REPO" \
+            --body-file /tmp/pr_body.md
+
+  validate-title:
+    name: Validate PR Title
+    # Title validation is independent — runs in parallel with changelog generation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check conventional commit format
+        # Pass title via env var to prevent script injection
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # Conventional commit pattern: type(optional-scope): description
+          PATTERN='^(feat|fix|docs|chore|refactor|test|ci|style|perf|build|revert)(\(.+\))?: .+'
+          if [[ ! "$PR_TITLE" =~ $PATTERN ]]; then
+            echo "::error::PR title must follow conventional commit format."
+            echo "::error::Expected: type(scope): description"
+            echo "::error::Valid types: feat, fix, docs, chore, refactor, test, ci, style, perf, build, revert"
+            echo "::error::Got: $PR_TITLE"
+            exit 1
+          fi
+
+  validate-description:
+    name: Validate PR Description
+    # Always runs, but waits for generate-changelog to finish first so the
+    # body is populated before we check it (if: always() prevents skipping
+    # when generate-changelog was skipped for non-promotion PRs)
+    needs: [generate-changelog]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for Summary section with content
+        # Fetch the live PR body via API — not the event context, which is stale
+        # after generate-changelog has written the auto-filled body
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Read the current PR body from the API (reflects any changelog update)
+          PR_BODY=$(gh pr view "$PR_NUMBER" --repo "$REPO" --json body --jq '.body')
+
+          # Require a ## Summary heading to be present
+          if ! echo "$PR_BODY" | grep -qi '^## Summary'; then
+            echo "::error::PR description must contain a '## Summary' section."
+            exit 1
+          fi
+
+          # Extract content between ## Summary and the next ## heading (or end of body)
+          SUMMARY_CONTENT=$(echo "$PR_BODY" | awk '/^## Summary/{found=1; next} found && /^## /{exit} found{print}')
+
+          # Require at least one bullet point line under Summary
+          if ! echo "$SUMMARY_CONTENT" | grep -qE '^\s*[-*] .+'; then
+            echo "::error::The '## Summary' section must contain at least one bullet point (e.g. '- description')."
+            exit 1
+          fi
