@@ -7,3 +7,10 @@ content/cache/
 dist/
 .claude/settings.local.json
 tasks/
+
+# Understand Anything — local scratch only; commit knowledge-graph.json and config.json
+.understand-anything/intermediate/
+.understand-anything/diff-overlay.json
+
+# Graphify — commit graphify-out/ if you want persistent graph; ignore local HTML render
+graphify-out/graph.html
