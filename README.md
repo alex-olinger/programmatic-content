@@ -2,6 +2,8 @@
 
 A deterministic content factory: structured JSON datasets → computed page definitions → page-definition index → generated markdown files → frontend rendering.
 
+📐 **[Architecture diagrams →](https://alex-olinger.github.io/programmatic-content/)** — auto-rendered from `docs/diagrams/*.puml` on every push to `main`.
+
 ## Architecture
 
 ```
@@ -11,8 +13,9 @@ content/pages/       Generated markdown pages (gitignored)
 src/lib/             Engine libraries
 src/types/           TypeScript types
 scripts/             Pipeline scripts
-apps/web/            Frontend render layer (Phase 3)
+apps/web/            Frontend render layer (Next.js App Router)
 docs/architecture/   System structure, build order, entity graphs, workflow diagrams
+docs/diagrams/       PlantUML sources rendered to GitHub Pages
 docs/rules/          Editing rules and content engine rules
 docs/walkthroughs/   Code walkthroughs and implementation deep-dives
 docs/plans/          Task plans written during development
@@ -23,7 +26,10 @@ docs/plans/          Task plans written during development
 ```bash
 pnpm install
 
+pnpm pipeline         # run the full pipeline (the four steps below, in order)
+
 pnpm compute-pages    # data → page-definitions.json + report
+pnpm compute-graph    # entity-graph.json + page-links.json
 pnpm generate-pages   # valid definitions → content/pages/*.md
 pnpm qa-check         # validate definitions + generated files
 
@@ -33,14 +39,26 @@ pnpm clean            # remove generated artifacts
 ## Pipeline
 
 ```
-loadData()               reads content/data/**/*.json
-applyAllRules()          produces PageDefinition[] candidates from 9 page-type rules
-validateCandidates()     applies threshold + overlap rules, marks valid/rejected
-deduplicateCandidates()  rejects duplicate canonical keys and slugs
-buildPageIndex()         writes content/index/page-definitions.json (all candidates)
-buildReport()            writes content/index/page-definition-report.json (summary)
-renderMarkdown()         generates .md files from valid definitions only
-validateAll()            checks slugs, frontmatter, tool counts on valid pages
+compute-pages
+  loadData()               reads content/data/**/*.json
+  applyAllRules()          produces PageDefinition[] candidates from 9 page-type rules
+  validateCandidates()     applies threshold + overlap rules, marks valid/rejected
+  deduplicateCandidates()  rejects duplicate canonical keys and slugs
+  buildPageIndex()         writes content/index/page-definitions.json (all candidates)
+  buildReport()            writes content/index/page-definition-report.json (summary)
+  buildSitePlanSummary()   writes content/index/site-plan-summary.json
+
+compute-graph
+  buildEntityGraph()       writes content/index/entity-graph.json (nodes + edges)
+  computeRelatedPages()    writes content/index/page-links.json (related pages per page)
+  buildTopicalClusters()   groups pages into topical clusters
+
+generate-pages
+  renderMarkdown()         generates .md files from valid definitions only
+  generateNarrative()      fills LLM prose sections (see LLM Boundary below)
+
+qa-check
+  validateAll()            checks slugs, frontmatter, tool counts, graph + link artifacts
 ```
 
 ## File Responsibilities
@@ -52,6 +70,9 @@ validateAll()            checks slugs, frontmatter, tool counts on valid pages
 | `src/lib/pageRules.ts` | Compute page candidates and thresholds |
 | `src/lib/pageBuilders.ts` | Construct `PageDefinition` objects from rule outputs |
 | `src/lib/pageIndex.ts` | Validate, deduplicate, and persist the page-definition index |
+| `src/lib/entityGraph.ts` | Build the entity graph (nodes + edges) from the dataset |
+| `src/lib/pageLinks.ts` | Compute related pages for cross-linking |
+| `src/lib/topicalClusters.ts` | Group pages into topical clusters |
 | `src/lib/markdown.ts` | Render a `PageDefinition` to a markdown string |
 | `src/lib/llm.ts` | Generate narrative prose (placeholder until real LLM connected) |
 | `src/lib/validate.ts` | Check definitions and generated files for correctness |
@@ -114,14 +135,16 @@ First-seen wins. If a second candidate arrives with an already-seen key, it is m
 
 ## LLM Boundary
 
-`src/lib/llm.ts` contains `generateNarrative()`. Currently returns placeholder comments. Page structure is decided entirely by the deterministic pipeline — the LLM only fills in prose sections.
+`src/lib/llm.ts` contains `generateNarrative()`. Page structure is decided entirely by the deterministic pipeline — the LLM only fills in prose sections (`introduction`, `bestFor`, `prosAndCons`, `faq`).
 
-**Before plugging in a real LLM:**
-1. Enrich `NarrativeContext` — pass full `Tool` objects (name, description, tagline, website) not just IDs, so prompts have meaningful content.
-2. Replace `generateNarrative()` in `src/lib/llm.ts` with a real API call. The function signature is already correct.
-3. Add rate limiting / batching — up to ~200 calls per full run (4–6 sections × 48 pages).
-4. Add a dry-run mode with cost/token estimation before committing to full generation.
-5. Cache generated narratives to avoid re-generating unchanged pages.
+How it behaves:
+- **With `ANTHROPIC_API_KEY` set** — calls Claude (Haiku 4.5) with a focused, section-specific prompt built from full `Tool` objects.
+- **Without the key** — returns an informative `<!-- LLM_PLACEHOLDER ... -->` comment, so the pipeline runs end-to-end in development without spending tokens.
+- **Caching** — each generated section is cached by a SHA-256 key over `section + title + pageType + matchedToolIds`, so unchanged pages are never regenerated.
+
+**Not yet implemented:**
+1. Rate limiting / batching — up to ~200 calls per full run (4 sections × ~48 pages).
+2. A dry-run mode with cost/token estimation before committing to full generation.
 
 ## Local Testing
 
@@ -130,9 +153,7 @@ Run the full pipeline, then start the Next.js dev server:
 ```bash
 pnpm install
 
-pnpm compute-pages       # compute page-definitions.json
-pnpm generate-pages      # generate content/pages/*.md
-pnpm qa-check            # validate output (optional but recommended)
+pnpm pipeline            # compute-pages → compute-graph → generate-pages → qa-check
 
 pnpm --filter web dev    # start Next.js on http://localhost:3000
 ```
